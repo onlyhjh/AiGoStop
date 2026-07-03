@@ -173,7 +173,7 @@ struct MainContentView: View {
                     self.popupData.completion(0)
                 })
             case .showWinnerPopup:
-                WinnerView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, closeAction: {
+                WinnerView(players: self.popupData.players, closeAction: {
                     isPresentedPopup = false
                     self.popupData.completion(0)
                 })

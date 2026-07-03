@@ -208,6 +208,7 @@ extension GameScene {
         let players = ScoreEngine().getPlayersFinalScore(type: .regularWin ,winnerIndex: self.gameData.currentPlayerIndex, gameData: self.gameData, wasNagari: UserDefaults.standard.wasNagari ?? false, goBakPlayerIndex: goBakPlayerIndex)
         self.gameData.winnerIndex = self.gameData.currentPlayerIndex
         self.saveGameData(winnerIndex: winnderIndex, finalScore: players[0].finalScore, isNagari: false)
+        self.setPlayerNodes(player: players[0], isBlink: false)
         PopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
             self.movePlayerPayouts(players: players) {
                 self.startGame()

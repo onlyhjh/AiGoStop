@@ -10,8 +10,8 @@ import SwiftUI
 
 public struct WinnerView: View {
     
-    var title: String?
-    var message: String?
+    @State var isHidden: Bool = false
+    
     var players: [Player]
     var isTest: Bool = false
     var closeAction: (() -> Void)
@@ -19,9 +19,7 @@ public struct WinnerView: View {
     
     let title3 = "kim"
     
-    init(title: String?, message: String?, players: [Player], isTest: Bool = false, closeAction: @escaping () -> Void) {
-        self.title = title
-        self.message = message
+    init(players: [Player], isTest: Bool = false, closeAction: @escaping () -> Void) {
         self.players = players
         self.isTest = isTest
         self.closeAction = closeAction
@@ -36,431 +34,452 @@ public struct WinnerView: View {
     
     public var body: some View {
         ZStack {
-            VStack(spacing: 0) {
+            VStack {
                 HStack {
-                    VStack(spacing: 20) {
-                        // Winner
-                        VStack(spacing: 5) {
-                            HStack {
-                                Image(players[0].imageName)
-                                    .resizable()
-                                    .frame(width: 60, height: 60)
-                                    .cornerRadius(30)
-                                
-                                VStack(spacing: 5) {
-                                    HStack(spacing: 10) {
-                                        Text(players[0].name)
-                                            .font(.title)
-                                            .bold()
-                                        Text("승")
-                                            .font(.title)
-                                            .bold()
-                                            .foregroundStyle(.white)
-                                            .background(.pink)
-                                            .clipShape(Circle())
-                                    }
-                                    HStack(spacing: 10) {
-                                        Text("+\(players[0].finalScore)만냥")
-                                            .font(.title3)
-                                            .bold()
-                                            .padding(7)
-                                            .foregroundStyle(.white)
-                                            .background(.blue)
-                                            .clipShape(Capsule())
-                                        Text("🥳")
-                                            .font(.title)
-                                    }
-                                }
-                            }
-                            HStack(spacing: 10) {
-                                Text(players[0].goCount > 2 ? "\(players[0].goCount)고x\(Int(pow(2.0, Double(players[0].goCount - 2))))" : "3고x2")
-                                    .font(.caption)
-                                    .bold()
-                                    .padding(5)
-                                    .foregroundStyle(players[0].goCount > 2 ? .red : .white.opacity(0.5))
-                                    .background(players[0].goCount > 2 ? .yellow: .gray.opacity(0.5))
-                                Text(players[0].waveCount > 0 ? "흔들기x\(Int(pow(2.0, Double(players[0].waveCount))))" : "흔들기x2")
-                                    .font(.caption)
-                                    .bold()
-                                    .padding(5)
-                                    .foregroundStyle(players[0].waveCount > 0 ? .red : .white.opacity(0.5))
-                                    .background(players[0].waveCount > 0 ? .yellow: .gray.opacity(0.5))
-                                Text("나가리x2")
-                                    .font(.caption)
-                                    .bold()
-                                    .padding(5)
-                                    .foregroundStyle(players[0].wasNagari ? .red : .white.opacity(0.5))
-                                    .background(players[0].wasNagari ? .yellow: .gray.opacity(0.5))
-                                Text("멍텅구리x2")
-                                    .font(.caption)
-                                    .bold()
-                                    .padding(5)
-                                    .foregroundStyle(players[0].isMungtungguri ? .red : .white.opacity(0.5))
-                                    .background(players[0].isMungtungguri ? .yellow: .gray.opacity(0.5))
-                            }
+                    Spacer()
+                    Button(action: {isHidden.toggle()}, label: {
+                        VStack {
+                            Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
+                            Text(isHidden ? "열기" : "닫기")
+                                .font(.caption)
                         }
-                        // winner
-                        Divider()
-                        HStack(spacing: 10) {
-                            HStack(spacing: 30) {
-                                // Player1
-                                VStack(spacing: 5) {
-                                    HStack(spacing: 5) {
-                                        Image(players[1].imageName)
-                                            .resizable()
-                                            .frame(width: 34, height: 34)
-                                            .cornerRadius(17)
-                                        VStack(spacing: 0) {
-                                            HStack(spacing: 5) {
-                                                Text(players[1].name)
-                                                    .font(.title3)
-                                                    .bold()
-                                                Text("패")
-                                                    .font(.title3)
-                                                    .bold()
-                                                    .foregroundStyle(.white)
-                                                    .background(.red)
-                                                    .clipShape(Circle())
-                                                Spacer()
-                                            }
-                                            HStack(spacing: 5) {
-                                                if players[1].finalScore > 0 {
-                                                    Text("\(players[1].finalScore)만냥")
-                                                        .font(.title3)
-                                                        .bold()
-                                                        .padding(5)
-                                                        .foregroundStyle(.white)
-                                                        .background(.red)
-                                                        .clipShape(Capsule())
-                                                    Text("😭")
-                                                        .font(.title)
-                                                }
-                                                else {
-                                                    Text("🤭")
-                                                        .font(.title)
-                                                }
-                                                Spacer()
-                                            }
-                                        }
-                                    }
-                                    HStack(spacing: 10) {
-                                        Text("광박x2")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[1].isGwangBak ? .red : .white.opacity(0.5))
-                                            .background(players[1].isGwangBak ? .yellow: .gray.opacity(0.5))
-                                        Text("피박x2")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[1].isPiBak ? .red : .white.opacity(0.5))
-                                            .background(players[1].isPiBak ? .yellow: .gray.opacity(0.5))
-                                        Text("독박")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[1].isGoBak ? .red : .white.opacity(0.5))
-                                            .background(players[1].isGoBak ? .yellow: .gray.opacity(0.5))
-                                    }
-                                }
-                                .frame(width: 200)
-                                
-                                // Player1
-                                VStack(spacing: 5) {
-                                    HStack(spacing: 5) {
-                                        Image(players[2].imageName)
-                                            .resizable()
-                                            .frame(width: 34, height: 34)
-                                            .cornerRadius(17)
-                                        VStack(spacing: 0) {
-                                            HStack(spacing: 5) {
-                                                Text(players[2].name)
-                                                    .font(.title3)
-                                                    .bold()
-                                                Text("패")
-                                                    .font(.title3)
-                                                    .bold()
-                                                    .foregroundStyle(.white)
-                                                    .background(.red)
-                                                    .clipShape(Circle())
-                                                Spacer()
-                                            }
-                                            HStack(spacing: 5) {
-                                                if players[2].finalScore > 0 {
-                                                    Text("\(players[2].finalScore)만냥")
-                                                        .font(.title3)
-                                                        .bold()
-                                                        .padding(5)
-                                                        .foregroundStyle(.white)
-                                                        .background(.red)
-                                                        .clipShape(Capsule())
-                                                    Text("😭")
-                                                        .font(.title)
-                                                }
-                                                else {
-                                                    Text("🤭")
-                                                        .font(.title)
-                                                }
-                                                Spacer()
-                                            }
-                                        }
-                                    }
+                        .padding(20)
+                        .foregroundStyle(.white)
+                        .background(.black)
+                        .clipShape(Circle())
+                    })
+                    .padding(20)
+                }
+                Spacer()
+            }
+            
+            if !isHidden {
+                VStack(spacing: 0) {
+                    HStack {
+                        VStack(spacing: 10) {
+                            // Winner
+                            VStack(spacing: 5) {
+                                HStack {
+                                    Image(players[0].imageName)
+                                        .resizable()
+                                        .frame(width: 60, height: 60)
+                                        .cornerRadius(30)
                                     
-                                    HStack(spacing: 10) {
-                                        Text("광박x2")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[2].isGwangBak ? .red : .white.opacity(0.5))
-                                            .background(players[2].isGwangBak ? .yellow: .gray.opacity(0.5))
-                                        Text("피박x2")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[2].isPiBak ? .red : .white.opacity(0.5))
-                                            .background(players[2].isPiBak ? .yellow: .gray.opacity(0.5))
-                                        Text("독박")
-                                            .font(.caption)
-                                            .bold()
-                                            .padding(5)
-                                            .foregroundStyle(players[2].isGoBak ? .red : .white.opacity(0.5))
-                                            .background(players[2].isGoBak ? .yellow: .gray.opacity(0.5))
+                                    VStack(spacing: 5) {
+                                        HStack(spacing: 10) {
+                                            Text(players[0].name)
+                                                .font(.title)
+                                                .bold()
+                                            Text("승")
+                                                .font(.title)
+                                                .bold()
+                                                .foregroundStyle(.white)
+                                                .background(.pink)
+                                                .clipShape(Circle())
+                                        }
+                                        HStack(spacing: 10) {
+                                            Text("+\(players[0].finalScore)만냥")
+                                                .font(.title3)
+                                                .bold()
+                                                .padding(7)
+                                                .foregroundStyle(.white)
+                                                .background(.blue)
+                                                .clipShape(Capsule())
+                                            Text("🥳")
+                                                .font(.title)
+                                        }
                                     }
                                 }
-                                .frame(width: 200)
+                                HStack(spacing: 10) {
+                                    Text(players[0].goCount > 2 ? "\(players[0].goCount)고x\(Int(pow(2.0, Double(players[0].goCount - 2))))" : "3고x2")
+                                        .font(.caption)
+                                        .bold()
+                                        .padding(5)
+                                        .foregroundStyle(players[0].goCount > 2 ? .red : .white.opacity(0.5))
+                                        .background(players[0].goCount > 2 ? .yellow: .gray.opacity(0.5))
+                                    Text(players[0].waveCount > 0 ? "흔들기x\(Int(pow(2.0, Double(players[0].waveCount))))" : "흔들기x2")
+                                        .font(.caption)
+                                        .bold()
+                                        .padding(5)
+                                        .foregroundStyle(players[0].waveCount > 0 ? .red : .white.opacity(0.5))
+                                        .background(players[0].waveCount > 0 ? .yellow: .gray.opacity(0.5))
+                                    Text("나가리x2")
+                                        .font(.caption)
+                                        .bold()
+                                        .padding(5)
+                                        .foregroundStyle(players[0].wasNagari ? .red : .white.opacity(0.5))
+                                        .background(players[0].wasNagari ? .yellow: .gray.opacity(0.5))
+                                    Text("멍텅구리x2")
+                                        .font(.caption)
+                                        .bold()
+                                        .padding(5)
+                                        .foregroundStyle(players[0].isMungtungguri ? .red : .white.opacity(0.5))
+                                        .background(players[0].isMungtungguri ? .yellow: .gray.opacity(0.5))
+                                }
+                            }
+                            // winner
+                            Divider()
+                            HStack(spacing: 10) {
+                                HStack(spacing: 30) {
+                                    // Player1
+                                    VStack(spacing: 5) {
+                                        HStack(spacing: 5) {
+                                            Image(players[1].imageName)
+                                                .resizable()
+                                                .frame(width: 34, height: 34)
+                                                .cornerRadius(17)
+                                            VStack(spacing: 0) {
+                                                HStack(spacing: 5) {
+                                                    Text(players[1].name)
+                                                        .font(.title3)
+                                                        .bold()
+                                                    Text("패")
+                                                        .font(.title3)
+                                                        .bold()
+                                                        .foregroundStyle(.white)
+                                                        .background(.red)
+                                                        .clipShape(Circle())
+                                                    Spacer()
+                                                }
+                                                HStack(spacing: 5) {
+                                                    if players[1].finalScore > 0 {
+                                                        Text("\(players[1].finalScore)만냥")
+                                                            .font(.title3)
+                                                            .bold()
+                                                            .padding(5)
+                                                            .foregroundStyle(.white)
+                                                            .background(.red)
+                                                            .clipShape(Capsule())
+                                                        Text("😭")
+                                                            .font(.title)
+                                                    }
+                                                    else {
+                                                        Text("🤭")
+                                                            .font(.title)
+                                                    }
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                        HStack(spacing: 10) {
+                                            Text("광박x2")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[1].isGwangBak ? .red : .white.opacity(0.5))
+                                                .background(players[1].isGwangBak ? .yellow: .gray.opacity(0.5))
+                                            Text("피박x2")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[1].isPiBak ? .red : .white.opacity(0.5))
+                                                .background(players[1].isPiBak ? .yellow: .gray.opacity(0.5))
+                                            Text("독박")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[1].isGoBak ? .red : .white.opacity(0.5))
+                                                .background(players[1].isGoBak ? .yellow: .gray.opacity(0.5))
+                                        }
+                                    }
+                                    .frame(width: 200)
+                                    
+                                    // Player1
+                                    VStack(spacing: 5) {
+                                        HStack(spacing: 5) {
+                                            Image(players[2].imageName)
+                                                .resizable()
+                                                .frame(width: 34, height: 34)
+                                                .cornerRadius(17)
+                                            VStack(spacing: 0) {
+                                                HStack(spacing: 5) {
+                                                    Text(players[2].name)
+                                                        .font(.title3)
+                                                        .bold()
+                                                    Text("패")
+                                                        .font(.title3)
+                                                        .bold()
+                                                        .foregroundStyle(.white)
+                                                        .background(.red)
+                                                        .clipShape(Circle())
+                                                    Spacer()
+                                                }
+                                                HStack(spacing: 5) {
+                                                    if players[2].finalScore > 0 {
+                                                        Text("\(players[2].finalScore)만냥")
+                                                            .font(.title3)
+                                                            .bold()
+                                                            .padding(5)
+                                                            .foregroundStyle(.white)
+                                                            .background(.red)
+                                                            .clipShape(Capsule())
+                                                        Text("😭")
+                                                            .font(.title)
+                                                    }
+                                                    else {
+                                                        Text("🤭")
+                                                            .font(.title)
+                                                    }
+                                                    Spacer()
+                                                }
+                                            }
+                                        }
+                                        
+                                        HStack(spacing: 10) {
+                                            Text("광박x2")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[2].isGwangBak ? .red : .white.opacity(0.5))
+                                                .background(players[2].isGwangBak ? .yellow: .gray.opacity(0.5))
+                                            Text("피박x2")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[2].isPiBak ? .red : .white.opacity(0.5))
+                                                .background(players[2].isPiBak ? .yellow: .gray.opacity(0.5))
+                                            Text("독박")
+                                                .font(.caption)
+                                                .bold()
+                                                .padding(5)
+                                                .foregroundStyle(players[2].isGoBak ? .red : .white.opacity(0.5))
+                                                .background(players[2].isGoBak ? .yellow: .gray.opacity(0.5))
+                                        }
+                                    }
+                                    .frame(width: 200)
+                                }
                             }
                         }
-                    }
-                    VStack(spacing: 10) {
-                        // Best Record
-                        if let bestRecords, players[0].index == 0 {
-                            Spacer()
-                            VStack(spacing: 10) {
+                        VStack(spacing: 10) {
+                            Spacer().frame(height: 20)
+                            // Best Record
+                            if let bestRecords, players[0].index == 0 {
+                                VStack(spacing: 5) {
+                                    Spacer().frame(height: 0)
+                                    Text("최고 기록")
+                                        .font(.headline)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                    ScrollViewReader { proxy in
+                                        ScrollView{
+                                            VStack(spacing: 3) {
+                                                Spacer().frame(height: 0)
+                                                ForEach(bestRecords.indices, id: \.self) { i in
+                                                    HStack() {
+                                                        Text((players[0].finalScore == bestRecords[i] ? "👉🏻" : "") + "\(i + 1)위")
+                                                            .font(.caption)
+                                                            .bold()
+                                                            .foregroundColor(.white)
+                                                            .frame(width: 50)
+                                                        Spacer()
+                                                        Text("\(bestRecords[i])만냥")
+                                                            .font(.caption)
+                                                            .bold()
+                                                            .foregroundColor(.white)
+                                                    }
+                                                    .padding(.horizontal, 10)
+                                                    Divider().padding(.horizontal, 10)
+                                                }
+                                                Spacer().frame(height: 0)
+                                            }
+                                        }
+                                        .frame(width: 130 , height: 60)
+                                        .background(.white.opacity(0.5))
+                                        .onAppear {
+                                            for (i, bestRecord) in bestRecords.enumerated() {
+                                                if bestRecord == players[0].finalScore {
+                                                    proxy.scrollTo(i, anchor: .center)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                .background(.pink.opacity(0.8))
+                                .cornerRadius(20)
+                                .scrollIndicators(.hidden)
+                            }
+                            
+                            // Score
+                            VStack(spacing: 5) {
                                 Spacer().frame(height: 0)
-                                Text("최고 기록")
+                                Text("총\(players[0].baseScore)점")
                                     .font(.headline)
                                     .bold()
                                     .foregroundColor(.white)
-                                ScrollViewReader { proxy in
-                                    ScrollView{
-                                        VStack(spacing: 3) {
-                                            Spacer().frame(height: 0)
-                                            ForEach(bestRecords.indices, id: \.self) { i in
-                                                HStack() {
-                                                    Text((players[0].finalScore == bestRecords[i] ? "👉🏻" : "") + "\(i + 1)위")
-                                                        .font(.caption)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                        .frame(width: 40)
-                                                    Spacer()
-                                                    Text("\(bestRecords[i])만냥")
-                                                        .font(.caption)
-                                                        .bold()
-                                                        .foregroundColor(.white)
-                                                }
-                                                .padding(.horizontal, 10)
-                                                Divider().padding(.horizontal, 10)
+                                ScrollView {
+                                    VStack(spacing: 3) {
+                                        Spacer().frame(height: 0)
+                                        if self.isTest || players[0].gwangScore > 0 {
+                                            HStack() {
+                                                Text("광")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].gwangScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
                                             }
-                                            Spacer().frame(height: 0)
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
                                         }
-                                    }
-                                    .frame(width: 130 , height: 60)
-                                    .background(.white.opacity(0.5))
-                                    .onAppear {
-                                        for (i, bestRecord) in bestRecords.enumerated() {
-                                            if bestRecord == players[0].finalScore {
-                                                proxy.scrollTo(i, anchor: .center)
+                                        if self.isTest || players[0].yeolScore > 0 {
+                                            HStack() {
+                                                Text("열")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].yeolScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
                                             }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
                                         }
+                                        if self.isTest || players[0].ttiScore > 0 {
+                                            HStack() {
+                                                Text("띠")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].ttiScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].piScore > 0 {
+                                            HStack() {
+                                                Text("피")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].piScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].chungdanScore > 0 {
+                                            HStack() {
+                                                Text("청단")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].chungdanScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].hongdanScore > 0 {
+                                            HStack() {
+                                                Text("홍단")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].hongdanScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].chodanScore > 0 {
+                                            HStack() {
+                                                Text("초단")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].chodanScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].godoriScore > 0 {
+                                            HStack() {
+                                                Text("고도리")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].godoriScore)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        if self.isTest || players[0].goCount > 0 {
+                                            HStack() {
+                                                Text("\(players[0].goCount)고")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .frame(width: 40)
+                                                Spacer()
+                                                Text("\(players[0].goCount)점")
+                                                    .font(.caption)
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                            }
+                                            .padding(.horizontal, 10)
+                                            Divider().padding(.horizontal, 10)
+                                        }
+                                        Spacer().frame(height: 0)
                                     }
                                 }
+                                .frame(width: 130)
+                                .background(.white.opacity(0.3))
                             }
-                            .background(.pink.opacity(0.8))
+                            .background(.green.opacity(0.9))
                             .cornerRadius(20)
                             .scrollIndicators(.hidden)
+                            Spacer()
                         }
-                        
-                        // Score
-                        VStack() {
-                            Spacer().frame(height: 10)
-                            Text("총\(players[0].baseScore)점")
-                                .font(.headline)
-                                .bold()
-                                .foregroundColor(.white)
-                            ScrollView {
-                                VStack(spacing: 3) {
-                                    Spacer().frame(height: 0)
-                                    if self.isTest || players[0].gwangScore > 0 {
-                                        HStack() {
-                                            Text("광")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].gwangScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].yeolScore > 0 {
-                                        HStack() {
-                                            Text("열")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].yeolScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].ttiScore > 0 {
-                                        HStack() {
-                                            Text("띠")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].ttiScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].piScore > 0 {
-                                        HStack() {
-                                            Text("피")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].piScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].chungdanScore > 0 {
-                                        HStack() {
-                                            Text("청단")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].chungdanScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].hongdanScore > 0 {
-                                        HStack() {
-                                            Text("홍단")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].hongdanScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].chodanScore > 0 {
-                                        HStack() {
-                                            Text("초단")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].chodanScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].godoriScore > 0 {
-                                        HStack() {
-                                            Text("고도리")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].godoriScore)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    if self.isTest || players[0].goCount > 0 {
-                                        HStack() {
-                                            Text("\(players[0].goCount)고")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                                .frame(width: 40)
-                                            Spacer()
-                                            Text("\(players[0].goCount)점")
-                                                .font(.caption)
-                                                .bold()
-                                                .foregroundColor(.white)
-                                        }
-                                        .padding(.horizontal, 10)
-                                        Divider().padding(.horizontal, 10)
-                                    }
-                                    Spacer().frame(height: 0)
-                                }
-                            }
-                            .frame(width: 130 , height: 100)
-                            .background(.white.opacity(0.3))
-                        }
-                        .background(.green.opacity(0.9))
-                        .cornerRadius(20)
-                        .scrollIndicators(.hidden)
-                        Spacer().frame(height:10)
                     }
-                }
-                Button("확인") {
-                    closeAction()
-                }
-                .foregroundStyle(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(.green)
-                .clipShape(Capsule())
-                Spacer().frame(height:10)
-            } // inner frame
-            .frame(width: 600, height: 350)
-            .padding(.horizontal,  40)
-            .background(.white.opacity(0.8))
-            .cornerRadius(20)
+                    Button("확인") {
+                        closeAction()
+                    }
+                    .foregroundStyle(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(.green)
+                    .clipShape(Capsule())
+                    Spacer().frame(height:10)
+                } // inner frame
+                .frame(width: 600, height: 330)
+                .padding(.horizontal,  40)
+                .background(.white.opacity(0.9))
+                .cornerRadius(20)
+            }
         }
         .ignoresSafeArea()
         .presentationBackground(.black.opacity(0.4))
@@ -473,8 +492,7 @@ public struct WinnerView: View {
     ZStack {
         Color.tableBG
             .edgesIgnoringSafeArea(.all)
-        WinnerView(title: "OOO승", message: "message", players: players, isTest: true, closeAction: {
+        WinnerView(players: players, isTest: true, closeAction: {
         })
     }
-    
 }
