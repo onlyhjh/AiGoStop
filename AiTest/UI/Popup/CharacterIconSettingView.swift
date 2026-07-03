@@ -12,6 +12,7 @@ struct CharacterIconSettingView: View {
     @Binding var isPresented: Bool
     @Binding var origianlCharacterIndex: Int
     @State var tempCharacterIndex: Int = -1
+    var isFirstLaunch: Bool
     
     let columns = [
             GridItem(.flexible()),
@@ -25,10 +26,9 @@ struct CharacterIconSettingView: View {
     
     var body: some View {
         ZStack {
-            VStack() {
-                Spacer()
-                    .frame(height: 10)
-                Text("👩‍🏭 캐릭터 설정!")
+            VStack(spacing: 10) {
+                Text(self.isFirstLaunch ? "🥹 환영합니다!!!" : "👩‍🏭 캐릭터 아이콘 설정!")
+                    .font(.title)
                 
                 ScrollView{
                     LazyVGrid(columns: columns, spacing: 10) {
@@ -53,6 +53,7 @@ struct CharacterIconSettingView: View {
                 HStack(spacing: 100){
                     Button("확인") {
                         isPresented = false
+                        print("origianlCharacterIndex: \(origianlCharacterIndex)")
                         origianlCharacterIndex = tempCharacterIndex
                     }
                     .foregroundStyle(.white)
@@ -70,12 +71,8 @@ struct CharacterIconSettingView: View {
                     .background(.red)
                     .clipShape(Capsule())
                 }
-                
-                Spacer()
-                    .frame(height: 10)
-                
             }
-            .padding(20)
+            .padding(10)
             .background(.white.opacity(0.9))
             .cornerRadius(20)
         }

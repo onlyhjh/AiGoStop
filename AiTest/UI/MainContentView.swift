@@ -31,7 +31,7 @@ struct MainContentView: View {
             GeometryReader { geometry in
                 Group {
                     if let scene, showSpriteView {
-                        SpriteView(scene: scene)
+                        SpriteView(scene: scene, debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics])
                             .frame(width: geometry.size.width, height: geometry.size.height)
                     }
                     else {
@@ -41,7 +41,6 @@ struct MainContentView: View {
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         if scene == nil {
-                            UserDefaults.standard.wasNagari
                             let newScene = GameScene(size: geometry.size, gameData: self.gameData, popupData: self.popupData, isPresentedCharacterSettingPopup: $isPresentedCharacterSettingPopup)
                             newScene.scaleMode = .aspectFit
                             scene = newScene

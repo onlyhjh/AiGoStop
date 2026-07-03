@@ -37,10 +37,16 @@ class GameData: ObservableObject {
         setCardDuration(gameSpeed: UserDefaults.standard.gameSpeed ?? 0.0)
     }
     
-    func resetGameData(newDeckCards: [Card]) {
+    func resetGameData(newDeckCards: [Card], winnerIndex: Int? = nil) {
+        if let winnerIndex {
+            self.winnerIndex = winnerIndex
+            self.currentPlayerIndex = winnerIndex
+        }
+        else {
+            self.winnerIndex = UserDefaults.standard.winnerHistory?.last ?? 0
+            self.currentPlayerIndex = self.winnerIndex
+        }
         self.tableCardGroups = [[], [], [], [], [], [], [], [], [], [], [], [], [], []]
-        self.winnerIndex = UserDefaults.standard.winnerHistory?.last ?? 1
-        self.currentPlayerIndex = self.winnerIndex
         self.goHistory = []
         self.origianalDeckCards = newDeckCards // (최초 사용전 저장용)
         self.deckCards = newDeckCards

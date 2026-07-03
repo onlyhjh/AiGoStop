@@ -108,7 +108,7 @@ struct CharacterSettingView: View {
             .cornerRadius(20)
   
             if isShowCharacterIconSettingView {
-                CharacterIconSettingView(isPresented: $isShowCharacterIconSettingView, origianlCharacterIndex: $characterIndex)
+                CharacterIconSettingView(isPresented: $isShowCharacterIconSettingView, origianlCharacterIndex: $characterIndex, isFirstLaunch: isFirstLaunch)
             }
         }
         .presentationBackground(.black.opacity(0.4))
@@ -119,9 +119,12 @@ struct CharacterSettingView: View {
             characterIndex = self.gameData.players[0].characterIndex
             userName = self.gameData.players[0].name
             imageName = self.gameData.players[0].imageName
+            
+            if self.isFirstLaunch {
+                isShowCharacterIconSettingView = true
+            }
         }
         .onChange(of: characterIndex) { newValue in
-            if characterIndex == newValue { return }
             self.characterIndex = newValue
             // 사용자가 수정한 이름이 기존이름을 그대로 쓰는지 확인, 다르면 사용자 설정 커스텀 이름 사용
             if GameData.playerNames.contains(where: { $0 == self.gameData.players[0].name }) || self.userName.isEmpty {

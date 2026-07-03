@@ -16,6 +16,7 @@ enum UserDefaultKey: String, CaseIterable {
     case winnerHistory
     case wasNagari
     case gameSpeed
+    case bestRecords
 }
 
 extension UserDefaults {
@@ -57,5 +58,10 @@ extension UserDefaults {
     var gameSpeed: Double? {
         get { value(forKey: UserDefaultKey.gameSpeed.rawValue) as? Double }
         set { setValue(newValue, forKey: UserDefaultKey.gameSpeed.rawValue)}
+    }
+    
+    var bestRecords: [Int]? {
+        get { value(forKey: UserDefaultKey.bestRecords.rawValue) as? [Int] }
+        set { setValue(newValue, forKey: UserDefaultKey.bestRecords.rawValue)}
     }
 }
