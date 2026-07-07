@@ -5,7 +5,7 @@
 //  Created by Joey's Mac mini on 5/6/26.
 //
 
-import UIKit
+import SwiftUI
 
 struct Player: Codable {
     static let imageNamePrefix = "player_"
@@ -38,6 +38,11 @@ struct Player: Codable {
     var isGoBak = false // 독박과 동일
     var finalScore = 0
     
+    // Statistics
+    var totalGames: Int = 0
+    var winRate: Double = 0.0
+    var expectedProfit: Double = 0.0
+
     // MARK: - 계산 프로퍼티
     // 피 10개 1점
     var piScore: Int {
@@ -121,5 +126,17 @@ struct Player: Codable {
     
     init(index: Int) {
         self.index = index
+    }
+    
+    mutating func addGame(isWin: Bool, profit: Int) {
+        totalGames += 1
+
+        let winValue = isWin ? 1.0 : 0.0
+
+        winRate +=
+            (winValue - winRate) / Double(totalGames)
+
+        expectedProfit +=
+            (Double(profit) - expectedProfit) / Double(totalGames)
     }
 }

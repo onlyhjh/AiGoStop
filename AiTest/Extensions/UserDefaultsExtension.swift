@@ -17,6 +17,7 @@ enum UserDefaultKey: String, CaseIterable {
     case wasNagari
     case gameSpeed
     case bestRecords
+    case winningCounts // 0, 1, 2, 무승부
 }
 
 extension UserDefaults {

@@ -8,6 +8,49 @@
 
 import SwiftUI
 
+private struct PlayerTypeStatisticsView: View {
+    var isWinner: Bool
+    var player: Player
+    
+    var body: some View {
+        HStack(spacing: 5) {
+            switch player.index {
+            case 1:
+                Image(.cursorAI)
+                    .frame(width: 20, height: 20)
+                Text("cursor")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            case 2:
+                Image(.claudeAI)
+                    .frame(width: 20, height: 20)
+                Text("claude")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            default:
+                Text("😎 human")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+            if isWinner {
+                Text("승률:\(Int(player.winRate * 100))%")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                Text("(기대이익:\(String(format: "%.2f", player.expectedProfit))만냥)")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+            else {
+                Text("\(Int(player.winRate * 100))%")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+                Text("(\(String(format: "%.2f", player.expectedProfit))만냥)")
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+        }
+    }
+}
 public struct WinnerView: View {
     
     @State var isHidden: Bool = false
@@ -16,9 +59,7 @@ public struct WinnerView: View {
     var isTest: Bool = false
     var closeAction: (() -> Void)
     var bestRecords: [Int]?
-    
-    let title3 = "kim"
-    
+
     init(players: [Player], isTest: Bool = false, closeAction: @escaping () -> Void) {
         self.players = players
         self.isTest = isTest
@@ -116,8 +157,9 @@ public struct WinnerView: View {
                                         .foregroundStyle(players[0].isMungtungguri ? .red : .white.opacity(0.5))
                                         .background(players[0].isMungtungguri ? .yellow: .gray.opacity(0.5))
                                 }
+                                PlayerTypeStatisticsView(isWinner: true, player: players[0])
                             }
-                            // winner
+                            // player1
                             Divider()
                             HStack(spacing: 10) {
                                 HStack(spacing: 30) {
@@ -142,8 +184,8 @@ public struct WinnerView: View {
                                                     Spacer()
                                                 }
                                                 HStack(spacing: 5) {
-                                                    if players[1].finalScore > 0 {
-                                                        Text("\(players[1].finalScore)만냥")
+                                                    if players[1].finalScore != 0 {
+                                                        Text("\(-players[1].finalScore)만냥")
                                                             .font(.title3)
                                                             .bold()
                                                             .padding(5)
@@ -181,6 +223,7 @@ public struct WinnerView: View {
                                                 .foregroundStyle(players[1].isGoBak ? .red : .white.opacity(0.5))
                                                 .background(players[1].isGoBak ? .yellow: .gray.opacity(0.5))
                                         }
+                                        PlayerTypeStatisticsView(isWinner: false, player: players[1])
                                     }
                                     .frame(width: 200)
                                     
@@ -205,8 +248,8 @@ public struct WinnerView: View {
                                                     Spacer()
                                                 }
                                                 HStack(spacing: 5) {
-                                                    if players[2].finalScore > 0 {
-                                                        Text("\(players[2].finalScore)만냥")
+                                                    if players[2].finalScore != 0 {
+                                                        Text("\(-players[2].finalScore)만냥")
                                                             .font(.title3)
                                                             .bold()
                                                             .padding(5)
@@ -245,6 +288,7 @@ public struct WinnerView: View {
                                                 .foregroundStyle(players[2].isGoBak ? .red : .white.opacity(0.5))
                                                 .background(players[2].isGoBak ? .yellow: .gray.opacity(0.5))
                                         }
+                                        PlayerTypeStatisticsView(isWinner: false, player: players[2])
                                     }
                                     .frame(width: 200)
                                 }
@@ -315,7 +359,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].gwangScore)점")
                                                     .font(.caption)
@@ -331,7 +375,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].yeolScore)점")
                                                     .font(.caption)
@@ -347,7 +391,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].ttiScore)점")
                                                     .font(.caption)
@@ -363,7 +407,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].piScore)점")
                                                     .font(.caption)
@@ -379,7 +423,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].chungdanScore)점")
                                                     .font(.caption)
@@ -395,7 +439,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].hongdanScore)점")
                                                     .font(.caption)
@@ -411,7 +455,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].chodanScore)점")
                                                     .font(.caption)
@@ -427,7 +471,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].godoriScore)점")
                                                     .font(.caption)
@@ -443,7 +487,7 @@ public struct WinnerView: View {
                                                     .font(.caption)
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 40)
+                                                    .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].goCount)점")
                                                     .font(.caption)
@@ -475,7 +519,7 @@ public struct WinnerView: View {
                     .clipShape(Capsule())
                     Spacer().frame(height:10)
                 } // inner frame
-                .frame(width: 600, height: 330)
+                .frame(width: 600, height: 380)
                 .padding(.horizontal,  40)
                 .background(.white.opacity(0.9))
                 .cornerRadius(20)
@@ -484,6 +528,8 @@ public struct WinnerView: View {
         .ignoresSafeArea()
         .presentationBackground(.black.opacity(0.4))
     }
+    
+    
 }
 
 #Preview {

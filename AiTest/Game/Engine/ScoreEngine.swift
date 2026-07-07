@@ -22,7 +22,6 @@ class ScoreEngine {
         case .chongtongWin:
             loser1.finalScore = -10
             loser2.finalScore = -10
-            winner.finalScore = loser1.finalScore + loser2.finalScore
         case .thirdFuckWin:
             loser1.finalScore = -3
             loser2.finalScore = -3
@@ -37,8 +36,8 @@ class ScoreEngine {
                 loser2.isPiBak = loser2.piCount > 0 && loser2.piCount < 6
             }
         
-            loser1.finalScore = winner.subtotalScore * (loser1.isGwangBak ? 2 :1) * (loser1.isPiBak ? 2 : 1)
-            loser2.finalScore = winner.subtotalScore * (loser2.isGwangBak ? 2 :1) * (loser2.isPiBak ? 2 : 1)
+            loser1.finalScore = -winner.subtotalScore * (loser1.isGwangBak ? 2 :1) * (loser1.isPiBak ? 2 : 1)
+            loser2.finalScore = -winner.subtotalScore * (loser2.isGwangBak ? 2 :1) * (loser2.isPiBak ? 2 : 1)
         }
 
         // 독박 확인
@@ -62,7 +61,12 @@ class ScoreEngine {
             loser2.finalScore *= 2
         }
         
-        winner.finalScore = loser1.finalScore + loser2.finalScore
+        winner.finalScore = -(loser1.finalScore + loser2.finalScore)
+        
+        // 승률, 기대수익 임시 저장 (save할때
+        winner.addGame(isWin: true, profit: winner.finalScore)
+        loser1.addGame(isWin: false, profit: loser1.finalScore)
+        loser2.addGame(isWin: false, profit: loser2.finalScore)
         
         return [winner, loser1, loser2]
     }
