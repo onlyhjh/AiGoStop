@@ -9,6 +9,8 @@ import SwiftUI
 
 public struct SelectCardsView: View {
     
+    @State var isHidden: Bool = false
+    
     var title: String?
     var message: String?
     var players: [Player]
@@ -27,49 +29,60 @@ public struct SelectCardsView: View {
     
     public var body: some View {
         ZStack {
-            VStack(spacing: 10) {
-//                HStack(spacing: 10) {
-//                    Spacer()
-//                    Button {
-//                        closeAction()
-//                    } label: {
-//                        Image(systemName: "xmark.circle.fill")
-//                                .font(.title)
-//                                .foregroundColor(.gray)
-//                    }
-//                }
-                HStack(spacing: 10) {
-                    Image(players.first?.imageName ?? Player.unknownImageName)
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(25)
-                    if let title {
-                        Text(title)
-                            .font(.title)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: {isHidden.toggle()}, label: {
+                        VStack {
+                            Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
+                            Text(isHidden ? "열기" : "닫기")
+                                .font(.caption)
+                        }
+                        .padding(20)
+                        .foregroundStyle(.white)
+                        .background(.black)
+                        .clipShape(Circle())
+                    })
+                    .padding(20)
+                }
+                Spacer()
+            }
+            
+            if !isHidden {
+                VStack(spacing: 10) {
+                    HStack(spacing: 10) {
+                        Image(players.first?.imageName ?? Player.unknownImageName)
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .cornerRadius(25)
+                        if let title {
+                            Text(title)
+                                .font(.title)
+                        }
+                        Image(cards[0].imageName ?? Card.backImageName)
+                            .resizable()
+                            .frame(width: 25, height: 37)
                     }
-                    Image(cards[0].imageName ?? Card.backImageName)
-                        .resizable()
-                        .frame(width: 25, height: 37)
-                }
-                if let message {
-                    Text(message)
-                        .font(.caption)
-                }
-                HStack(spacing: 20) {
-                    ForEach(1..<cards.count) { index in
-                        Button {
-                            buttonActions[index]()
-                        } label: {
-                            Image(cards[index].imageName ?? Card.backImageName)
-                                .resizable()
-                                .frame(width: 50, height: 75)
+                    if let message {
+                        Text(message)
+                            .font(.caption)
+                    }
+                    HStack(spacing: 20) {
+                        ForEach(1..<cards.count) { index in
+                            Button {
+                                buttonActions[index]()
+                            } label: {
+                                Image(cards[index].imageName ?? Card.backImageName)
+                                    .resizable()
+                                    .frame(width: 50, height: 75)
+                            }
                         }
                     }
                 }
+                .padding(20)
+                .background(.white.opacity(0.9))
+                .cornerRadius(20)
             }
-            .padding(20)
-            .background(.white.opacity(0.9))
-            .cornerRadius(20)
         }
         .presentationBackground(.black.opacity(0.4))
     }

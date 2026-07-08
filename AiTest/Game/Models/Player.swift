@@ -75,7 +75,7 @@ struct Player: Codable {
     
     // 광 3개 1점, 5광 15점 (비광 3점제외)
     var gwangScore: Int {
-        gwangCount > 4 ? 15 : gwangCount > 2 ? gwangCount - 2 : 0
+        gwangCount > 4 ? 15 : gwangCount > 2 ? gwangCount : 0
     }
     var gwangCount: Int {
         // 5광 15점

@@ -36,7 +36,7 @@ private struct PlayerTypeStatisticsView: View {
                 Text("승률:\(Int(player.winRate * 100))%")
                     .font(.caption)
                     .foregroundStyle(.gray)
-                Text("(기대이익:\(String(format: "%.2f", player.expectedProfit))만냥)")
+                Text("(기대수익:\(String(format: "%.2f", player.expectedProfit))만냥)")
                     .font(.caption)
                     .foregroundStyle(.gray)
             }
@@ -327,7 +327,7 @@ public struct WinnerView: View {
                                                 Spacer().frame(height: 0)
                                             }
                                         }
-                                        .frame(width: 130 , height: 60)
+                                        .frame(width: 140 , height: 60)
                                         .background(.white.opacity(0.5))
                                         .onAppear {
                                             for (i, bestRecord) in bestRecords.enumerated() {
@@ -500,7 +500,7 @@ public struct WinnerView: View {
                                         Spacer().frame(height: 0)
                                     }
                                 }
-                                .frame(width: 130)
+                                .frame(width: 140)
                                 .background(.white.opacity(0.3))
                             }
                             .background(.green.opacity(0.9))
