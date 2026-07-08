@@ -19,33 +19,33 @@ private struct PlayerTypeStatisticsView: View {
                 Image(.cursorAI)
                     .frame(width: 20, height: 20)
                 Text("cursor")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             case 2:
                 Image(.claudeAI)
                     .frame(width: 20, height: 20)
                 Text("claude")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             default:
                 Text("😎 human")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             }
             if isWinner {
                 Text("승률:\(Int(player.winRate * 100))%")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
                 Text("(기대수익:\(String(format: "%.2f", player.expectedProfit))만냥)")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             }
             else {
                 Text("\(Int(player.winRate * 100))%")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
                 Text("(\(String(format: "%.2f", player.expectedProfit))만냥)")
-                    .font(.caption)
+                    .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             }
         }
@@ -82,7 +82,7 @@ public struct WinnerView: View {
                         VStack {
                             Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
                             Text(isHidden ? "열기" : "닫기")
-                                .font(.caption)
+                                .font(.system(size: 18,weight: .regular))
                         }
                         .padding(20)
                         .foregroundStyle(.white)
@@ -103,16 +103,16 @@ public struct WinnerView: View {
                                 HStack {
                                     Image(players[0].imageName)
                                         .resizable()
-                                        .frame(width: 60, height: 60)
-                                        .cornerRadius(30)
+                                        .frame(width: 70, height: 70)
+                                        .cornerRadius(35)
                                     
                                     VStack(spacing: 5) {
                                         HStack(spacing: 10) {
                                             Text(players[0].name)
-                                                .font(.title)
+                                                .font(.system(size: 20,weight: .bold))
                                                 .bold()
                                             Text("승")
-                                                .font(.title)
+                                                .font(.system(size: 20,weight: .bold))
                                                 .bold()
                                                 .foregroundStyle(.white)
                                                 .background(.pink)
@@ -127,31 +127,31 @@ public struct WinnerView: View {
                                                 .background(.blue)
                                                 .clipShape(Capsule())
                                             Text("🥳")
-                                                .font(.title)
+                                                .font(.system(size: 20,weight: .bold))
                                         }
                                     }
                                 }
                                 HStack(spacing: 10) {
                                     Text(players[0].goCount > 2 ? "\(players[0].goCount)고x\(Int(pow(2.0, Double(players[0].goCount - 2))))" : "3고x2")
-                                        .font(.caption)
+                                        .font(.system(size: 18,weight: .regular))
                                         .bold()
                                         .padding(5)
                                         .foregroundStyle(players[0].goCount > 2 ? .red : .white.opacity(0.5))
                                         .background(players[0].goCount > 2 ? .yellow: .gray.opacity(0.5))
                                     Text(players[0].waveCount > 0 ? "흔들기x\(Int(pow(2.0, Double(players[0].waveCount))))" : "흔들기x2")
-                                        .font(.caption)
+                                        .font(.system(size: 18,weight: .regular))
                                         .bold()
                                         .padding(5)
                                         .foregroundStyle(players[0].waveCount > 0 ? .red : .white.opacity(0.5))
                                         .background(players[0].waveCount > 0 ? .yellow: .gray.opacity(0.5))
                                     Text("나가리x2")
-                                        .font(.caption)
+                                        .font(.system(size: 18,weight: .regular))
                                         .bold()
                                         .padding(5)
                                         .foregroundStyle(players[0].wasNagari ? .red : .white.opacity(0.5))
                                         .background(players[0].wasNagari ? .yellow: .gray.opacity(0.5))
                                     Text("멍텅구리x2")
-                                        .font(.caption)
+                                        .font(.system(size: 18,weight: .regular))
                                         .bold()
                                         .padding(5)
                                         .foregroundStyle(players[0].isMungtungguri ? .red : .white.opacity(0.5))
@@ -168,8 +168,8 @@ public struct WinnerView: View {
                                         HStack(spacing: 5) {
                                             Image(players[1].imageName)
                                                 .resizable()
-                                                .frame(width: 34, height: 34)
-                                                .cornerRadius(17)
+                                                .frame(width: 50, height: 50)
+                                                .cornerRadius(25)
                                             VStack(spacing: 0) {
                                                 HStack(spacing: 5) {
                                                     Text(players[1].name)
@@ -193,11 +193,11 @@ public struct WinnerView: View {
                                                             .background(.red)
                                                             .clipShape(Capsule())
                                                         Text("😭")
-                                                            .font(.title)
+                                                            .font(.system(size: 20,weight: .bold))
                                                     }
                                                     else {
                                                         Text("🤭")
-                                                            .font(.title)
+                                                            .font(.system(size: 20,weight: .bold))
                                                     }
                                                     Spacer()
                                                 }
@@ -205,19 +205,19 @@ public struct WinnerView: View {
                                         }
                                         HStack(spacing: 10) {
                                             Text("광박x2")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[1].isGwangBak ? .red : .white.opacity(0.5))
                                                 .background(players[1].isGwangBak ? .yellow: .gray.opacity(0.5))
                                             Text("피박x2")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[1].isPiBak ? .red : .white.opacity(0.5))
                                                 .background(players[1].isPiBak ? .yellow: .gray.opacity(0.5))
                                             Text("독박")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[1].isGoBak ? .red : .white.opacity(0.5))
@@ -232,8 +232,8 @@ public struct WinnerView: View {
                                         HStack(spacing: 5) {
                                             Image(players[2].imageName)
                                                 .resizable()
-                                                .frame(width: 34, height: 34)
-                                                .cornerRadius(17)
+                                                .frame(width: 50, height: 50)
+                                                .cornerRadius(25)
                                             VStack(spacing: 0) {
                                                 HStack(spacing: 5) {
                                                     Text(players[2].name)
@@ -257,11 +257,11 @@ public struct WinnerView: View {
                                                             .background(.red)
                                                             .clipShape(Capsule())
                                                         Text("😭")
-                                                            .font(.title)
+                                                            .font(.system(size: 20,weight: .bold))
                                                     }
                                                     else {
                                                         Text("🤭")
-                                                            .font(.title)
+                                                            .font(.system(size: 20,weight: .bold))
                                                     }
                                                     Spacer()
                                                 }
@@ -270,19 +270,19 @@ public struct WinnerView: View {
                                         
                                         HStack(spacing: 10) {
                                             Text("광박x2")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[2].isGwangBak ? .red : .white.opacity(0.5))
                                                 .background(players[2].isGwangBak ? .yellow: .gray.opacity(0.5))
                                             Text("피박x2")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[2].isPiBak ? .red : .white.opacity(0.5))
                                                 .background(players[2].isPiBak ? .yellow: .gray.opacity(0.5))
                                             Text("독박")
-                                                .font(.caption)
+                                                .font(.system(size: 18,weight: .regular))
                                                 .bold()
                                                 .padding(5)
                                                 .foregroundStyle(players[2].isGoBak ? .red : .white.opacity(0.5))
@@ -311,13 +311,13 @@ public struct WinnerView: View {
                                                 ForEach(bestRecords.indices, id: \.self) { i in
                                                     HStack() {
                                                         Text((players[0].finalScore == bestRecords[i] ? "👉🏻" : "") + "\(i + 1)위")
-                                                            .font(.caption)
+                                                            .font(.system(size: 16,weight: .regular))
                                                             .bold()
                                                             .foregroundColor(.white)
                                                             .frame(width: 50)
                                                         Spacer()
                                                         Text("\(bestRecords[i])만냥")
-                                                            .font(.caption)
+                                                            .font(.system(size: 16,weight: .regular))
                                                             .bold()
                                                             .foregroundColor(.white)
                                                     }
@@ -356,13 +356,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].gwangScore > 0 {
                                             HStack() {
                                                 Text("광")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].gwangScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -372,13 +372,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].yeolScore > 0 {
                                             HStack() {
                                                 Text("열")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].yeolScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -388,13 +388,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].ttiScore > 0 {
                                             HStack() {
                                                 Text("띠")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].ttiScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -404,13 +404,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].piScore > 0 {
                                             HStack() {
                                                 Text("피")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].piScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -420,13 +420,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].chungdanScore > 0 {
                                             HStack() {
                                                 Text("청단")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].chungdanScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -436,13 +436,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].hongdanScore > 0 {
                                             HStack() {
                                                 Text("홍단")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].hongdanScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -452,13 +452,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].chodanScore > 0 {
                                             HStack() {
                                                 Text("초단")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].chodanScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -468,13 +468,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].godoriScore > 0 {
                                             HStack() {
                                                 Text("고도리")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].godoriScore)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }
@@ -484,13 +484,13 @@ public struct WinnerView: View {
                                         if self.isTest || players[0].goCount > 0 {
                                             HStack() {
                                                 Text("\(players[0].goCount)고")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                                     .frame(width: 50)
                                                 Spacer()
                                                 Text("\(players[0].goCount)점")
-                                                    .font(.caption)
+                                                    .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
                                             }

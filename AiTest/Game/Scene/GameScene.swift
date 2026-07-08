@@ -219,8 +219,6 @@ extension GameScene {
     private func checkScoreAndDoNextPlay() {
         let player = self.gameData.players[self.gameData.currentPlayerIndex]
         print("\(#function) player:\(player.index), baseScore: \(player.baseScore), lastGoScore: \(player.lastGoScore)")
-        //광 test
-        print("광 test count:\(self.gameData.players[self.gameData.currentPlayerIndex].capturedCardTypeGroups[CardType.gwang.rawValue].count) contains12:\(self.gameData.players[self.gameData.currentPlayerIndex].capturedCardTypeGroups[CardType.gwang.rawValue].contains(where: { $0.month == 12 }))")
         // 3점 이상이고 이전에 고한 점수 보다 높아야 함 (고1점  -1 제외)
         if player.baseScore > 2 && player.baseScore - 1 > player.lastGoScore {
             // 막장이었으면 고/스톱 선택없이 바로 결과 출력

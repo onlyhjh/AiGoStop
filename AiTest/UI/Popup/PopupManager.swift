@@ -48,67 +48,67 @@ class PopupManager {
             switch type {
             case .chongtongWin:
                 popupData.title = "총통 승!!!"
-                popupData.message = "10만냥씩 줘~ 🥳"
+                popupData.message = "10만냥씩 주세요~ 🥳"
                 popupData.status = .showSpecialWinnerPopup
             case .winner:
                 popupData.title = "Winner!!!"
-                popupData.message = message ?? "알아서 언넝 내놔~ 🥳"
+                popupData.message = message ?? "알아서 빨리 주세요~ 🥳"
                 popupData.status = .showWinnerPopup
             case .nagari:
                 popupData.title = "나가리!!!"
-                popupData.message = message ?? "다음판은 두배여~ 🥶"
+                popupData.message = message ?? "다음판은 두배에요~ 🥶"
                 popupData.button1Text = "확인"
                 popupData.status = .showMessagePopup
             case .fourTableCards:
-                popupData.title = "다시돌려!!!"
-                popupData.message = message ?? "이럴수가! 바닥패 4장이 모두 같다니~ 🥶"
+                popupData.title = "무효!!!"
+                popupData.message = message ?? "이럴수가! 바닥패 4장이 모두 같다니요~ 🥶"
                 popupData.button1Text = "확인"
                 popupData.status = .showMessagePopup
             case .thirdFuckWin:
-                popupData.title = "뻑 3번 승!!!"
-                popupData.message = "웃프게 이겼네.. 3만냥 주삼~ 😂"
+                popupData.title = "한게임에 3번 뻑!!!"
+                popupData.message = "웃프게 이겼네요.. 3만냥 주세요~ 😂"
                 popupData.status = .showSpecialWinnerPopup
             case .selectCard:
                 popupData.title = "카드 선택!!!"
-                popupData.message = "가져올 카드를 선택하삼~ 🥸"
+                popupData.message = "이 카드로 가져올 카드를 선택하세요~ 🥸"
                 popupData.status = .showSelectCardPopup
             case .kiss:
                 popupData.title = "아싸 쪽!!!"
-                popupData.message = "피 한장씩 내놔~ 😘"
+                popupData.message = "피 한장씩 주세요~ 😘"
                 popupData.status = .showAutoCloseMessagePopup
             case .emptyTable:
                 popupData.title = "아싸 쓸!!!"
-                popupData.message = "피 한장씩 더 내놔~ 😘"
+                popupData.message = "피 한장씩 더 주세요~ 😘"
                 popupData.status = .showAutoCloseMessagePopup
             case .bomb:
                 popupData.title = "폭탄!!!"
-                popupData.message = "피 한장씩 내놔~ 🫣"
+                popupData.message = "피 한장씩 주세요~ 🫣"
                 popupData.status = .showAutoCloseMessagePopup
             case .selectWave:
                 popupData.title = "흔들기!!!"
-                popupData.message = "흔들까? 아님 그냥? 😵‍💫"
+                popupData.message = "흔들까요? 😵‍💫"
                 popupData.status = .showSelectButtonPopup
                 popupData.button1Text = "흔들기"
                 popupData.button2Text = "그냥치기"
             case .selectGoOrStop:
                 popupData.title = "고/스톱???"
-                popupData.message = "고할까 아님 안전하게 스톱??? 😵‍💫"
+                popupData.message = "고할까 아님 안전하게 스톱할까요??? 😵‍💫"
                 popupData.status = .showSelectButtonPopup
                 popupData.button1Text = "고"
                 popupData.button2Text = "스톱"
             case .selectGukjin:
                 popupData.title = "국진 쌍피 선택!!!"
-                popupData.message = "쌍피로 쓸까? 🥸"
+                popupData.message = "쌍피로 쓸까요? 🥸"
                 popupData.status = .showSelectButtonPopup
                 popupData.button1Text = "쌍피로"
                 popupData.button2Text = "열끗으로"
             case .wave:
                 popupData.title = "흔들었으!!!"
-                popupData.message = "어질어질 하지~ 😵‍💫"
+                popupData.message = "어질어질 하시죠? 😵‍💫"
                 popupData.status = .showAutoCloseMessagePopup
             case .fuck:
-                popupData.title = "오메 뻑!!!"
-                popupData.message = "아놔~ 🤯"
+                popupData.title = "뻑!!!"
+                popupData.message = "오메 이런일이... 🤯"
                 popupData.status = .showAutoCloseMessagePopup
             case .deckBonus:
                 popupData.title = "아싸 보너스!!!"
@@ -116,31 +116,31 @@ class PopupManager {
                 popupData.status = .showAutoCloseMessagePopup
             case .handBonus:
                 popupData.title = "숨겨둔 보너스!!!"
-                popupData.message = "오늘 운빨이 좋구먼~ 🤭"
+                popupData.message = "오늘 운이 좋네요~ 🤭"
                 popupData.status = .showAutoCloseMessagePopup
             case .firstFuck:
                 popupData.title = "오메 첫뻑!!!"
-                popupData.message = "웃프다~ 일단 5만냥씩 내놔~ 😂"
+                popupData.message = "웃프다~ 일단 5만냥씩 주세요~ 😂"
                 popupData.status = .showAutoCloseMessagePopup
             case .secondFuck:
                 popupData.title = "오메메 2연속 뻑!!!"
-                popupData.message = "대단하다~ 일단 따블로 10만냥씩 받자~ 😂"
+                popupData.message = "대단하죠~ 일단 따블로 10만냥씩 주세요~ 😂"
                 popupData.status = .showAutoCloseMessagePopup
             case .tadak:
                 popupData.title = "아싸 따닥!!!"
-                popupData.message = "피 한장씩 내놔~ 🤩"
+                popupData.message = "피 한장씩 주세요~ 🤩"
                 popupData.status = .showAutoCloseMessagePopup
             case .firstTadak:
                 popupData.title = "아싸 첫 따닥!!!"
-                popupData.message = "피 한장씩 그리고 5만냥도 내놔~ 🤩"
+                popupData.message = "피 한장씩 그리고 5만냥도 주세요~ 🤩"
                 popupData.status = .showAutoCloseMessagePopup
             case .threeTableCards:
                 popupData.title = "아싸 쌩큐!!!"
-                popupData.message = "피 한장씩 내놔~ 🥳"
+                popupData.message = "피 한장씩 주세요~ 🥳"
                 popupData.status = .showAutoCloseMessagePopup
             case .threeTableCardsWithPlayerFuck:
-                popupData.title = "아싸 자뻑이었던거 알지!!!"
-                popupData.message = "피 두장씩 내놔~ 🥳"
+                popupData.title = "아싸 자뻑이었던거 알죠!!!"
+                popupData.message = "피 두장씩 주세요~ 🥳"
                 popupData.status = .showAutoCloseMessagePopup
             case .go:
                 popupData.title = message
@@ -148,7 +148,7 @@ class PopupManager {
                 popupData.status = .showAutoCloseMessagePopup
             case .stop:
                 popupData.title = "안전하게 스톱!!!"
-                popupData.message = "돈 준비들 하셔~ 🥹"
+                popupData.message = "돈 준비들 하셔요~ 🥹"
                 popupData.status = .showAutoCloseMessagePopup
             }
         }

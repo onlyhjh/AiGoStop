@@ -40,7 +40,7 @@ public struct SelectButtonView: View {
                         VStack {
                             Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
                             Text(isHidden ? "열기" : "닫기")
-                                .font(.caption)
+                                .font(.system(size: 18,weight: .regular))
                         }
                         .padding(20)
                         .foregroundStyle(.white)
@@ -53,54 +53,71 @@ public struct SelectButtonView: View {
             }
             
             if !isHidden {
-                VStack(spacing: 10) {
-                    HStack(spacing: 10) {
-                        Image(players[0].imageName ?? Player.unknownImageName)
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .cornerRadius(25)
-                        if let title = title {
-                            Text(title)
-                                .font(.title)
+                ZStack(alignment: .topLeading) {
+                    VStack {
+                        Spacer().frame(height: 35)
+                        HStack{
+                            Spacer().frame(width: 35)
+                            VStack(spacing: 10) {
+                                if let title = title {
+                                    Text(title)
+                                        .font(.system(size: 20,weight: .bold))
+                                }
+                                if let message = message {
+                                    Text(message)
+                                        .font(.system(size: 18,weight: .regular))
+                                }
+                                HStack(spacing: 0) {
+                                    ForEach(0..<cards.count) { index in
+                                        Image(cards[index].imageName ?? Card.backImageName)
+                                            .resizable()
+                                            .frame(width: 50, height: 75)
+                                            .rotationEffect(.degrees(15 * Double(index % 2 == 0 ? 1 : -1)))
+                                    }
+                                }
+                                HStack(spacing: 20) {
+                                    Button(button1Text) {
+                                        button1Action()
+                                    }
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .frame(width: 150)
+                                    .background(.red)
+                                    .clipShape(Capsule())
+                                    
+                                    Button(button2Text) {
+                                        button2Action()
+                                    }
+                                    .foregroundStyle(.white)
+                                    .padding()
+                                    .frame(width: 150)
+                                    .background(.green)
+                                    .clipShape(Capsule())
+                                }
+                            }
+                            .padding(20)
+                            .background(.white.opacity(0.9))
+                            .cornerRadius(20)
                         }
                     }
-                    if let message = message {
-                        Text(message)
-                            .font(.caption)
-                    }
-                    HStack(spacing: 0) {
-                        ForEach(0..<cards.count) { index in
-                            Image(cards[index].imageName ?? Card.backImageName)
-                                .resizable()
-                                .frame(width: 50, height: 75)
-                                .rotationEffect(.degrees(15 * Double(index % 2 == 0 ? 1 : -1)))
-                        }
-                    }
-                    HStack(spacing: 20) {
-                        Button(button1Text) {
-                            button1Action()
-                        }
-                        .foregroundStyle(.white)
-                        .padding()
-                        .frame(width: 150)
-                        .background(.red)
-                        .clipShape(Capsule())
-                        
-                        Button(button2Text) {
-                            button2Action()
-                        }
-                        .foregroundStyle(.white)
-                        .padding()
-                        .frame(width: 150)
-                        .background(.green)
-                        .clipShape(Capsule())
-                    }
+                    Image(players[0].imageName)
+                        .resizable()
+                        .frame(width: 70, height: 70)
+                        .cornerRadius(35)
                 }
-                .padding(20)
-                .background(.white.opacity(0.9))
-                .cornerRadius(20)
             }
         }
         .presentationBackground(.black.opacity(0.4))
+    }
+}
+
+#Preview {
+    let players = PlayerFactory().getRandomPlayers()
+    let cards = Array(DeckFactory().generateFullDeck().prefix(4))
+    
+    ZStack {
+        Color.tableBG
+            .edgesIgnoringSafeArea(.all)
+        SelectButtonView(title: "뻑 3번!!!", message: "웃프게 이겼네.. 3만냥 주삼~ 😂", players: players, cards: cards, button1Text: "확인", button2Text: "취소",  button1Action: {}, button2Action: {})
     }
 }

@@ -26,7 +26,7 @@ struct SpeedSettingView: View {
                 Text("👩‍🏭 설정!")
                 HStack(spacing: 10) {
                     Text("게임 속도")
-                        .font(.caption)
+                        .font(.system(size: 18,weight: .regular))
                     Slider(value: $sliderValue, in: -1...1)
                 }
                 .frame(width: 300)

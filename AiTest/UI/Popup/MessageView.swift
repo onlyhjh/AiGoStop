@@ -23,14 +23,14 @@ public struct MessageView: View {
     
     public var body: some View {
         ZStack {
-            VStack(spacing: 10) {
+            VStack(spacing: 20) {
                 if let title = title {
                     Text(title)
-                        .font(.title)
+                        .font(.system(size: 20,weight: .bold))
                 }
                 if let message = message {
                     Text(message)
-                        .font(.caption)
+                        .font(.system(size: 18,weight: .regular))
                 }
                 Button(buttonText) {
                     self.buttonAction()
@@ -46,5 +46,13 @@ public struct MessageView: View {
             .cornerRadius(20)
         }
         .presentationBackground(.black.opacity(0.4))
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.tableBG
+            .edgesIgnoringSafeArea(.all)
+        MessageView(title:  "뻑 3번!!!", message: "웃프게 이겼네.. 3만냥 주삼~ 😂", buttonText: "확인", buttonAction: {})
     }
 }

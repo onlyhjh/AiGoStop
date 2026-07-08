@@ -28,7 +28,7 @@ struct CharacterIconSettingView: View {
         ZStack {
             VStack(spacing: 10) {
                 Text(self.isFirstLaunch ? "🥹 환영합니다!!!" : "👩‍🏭 캐릭터 아이콘 설정!")
-                    .font(.title)
+                    .font(.system(size: 20,weight: .bold))
                 
                 ScrollView{
                     LazyVGrid(columns: columns, spacing: 10) {

@@ -25,7 +25,7 @@ struct CharacterSettingView: View {
                 .ignoresSafeArea()
             VStack(spacing: 10) {
                 Text(self.isFirstLaunch ? "🥹 환영합니다!!!" : "👩‍🏭 캐릭터 설정!")
-                    .font(.title)
+                    .font(.system(size: 20,weight: .bold))
                     .padding()
                 HStack(spacing: 10) {
                     Button {
