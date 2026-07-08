@@ -142,7 +142,7 @@ extension GameScene {
             // 보너스 카드 지급 후 덱카드 테이블에 지급 (재귀반복)
             await self.moveBonusTableCardToPlayerCapturedAndMoveDeckCardToTableAgain(playerIndex: self.gameData.winnerIndex)
             // 총통 검사 1 (10점)
-            if !self.isChongTong() {
+            if !self.checkChongTong() {
                 // 테스트 한장씩 뺏어오기 테스트용
     //            for i in 0...8 {
     //                await self.moveDeckCardToPlayerCaptured(playerIndex: i % 3)
@@ -219,7 +219,8 @@ extension GameScene {
     private func checkScoreAndDoNextPlay() {
         let player = self.gameData.players[self.gameData.currentPlayerIndex]
         print("\(#function) player:\(player.index), baseScore: \(player.baseScore), lastGoScore: \(player.lastGoScore)")
-        
+        //광 test
+        print("광 test count:\(self.gameData.players[self.gameData.currentPlayerIndex].capturedCardTypeGroups[CardType.gwang.rawValue].count) contains12:\(self.gameData.players[self.gameData.currentPlayerIndex].capturedCardTypeGroups[CardType.gwang.rawValue].contains(where: { $0.month == 12 }))")
         // 3점 이상이고 이전에 고한 점수 보다 높아야 함 (고1점  -1 제외)
         if player.baseScore > 2 && player.baseScore - 1 > player.lastGoScore {
             // 막장이었으면 고/스톱 선택없이 바로 결과 출력
@@ -302,7 +303,7 @@ extension GameScene {
     }
     
     // 총통 검사 2 (10점)
-    private func isChongTong() -> Bool  {
+    private func checkChongTong() -> Bool  {
         for (i, player) in self.gameData.players.enumerated() {
             for handCard in player.handCards {
                 let sameMonthCards = player.handCards.filter({$0.month == handCard.month})
@@ -320,6 +321,14 @@ extension GameScene {
                 }
             }
         }
+        // 바닥패 4장인 경우 무효
+        for groupCards in self.gameData.tableCardGroups {
+            if groupCards.count == 4 {
+                PopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
+                    self.startGame()
+                })
+            }
+        }
         return false
     }
     
@@ -335,7 +344,7 @@ extension GameScene {
                         await self.moveBonusPlayerHandBonusCardToPlayerCaptured(playerIndex: player.index, handCard: handCard)
                         self.sortPlayerHandCards(playerIndex: player.index)
                         // 총통 검사 2 (10점)
-                        if !self.isChongTong() {
+                        if !self.checkChongTong() {
                             self.doPlay() // 다시
                         }
                     }

@@ -11,6 +11,7 @@ enum PopupType {
     case chongtongWin       // 총통 승리
     case winner             // 승리
     case nagari             // 나가리
+    case fourTableCards     // 바닥패 4장
     case tadak             // 따닥
     case firstTadak         // 첫따닥
     case selectCard         // 카드 선택
@@ -58,6 +59,11 @@ class PopupManager {
                 popupData.message = message ?? "다음판은 두배여~ 🥶"
                 popupData.button1Text = "확인"
                 popupData.status = .showMessagePopup
+            case .fourTableCards:
+                popupData.title = "다시돌려!!!"
+                popupData.message = message ?? "이럴수가! 바닥패 4장이 모두 같다니~ 🥶"
+                popupData.button1Text = "확인"
+                popupData.status = .showMessagePopup
             case .thirdFuckWin:
                 popupData.title = "뻑 3번 승!!!"
                 popupData.message = "웃프게 이겼네.. 3만냥 주삼~ 😂"
@@ -85,7 +91,7 @@ class PopupManager {
                 popupData.button1Text = "흔들기"
                 popupData.button2Text = "그냥치기"
             case .selectGoOrStop:
-                popupData.title = "고 or 스톱???"
+                popupData.title = "고/스톱???"
                 popupData.message = "고할까 아님 안전하게 스톱??? 😵‍💫"
                 popupData.status = .showSelectButtonPopup
                 popupData.button1Text = "고"

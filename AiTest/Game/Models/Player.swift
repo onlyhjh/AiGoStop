@@ -73,15 +73,13 @@ struct Player: Codable {
         yeolCount > 6
     }
     
-    // 광 3개 1점, 5광 15점 (비광 3점제외)
+    // 광 3개 3점(비광일때는 2점), 4개이면 4점,  5광 15점 (비광 3점제외)
     var gwangScore: Int {
-        gwangCount > 4 ? 15 : gwangCount > 2 ? gwangCount : 0
+        // 3점일때는 비 제외
+        gwangCount > 4 ? 15 : (gwangCount > 3 ? 4 : (gwangCount > 2 ? (capturedCardTypeGroups[CardType.gwang.rawValue].contains(where: { $0.month == 12 }) ? 2 : 3)  : 0))
     }
     var gwangCount: Int {
-        // 5광 15점
-        capturedCardTypeGroups[CardType.gwang.rawValue].count == 5 ? 15 :
-        // 3점일때는 비 제외
-        capturedCardTypeGroups[CardType.gwang.rawValue].count == 3 && capturedCardTypeGroups[CardType.gwang.rawValue].contains(where: { $0.month == 12 }) ? 2 : capturedCardTypeGroups[CardType.gwang.rawValue].count
+        capturedCardTypeGroups[CardType.gwang.rawValue].count
     }
     
     // 초단 3점
