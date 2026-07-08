@@ -105,6 +105,10 @@ public struct WinnerView: View {
                                         .resizable()
                                         .frame(width: 70, height: 70)
                                         .cornerRadius(35)
+                                        .overlay(
+                                            Circle()
+                                                .strokeBorder(.blue, lineWidth: 2)
+                                        )
                                     
                                     VStack(spacing: 5) {
                                         HStack(spacing: 10) {
@@ -170,6 +174,10 @@ public struct WinnerView: View {
                                                 .resizable()
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(25)
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.red, lineWidth: 2)
+                                                )
                                             VStack(spacing: 0) {
                                                 HStack(spacing: 5) {
                                                     Text(players[1].name)
@@ -234,6 +242,10 @@ public struct WinnerView: View {
                                                 .resizable()
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(25)
+                                                .overlay(
+                                                    Circle()
+                                                        .strokeBorder(.red, lineWidth: 2)
+                                                )
                                             VStack(spacing: 0) {
                                                 HStack(spacing: 5) {
                                                     Text(players[2].name)

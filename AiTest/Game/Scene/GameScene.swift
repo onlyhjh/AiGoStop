@@ -421,14 +421,15 @@ extension GameScene {
                     // await self.flipDeckCardAfterBonusCard() 가져가면 안됨
                     await self.moveDeckCardToTable()
                     
-                    var players = [Player(index: player.index),Player(index: (player.index + 1) % 3), Player(index: (player.index + 2) % 3)]
+                    // 점수 계산 순서정렬
+                    var players = [self.gameData.players[player.index], self.gameData.players[((player.index + 1) % 3)] , self.gameData.players[((player.index + 2) % 3)]]
                     
                     // 시작 첫뻑
                     if player.handCards.count > 6 {
                         players[0].finalScore = 10
                         players[1].finalScore = -5
                         players[2].finalScore = -5
-                        self.saveGameData(winnerIndex: nil, players: [], isNagari: nil)
+                        self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .firstFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
                                 self.checkScoreAndDoNextPlay()
@@ -496,7 +497,8 @@ extension GameScene {
                                             await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 1, completion: {
                                                 // 첫따닥 5만냥
                                                 if isFirstCardTadak {
-                                                    var players = [Player(index: player.index),Player(index: (player.index + 1) % 3), Player(index: (player.index + 2) % 3)]
+                                                    // 점수 계산 순서정렬
+                                                    var players = [self.gameData.players[player.index], self.gameData.players[((player.index + 1) % 3)] , self.gameData.players[((player.index + 2) % 3)]]
                                                     players[0].finalScore = 10
                                                     players[1].finalScore = -5
                                                     players[2].finalScore = 5

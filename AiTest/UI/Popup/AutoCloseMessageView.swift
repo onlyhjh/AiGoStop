@@ -60,6 +60,10 @@ public struct AutoCloseMessageView: View {
                     .resizable()
                     .frame(width: 70, height: 70)
                     .cornerRadius(35)
+                    .overlay(
+                        Circle()
+                            .strokeBorder(.white, lineWidth: 2)
+                    )
             }
         }
         .presentationBackground(.black.opacity(0.4))
