@@ -9,8 +9,8 @@ import SwiftUI
 
 struct Player: Codable {
     static let imageNamePrefix = "player_"
-    static let defaultMoney = 100
-    
+    static let defaultMoney = 10
+
     let index: Int
     var characterIndex: Int = 0
     var name: String = ""
@@ -130,7 +130,7 @@ struct Player: Codable {
     mutating func addGame(isWin: Bool, profit: Int) {
         totalGames += 1
         winGames += isWin ? 1 : 0
-        winRate += Double(winGames) / Double(totalGames)
+        winRate = Double(winGames) / Double(totalGames)
         expectedProfit += (Double(profit) - expectedProfit) / Double(totalGames)
     }
 }
