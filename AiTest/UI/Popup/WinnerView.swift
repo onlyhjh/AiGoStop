@@ -131,7 +131,7 @@ public struct WinnerView: View {
                                                 .background(.blue)
                                                 .clipShape(Capsule())
                                             Text("🥳")
-                                                .font(.system(size: 20,weight: .bold))
+                                                .font(.system(size: 30,weight: .bold))
                                         }
                                     }
                                 }
@@ -201,11 +201,11 @@ public struct WinnerView: View {
                                                             .background(.red)
                                                             .clipShape(Capsule())
                                                         Text("😭")
-                                                            .font(.system(size: 20,weight: .bold))
+                                                            .font(.system(size: 30,weight: .bold))
                                                     }
                                                     else {
                                                         Text("🤭")
-                                                            .font(.system(size: 20,weight: .bold))
+                                                            .font(.system(size: 30,weight: .bold))
                                                     }
                                                     Spacer()
                                                 }
@@ -269,11 +269,11 @@ public struct WinnerView: View {
                                                             .background(.red)
                                                             .clipShape(Capsule())
                                                         Text("😭")
-                                                            .font(.system(size: 20,weight: .bold))
+                                                            .font(.system(size: 30,weight: .bold))
                                                     }
                                                     else {
                                                         Text("🤭")
-                                                            .font(.system(size: 20,weight: .bold))
+                                                            .font(.system(size: 30,weight: .bold))
                                                     }
                                                     Spacer()
                                                 }
@@ -326,7 +326,7 @@ public struct WinnerView: View {
                                                             .font(.system(size: 16,weight: .regular))
                                                             .bold()
                                                             .foregroundColor(.white)
-                                                            .frame(width: 50)
+                                                            .frame(width: 55)
                                                         Spacer()
                                                         Text("\(bestRecords[i])만냥")
                                                             .font(.system(size: 16,weight: .regular))
@@ -339,7 +339,7 @@ public struct WinnerView: View {
                                                 Spacer().frame(height: 0)
                                             }
                                         }
-                                        .frame(width: 140 , height: 60)
+                                        .frame(width: 145 , height: 80)
                                         .background(.white.opacity(0.5))
                                         .onAppear {
                                             for (i, bestRecord) in bestRecords.enumerated() {
@@ -371,7 +371,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].gwangScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -387,7 +387,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].yeolScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -403,7 +403,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].ttiScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -419,7 +419,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].piScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -435,7 +435,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].chungdanScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -451,7 +451,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].hongdanScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -467,7 +467,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].chodanScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -483,7 +483,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].godoriScore)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -499,7 +499,7 @@ public struct WinnerView: View {
                                                     .font(.system(size: 16,weight: .regular))
                                                     .bold()
                                                     .foregroundColor(.white)
-                                                    .frame(width: 50)
+                                                    .frame(width: 55)
                                                 Spacer()
                                                 Text("\(players[0].goCount)점")
                                                     .font(.system(size: 16,weight: .regular))
@@ -512,7 +512,7 @@ public struct WinnerView: View {
                                         Spacer().frame(height: 0)
                                     }
                                 }
-                                .frame(width: 140)
+                                .frame(width: 145)
                                 .background(.white.opacity(0.3))
                             }
                             .background(.green.opacity(0.9))

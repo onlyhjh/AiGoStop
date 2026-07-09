@@ -1248,7 +1248,7 @@ extension GameScene {
             
             for movingCard in movingCards {
                 self.gameData.players[anotherPlayer.index].capturedCardTypeGroups[CardType.pi.rawValue].removeAll { $0.id == movingCard.id }
-                self.moveCardToPlayerCaptured(playerIndex: toPlayerIndex, card: movingCard)
+                self.moveCardToPlayerCaptured(playerIndex: toPlayerIndex, card: movingCard, forcedType: .pi) // 국진도 피로!
             }
             
             self.sortPlayerCapturedPiCards(playerIndex: anotherPlayer.index)
