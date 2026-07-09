@@ -10,6 +10,8 @@ import SwiftUI
 enum PopupType {
     case chongtongWin       // 총통 승리
     case winner             // 승리
+    case bustedPlayer       // 오링(돈없음)
+    case newPlayerJoins     // 새로운 플레이어 참가
     case nagari             // 나가리
     case fourTableCards     // 바닥패 4장
     case tadak             // 따닥
@@ -54,6 +56,14 @@ class PopupManager {
                 popupData.title = "Winner!!!"
                 popupData.message = message ?? "알아서 빨리 주세요~ 🥳"
                 popupData.status = .showWinnerPopup
+            case .bustedPlayer:
+                popupData.title = "빈털털이!!!"
+                popupData.message = message ?? "다음에 두고 보자고요~ 🤬"
+                popupData.status = .showAutoCloseMessagePopup
+            case .newPlayerJoins:
+                popupData.title = "내가 들어갈께요!!"
+                popupData.message = message ?? "같이 재밌게 놀아 보자구요~ 😘"
+                popupData.status = .showAutoCloseMessagePopup
             case .nagari:
                 popupData.title = "나가리!!!"
                 popupData.message = message ?? "다음판은 두배에요~ 🥶"

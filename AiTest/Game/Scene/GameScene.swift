@@ -211,9 +211,30 @@ extension GameScene {
         self.setPlayerNodes(player: players[0], isBlink: false)
         PopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
             self.movePlayerPayouts(players: players) {
-                self.startGame()
+                self.replacePlayerIfNeeded() {
+                    self.startGame()
+                }
             }
         })
+    }
+    
+    private func replacePlayerIfNeeded(completion: @escaping () -> Void) {
+        for i in 0 ... 2 {
+            if self.gameData.players[i].money <= 0 {
+                PopupManager.shared.showPopup(popupData: self.popupData, type: .bustedPlayer, cards: [], players: [self.gameData.players[i]]) { _ in
+                    let newPlayer = PlayerFactory().getRandomPlayer(playerIndex: i, without: [self.gameData.players[0].characterIndex, self.gameData.players[1].characterIndex, self.gameData.players[2].characterIndex])
+                        self.gameData.players[i].characterIndex = newPlayer.characterIndex
+                        self.gameData.players[i].name = newPlayer.name
+                        self.gameData.players[i].imageName = newPlayer.imageName
+                        self.gameData.players[i].money = Player.defaultMoney
+                    PopupManager.shared.showPopup(popupData: self.popupData, type: .newPlayerJoins, cards: [], players: [self.gameData.players[i]]) { _ in
+                        self.replacePlayerIfNeeded(completion: completion)
+                    }
+                }
+                return
+            }
+        }
+        completion()
     }
     
     private func checkScoreAndDoNextPlay() {
@@ -244,7 +265,9 @@ extension GameScene {
         else if self.gameData.players[0].handCards.isEmpty && self.gameData.players[1].handCards.isEmpty && self.gameData.players[2].handCards.isEmpty {
             PopupManager.shared.showPopup(popupData: self.popupData, type: .nagari, cards: [], players: []) { _ in
                 self.saveGameData(winnerIndex: nil, players: [], isNagari: true)
-                self.startGame()
+                self.replacePlayerIfNeeded() {
+                    self.startGame()
+                }
             }
         }
         else {
@@ -312,7 +335,9 @@ extension GameScene {
                     self.saveGameData(winnerIndex: player.index, players: players, isNagari: false)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .chongtongWin, cards: sameMonthCards, players: players, completion: { _ in
                         self.movePlayerPayouts(players: players) {
-                            self.startGame()
+                            self.replacePlayerIfNeeded() {
+                                self.startGame()
+                            }
                         }
                     })
                     return true
@@ -323,7 +348,9 @@ extension GameScene {
         for groupCards in self.gameData.tableCardGroups {
             if groupCards.count == 4 {
                 PopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
-                    self.startGame()
+                    self.replacePlayerIfNeeded() {
+                        self.startGame()
+                    }
                 })
             }
         }
@@ -457,7 +484,9 @@ extension GameScene {
                         
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .thirdFuckWin, cards: fuckCards, players: players) {_ in
                             self.movePlayerPayouts(players: players) {
-                                self.startGame()
+                                self.replacePlayerIfNeeded() {
+                                    self.startGame()
+                                }
                             }
                         }
                         return

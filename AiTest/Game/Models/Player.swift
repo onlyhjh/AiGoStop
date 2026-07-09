@@ -9,13 +9,19 @@ import SwiftUI
 
 struct Player: Codable {
     static let imageNamePrefix = "player_"
-    static let unknownImageName = "player_unkown"
+    static let defaultMoney = 100
     
     let index: Int
     var characterIndex: Int = 0
     var name: String = ""
     var imageName: String = ""
-    var money: Int = 1000
+    var money: Int = Player.defaultMoney
+    
+    // AI Statistics
+    var totalGames: Int = 0
+    var winGames: Int = 0
+    var winRate: Double = 0.0
+    var expectedProfit: Double = 0.0
     
     // 이하 각 게임마다 clear 대상
     var handCards: [Card] = []
@@ -37,11 +43,6 @@ struct Player: Codable {
     var isGwangBak = false
     var isGoBak = false // 독박과 동일
     var finalScore = 0
-    
-    // Statistics
-    var totalGames: Int = 0
-    var winRate: Double = 0.0
-    var expectedProfit: Double = 0.0
 
     // MARK: - 계산 프로퍼티
     // 피 10개 1점
@@ -128,13 +129,8 @@ struct Player: Codable {
     
     mutating func addGame(isWin: Bool, profit: Int) {
         totalGames += 1
-
-        let winValue = isWin ? 1.0 : 0.0
-
-        winRate +=
-            (winValue - winRate) / Double(totalGames)
-
-        expectedProfit +=
-            (Double(profit) - expectedProfit) / Double(totalGames)
+        winGames += isWin ? 1 : 0
+        winRate += Double(winGames) / Double(totalGames)
+        expectedProfit += (Double(profit) - expectedProfit) / Double(totalGames)
     }
 }
