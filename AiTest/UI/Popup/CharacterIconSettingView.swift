@@ -34,6 +34,7 @@ struct CharacterIconSettingView: View {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(0..<GameData.playerNames.count) { i in
                             Button(action: {
+                                SoundManager.shared.playSoundIfPossible(type: .click)
                                 tempCharacterIndex = i
                             }, label: {
                                 Image(Player.imageNamePrefix + String(format: "%02d", i))
@@ -52,6 +53,7 @@ struct CharacterIconSettingView: View {
                 
                 HStack(spacing: 100){
                     Button("확인") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         isPresented = false
                         print("origianlCharacterIndex: \(origianlCharacterIndex)")
                         origianlCharacterIndex = tempCharacterIndex
@@ -63,6 +65,7 @@ struct CharacterIconSettingView: View {
                     .clipShape(Capsule())
                     
                     Button("취소") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         isPresented = false
                     }
                     .foregroundStyle(.white)

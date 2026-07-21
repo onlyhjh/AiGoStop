@@ -38,7 +38,7 @@ class CardNode: SKSpriteNode {
         fatalError()
     }
     
-    func moveAndTurnCard(movePosition: CGPoint, duration: TimeInterval = 0, isFront: Bool, zPosition: Int = 0, movingUpScale: CardNodeScale? = .zoom, afterCardNodeScale: CardNodeScale, completion: (() -> Void)? = nil) {
+    func moveAndTurnCard(movePosition: CGPoint, duration: TimeInterval = 0, isFront: Bool, zPosition: Int = 0, movingUpScale: CardNodeScale? = .zoom, afterCardNodeScale: CardNodeScale, soundType: SoundType?, completion: (() -> Void)? = nil) {
         self.zPosition = 1000
         var sequnce: [SKAction] = []
         if let movingUpScale {
@@ -56,8 +56,8 @@ class CardNode: SKSpriteNode {
         }
         else {
             let moveAction = SKAction.move(to: movePosition, duration: duration)
-            //print("?\(#function) ??? scale compare 1:\(afterCardNodeScale.rawValue) <> 2:\(self.xScale)")
-            if afterCardNodeScale.rawValue == self.xScale  {
+            let selfScale = floor(self.xScale * 100) / 100  // 1.7000000476837158 >> 1.7
+            if afterCardNodeScale.rawValue == selfScale  {
                 sequnce = [moveAction]
             }
             else {
@@ -72,6 +72,13 @@ class CardNode: SKSpriteNode {
             let texture = SKTexture(image: isFront ? self.frontImage : .hwatuBack)
             let setTexture = SKAction.setTexture(texture)
             sequnce.append(setTexture)
+        }
+        
+        
+        if let soundType {
+            let fileName = "\(soundType.rawValue).mp3"
+            let soundAction = SKAction.playSoundFileNamed(fileName, waitForCompletion: true)
+            sequnce.append(soundAction)
         }
         
         run(SKAction.sequence(sequnce), completion: {

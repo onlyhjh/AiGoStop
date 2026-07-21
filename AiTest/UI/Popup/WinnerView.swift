@@ -8,49 +8,6 @@
 
 import SwiftUI
 
-private struct PlayerTypeStatisticsView: View {
-    var isWinner: Bool
-    var player: Player
-    
-    var body: some View {
-        HStack(spacing: 5) {
-            switch player.index {
-            case 1:
-                Image(.cursorAI)
-                    .frame(width: 20, height: 20)
-                Text("cursor")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-            case 2:
-                Image(.claudeAI)
-                    .frame(width: 20, height: 20)
-                Text("claude")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-            default:
-                Text("😎 human")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-            }
-            if isWinner {
-                Text("승률:\(Int(player.winRate * 100))%")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-                Text("(기대수익:\(String(format: "%.2f", player.expectedProfit))만냥)")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-            }
-            else {
-                Text("\(Int(player.winRate * 100))%")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-                Text("(\(String(format: "%.2f", player.expectedProfit))만냥)")
-                    .font(.system(size: 14,weight: .regular))
-                    .foregroundStyle(.gray)
-            }
-        }
-    }
-}
 public struct WinnerView: View {
     
     @State var isHidden: Bool = false
@@ -78,7 +35,10 @@ public struct WinnerView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button(action: {isHidden.toggle()}, label: {
+                    Button(action: {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
+                        isHidden.toggle()
+                    }, label: {
                         VStack {
                             Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
                             Text(isHidden ? "열기" : "닫기")
@@ -522,6 +482,7 @@ public struct WinnerView: View {
                         }
                     }
                     Button("확인") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         closeAction()
                     }
                     .foregroundStyle(.white)
@@ -540,8 +501,50 @@ public struct WinnerView: View {
         .ignoresSafeArea()
         .presentationBackground(.black.opacity(0.4))
     }
+}
+
+private struct PlayerTypeStatisticsView: View {
+    var isWinner: Bool
+    var player: Player
     
-    
+    var body: some View {
+        HStack(spacing: 5) {
+            switch player.index {
+            case 1:
+                Image(.cursorAI)
+                    .frame(width: 20, height: 20)
+                Text("cursor")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+            case 2:
+                Image(.claudeAI)
+                    .frame(width: 20, height: 20)
+                Text("claude")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+            default:
+                Text("😎 human")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+            if isWinner {
+                Text("승률:\(Int(player.winRate * 100))%")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+                Text("(기대수익:\(String(format: "%.2f", player.expectedProfit))만냥)")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+            else {
+                Text("\(Int(player.winRate * 100))%")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+                Text("(\(String(format: "%.2f", player.expectedProfit))만냥)")
+                    .font(.system(size: 14,weight: .regular))
+                    .foregroundStyle(.gray)
+            }
+        }
+    }
 }
 
 #Preview {

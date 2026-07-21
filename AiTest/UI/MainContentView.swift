@@ -16,13 +16,14 @@ struct MainContentView: View {
     @State var isPresentedAlert: Bool = false
     @State var isPresentedPopup = false
     @State var isPresentedCharacterSettingPopup = false
-    @State var isPresentedSpeedSettingPopup = false
+    @State var isPresentedSettingPopup = false
     @State var alertMessage: String? = nil
     @State var popupType: String? = nil
     @State var popupStatus: PopupStatus = .closePopup
     @State var scene: GameScene? // 다시 그리기 방지
     @State var showSpriteView = false
     @State var isStarted = false
+    @State var completionIndex = 0
     
     var body: some View {
         ZStack {
@@ -61,12 +62,14 @@ struct MainContentView: View {
                 Spacer()
                 VStack(alignment: .center, spacing: 20, content: {
                     Button("⚙︎") {
-                        isPresentedSpeedSettingPopup = true
+                        SoundManager.shared.playSoundIfPossible(type: .click)
+                        isPresentedSettingPopup = true
                     }
                     .foregroundStyle(.white)
                     .font(.largeTitle)
                     Spacer()
                     Button("start") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         self.gameData.gameStatus = .start
                         self.isStarted = true
                     }
@@ -75,6 +78,7 @@ struct MainContentView: View {
                     .background(.green)
                     .clipShape(Capsule())
                     Button("save") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         if !self.gameData.origianalDeckCards.isEmpty, let encoded = try? JSONEncoder().encode(self.gameData.origianalDeckCards) {
                             UserDefaults.standard.savedGameDeckCards = encoded
                             UserDefaults.standard.savedGameWinnerIndex = self.gameData.winnerIndex
@@ -88,6 +92,7 @@ struct MainContentView: View {
                     .clipShape(Capsule())
 
                     Button("load") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         if let data = UserDefaults.standard.savedGameDeckCards, let deckCards = try? JSONDecoder().decode([Card].self, from: data) {
                             self.gameData.origianalDeckCards = deckCards
                             self.gameData.winnerIndex = UserDefaults.standard.savedGameWinnerIndex ?? 0
@@ -105,6 +110,8 @@ struct MainContentView: View {
             .ignoresSafeArea(.all)
         }
         .onAppear {
+            SoundManager.shared.playSoundIfPossible(type: .background)
+            
             let playerFactory = PlayerFactory()
             if let user = playerFactory.loadPlayer(playerIndex: 0) {
                 self.gameData.players[0] = user
@@ -125,15 +132,16 @@ struct MainContentView: View {
         }, content: {
             CharacterSettingView(isPresented: $isPresentedCharacterSettingPopup, gameData: gameData, isFirstLaunch: UserDefaults.standard.user == nil)
         })
-        .fullScreenCover(isPresented: $isPresentedSpeedSettingPopup, onDismiss: {
+        .fullScreenCover(isPresented: $isPresentedSettingPopup, onDismiss: {
             let gameSpeed = UserDefaults.standard.gameSpeed ?? 0.0
             self.gameData.setCardDuration(gameSpeed: gameSpeed)
             self.popupData.setAutoCloseDuration(gameSpeed: gameSpeed)
         }, content: {
-            SpeedSettingView(isPresented: $isPresentedSpeedSettingPopup)
+            SettingView(isPresented: $isPresentedSettingPopup)
         })
         .fullScreenCover(isPresented: $isPresentedPopup, onDismiss: {
             self.popupData.status = .closePopup
+            self.popupData.completion(self.completionIndex)
         }, content: {
             switch self.popupData.status  {
             case .showSelectCardPopup:
@@ -142,11 +150,11 @@ struct MainContentView: View {
                     {
                         isPresentedPopup = false
                         self.popupData.cards = [self.popupData.cards[0], self.popupData.cards[1]]
-                        self.popupData.completion(0)
+                        self.completionIndex = 0
                     }, {
                         isPresentedPopup = false
                         self.popupData.cards = [self.popupData.cards[0], self.popupData.cards[2]]
-                        self.popupData.completion(1)
+                        self.completionIndex = 1
                     }
                 ], closeAction: {
                     isPresentedPopup = false
@@ -154,33 +162,33 @@ struct MainContentView: View {
             case .showSelectButtonPopup:
                 SelectButtonView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, cards: self.popupData.cards, button1Text: self.popupData.button1Text, button2Text: self.popupData.button2Text, button1Action: {
                     isPresentedPopup = false
-                    self.popupData.completion(0)
+                    self.completionIndex = 0
                 }, button2Action : {
                     isPresentedPopup = false
-                    self.popupData.completion(1)
+                    self.completionIndex = 1
                 })
             case .showAutoCloseMessagePopup:
                 AutoCloseMessageView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players,cards: self.popupData.cards)
                     .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + self.popupData.autoCloseDuration) {
                             isPresentedPopup = false
-                            self.popupData.completion(0)
+                            self.completionIndex = 0
                         }
                     }
             case .showMessagePopup:
                 MessageView(title: self.popupData.title, message: self.popupData.message, buttonText: self.popupData.button1Text, buttonAction: {
                     isPresentedPopup = false
-                    self.popupData.completion(0)
+                    self.completionIndex = 0
                 })
             case .showWinnerPopup:
                 WinnerView(players: self.popupData.players, closeAction: {
                     isPresentedPopup = false
-                    self.popupData.completion(0)
+                    self.completionIndex = 0
                 })
             case .showSpecialWinnerPopup:
                 SpecialWinnerView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, cards: self.popupData.cards, closeAction: {
                     isPresentedPopup = false
-                    self.popupData.completion(0)
+                    self.completionIndex = 0
                 })
             default:
                 EmptyView()

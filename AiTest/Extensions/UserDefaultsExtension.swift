@@ -18,6 +18,8 @@ enum UserDefaultKey: String, CaseIterable {
     case gameSpeed
     case bestRecords
     case winningCounts // 0, 1, 2, 무승부
+    case effectSound
+    case backgroundSound
 }
 
 extension UserDefaults {
@@ -64,5 +66,15 @@ extension UserDefaults {
     var bestRecords: [Int]? {
         get { value(forKey: UserDefaultKey.bestRecords.rawValue) as? [Int] }
         set { setValue(newValue, forKey: UserDefaultKey.bestRecords.rawValue)}
+    }
+    
+    var backgroundSound: Bool {
+        get { value(forKey: UserDefaultKey.backgroundSound.rawValue) as? Bool ?? true }
+        set { setValue(newValue, forKey: UserDefaultKey.backgroundSound.rawValue)}
+    }
+    
+    var effectSound: Bool {
+        get { value(forKey: UserDefaultKey.effectSound.rawValue) as? Bool ?? true }
+        set { setValue(newValue, forKey: UserDefaultKey.effectSound.rawValue)}
     }
 }

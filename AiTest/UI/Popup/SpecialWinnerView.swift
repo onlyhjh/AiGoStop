@@ -50,6 +50,7 @@ public struct SpecialWinnerView: View {
                             }
                             HStack(spacing: 20) {
                                 Button("확인") {
+                                    SoundManager.shared.playSoundIfPossible(type: .click)
                                     closeAction()
                                 }
                                 .foregroundStyle(.white)

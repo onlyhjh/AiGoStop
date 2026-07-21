@@ -29,6 +29,7 @@ struct CharacterSettingView: View {
                     .padding()
                 HStack(spacing: 10) {
                     Button {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         isShowCharacterIconSettingView = true
                         hideKeyboard()
                     } label: {
@@ -59,6 +60,7 @@ struct CharacterSettingView: View {
                 }
                 HStack(spacing: 10) {
                     Button("확인") {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
                         hideKeyboard()
                         if userName.isEmpty {
                             isPresentedAlert = true
@@ -88,6 +90,7 @@ struct CharacterSettingView: View {
                     
                     if !self.isFirstLaunch {
                         Button("취소") {
+                            SoundManager.shared.playSoundIfPossible(type: .click)
                             hideKeyboard()
                             isPresented = false
                         }

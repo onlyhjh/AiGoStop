@@ -77,6 +77,7 @@ class GameScene: SKScene, ObservableObject {
                 }
             }
             else if let playerIconNode = n as? PlayerIconNode {
+                SoundManager.shared.playSoundIfPossible(type: .click)
                 if playerIconNode.name == PlayerIconNode.prefixName + "0" {
                     self.isPresentedCharacterSettingPopup = true
                 }
@@ -125,7 +126,7 @@ extension GameScene {
             
             
             // 테이블에 첫번째 3장 나눠주기
-            await self.moveDeckCardToTable(count: 3)
+            await self.moveDeckCardsToTable(count: 3, soundType: nil)
             
             // 각 플레이어에게 첫번째 4장 나눠주기
             for i in 0...2 {
@@ -134,7 +135,7 @@ extension GameScene {
             }
             
             // 테이블에 두번째 3장 나눠주기
-            await self.moveDeckCardToTable(count: 3)
+            await self.moveDeckCardsToTable(count: 3, soundType: nil)
             
             // 각 플레이어에게 두번째 3장 나눠주기
             for i in 0...2 {
@@ -158,6 +159,7 @@ extension GameScene {
     
     private func doPlay() {
         print("\(#function) playerIndex:\(self.gameData.currentPlayerIndex)")
+        
         //  이전 플레이어도 정리해 줘야 함
         for i in 0...2 {
             self.sortPlayerHandCards(playerIndex: i)
@@ -213,6 +215,7 @@ extension GameScene {
         self.gameData.winnerIndex = self.gameData.currentPlayerIndex
         self.saveGameData(winnerIndex: winnderIndex, players: players, isNagari: false)
         self.setPlayerNodes(player: players[0], isBlink: false)
+        SoundManager.shared.playSoundIfPossible(type: .win)
         PopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
             self.movePlayerPayouts(players: players) {
                 self.replacePlayerIfNeeded(isShowPopup: true) {
@@ -237,7 +240,9 @@ extension GameScene {
                 print("\(#function) isShowPopup:\(isShowPopup), old player:\(oldPlayer.name) >>> new player: \(newPlayer.name)")
                 
                 if isShowPopup {
+                    SoundManager.shared.playSoundIfPossible(type: .bustedPlayer)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .bustedPlayer, cards: [], players: [oldPlayer]) { _ in
+                        SoundManager.shared.playSoundIfPossible(type: .newPlayerJoins)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .newPlayerJoins, cards: [], players: [newPlayer]) { _ in
                             self.replacePlayerIfNeeded(isShowPopup: isShowPopup, completion: completion)
                         }
@@ -278,6 +283,7 @@ extension GameScene {
         }
         // 전체 사용자 막장이었으면 나가리>> 다음판 두배
         else if self.gameData.players[0].handCards.isEmpty && self.gameData.players[1].handCards.isEmpty && self.gameData.players[2].handCards.isEmpty {
+            SoundManager.shared.playSoundIfPossible(type: .nagari)
             PopupManager.shared.showPopup(popupData: self.popupData, type: .nagari, cards: [], players: []) { _ in
                 self.saveGameData(winnerIndex: nil, players: [], isNagari: true)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
@@ -353,6 +359,7 @@ extension GameScene {
                     let players = ScoreEngine().getPlayersFinalScore(type: .chongtongWin ,winnerIndex: i, gameData: self.gameData, wasNagari: UserDefaults.standard.wasNagari ?? false, goBakPlayerIndex: nil)
                     self.gameData.winnerIndex = self.gameData.currentPlayerIndex
                     self.saveGameData(winnerIndex: player.index, players: players, isNagari: false)
+                    SoundManager.shared.playSoundIfPossible(type: .win)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .chongtongWin, cards: sameMonthCards, players: players, completion: { _ in
                         self.movePlayerPayouts(players: players) {
                             self.replacePlayerIfNeeded(isShowPopup: true) {
@@ -364,9 +371,11 @@ extension GameScene {
                 }
             }
         }
-        // 바닥패 4장인 경우 무효
+        // 바닥패 4장인 경우 무효 (뻑 with 보너스카드 제외)
         for groupCards in self.gameData.tableCardGroups {
-            if groupCards.count == 4 {
+            let count = groupCards.count{ $0.month != 0 }
+            if count == 4 {
+                SoundManager.shared.playSoundIfPossible(type: .nagari)
                 PopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
                     self.replacePlayerIfNeeded(isShowPopup: true) {
                         self.startGame()
@@ -384,6 +393,7 @@ extension GameScene {
         Task {
             // 선택카드가 bonus 카드인경우
             if handCard.month == 0 {
+                SoundManager.shared.playSoundIfPossible(type: .handBonus)
                 PopupManager.shared.showPopup(popupData: self.popupData, type: .handBonus, cards: [handCard], players: [player], completion: {_ in
                     Task {
                         await self.moveBonusPlayerHandBonusCardToPlayerCaptured(playerIndex: player.index, handCard: handCard)
@@ -440,6 +450,7 @@ extension GameScene {
                 // 폭탄
                 if sameMonthPlayerHandCards.count == 3 {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: sameMonthPlayerHandCards, tableCards: matchingTableCards)
+                    SoundManager.shared.playSoundIfPossible(type: .bomb)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .bomb, cards: sameMonthPlayerHandCards, players: [player], completion: {_ in
                         Task{
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: sameMonthPlayerHandCards, tableCards: matchingTableCards) {
@@ -466,7 +477,7 @@ extension GameScene {
                     let fuckCards = [handCard, nextDeckCardExceptBonus] + matchingTableCards
                     await self.moveBonusDeckCardsToTable(tableCardGroupIndex: tableCardGroupIndex)
                     // await self.flipDeckCardAfterBonusCard() 가져가면 안됨
-                    await self.moveDeckCardToTable()
+                    await self.moveDeckCardsToTable(soundType: .matching)
                     
                     // 점수 계산 순서정렬
                     var players = [self.gameData.players[player.index], self.gameData.players[((player.index + 1) % 3)] , self.gameData.players[((player.index + 2) % 3)]]
@@ -477,6 +488,7 @@ extension GameScene {
                         players[1].finalScore = -5
                         players[2].finalScore = -5
                         self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
+                        SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .firstFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
                                 self.checkScoreAndDoNextPlay()
@@ -489,6 +501,7 @@ extension GameScene {
                         players[1].finalScore = -10
                         players[2].finalScore = -10
                         self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
+                        SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .secondFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
                                 self.checkScoreAndDoNextPlay()
@@ -502,6 +515,7 @@ extension GameScene {
                         self.gameData.winnerIndex = player.index
                         self.saveGameData(winnerIndex: player.index, players: players, isNagari: false)
                         
+                        SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .thirdFuckWin, cards: fuckCards, players: players) {_ in
                             self.movePlayerPayouts(players: players) {
                                 self.replacePlayerIfNeeded(isShowPopup: true) {
@@ -512,6 +526,7 @@ extension GameScene {
                         return
                     }
                     else {
+                        SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .fuck, cards: fuckCards, players: players, completion: {_ in
                             self.checkScoreAndDoNextPlay()
                         })
@@ -536,6 +551,7 @@ extension GameScene {
                 if nextDeckCardExceptBonus.month == handCard.month {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
                     let isFirstCardTadak = player.handCards.count > 5
+                    SoundManager.shared.playSoundIfPossible(type: .tadak)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: isFirstCardTadak  ? .firstTadak : .tadak, cards: [handCard, nextDeckCardExceptBonus] + matchingTableCards, players: [player]) { _ in
                         Task {
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard], tableCards: [matchingTableCards[0]]) {
@@ -598,6 +614,7 @@ extension GameScene {
                 // 3장 가져오기 ~ 한장씩 뺏기
                 let isPlayerFuckCard = player.fuckCardMonths.first(where: { $0 == handCard.month }) != nil
                 await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
+                SoundManager.shared.playSoundIfPossible(type: .threeTableCards)
                 PopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [handCard] + matchingTableCards, players: [player], completion: { _ in
                     Task {
                         await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard], tableCards: matchingTableCards) {
@@ -639,18 +656,20 @@ extension GameScene {
             
             switch matchingTableCards.count {
             case 0: // 매칭카드 없는 경우
-                await self.moveDeckCardToTable()
+                await self.moveDeckCardsToTable(soundType: .noMatching)
                 self.checkScoreAndDoNextPlay()
             case 1: // 매칭카드 1개 (
                 await self.moveDeckCardToMatchingTableCards(deckCard: deckCard, tableCards: matchingTableCards)
                 // 쪽인경우
                 if let kissHandCard {
+                    SoundManager.shared.playSoundIfPossible(type: .kiss)
                     PopupManager.shared.showPopup(popupData: popupData, type: .kiss, cards: [kissHandCard, deckCard], players: [player]) { select in
                         Task {
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [deckCard], tableCards: matchingTableCards){
                                 // 쓸인경우
                                 if !player.handCards.isEmpty && self.isEmptyTable() {
-                                    PopupManager.shared.showPopup(popupData: self.popupData, type: .emptyTable, cards: [], players: [player]) { select in
+                                    SoundManager.shared.playSoundIfPossible(type: .ssl)
+                                    PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                         Task {
                                             await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 2) {
                                                 self.checkScoreAndDoNextPlay()
@@ -674,7 +693,8 @@ extension GameScene {
                         
                         // 쓸인경우
                         if !player.handCards.isEmpty && self.isEmptyTable() {
-                            PopupManager.shared.showPopup(popupData: self.popupData, type: .emptyTable, cards: [], players: [player]) { select in
+                            SoundManager.shared.playSoundIfPossible(type: .ssl)
+                            PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                 Task {
                                     await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 1) {
                                         self.checkScoreAndDoNextPlay()
@@ -720,12 +740,14 @@ extension GameScene {
             default:  // 매칭카드 3개 이상 (뻑하고 보너스가 함께 있을수 있음)
                 let isPlayerFuckCard = player.fuckCardMonths.first(where: { $0 == deckCard.month }) != nil
                 await self.moveDeckCardToMatchingTableCards(deckCard: deckCard, tableCards: matchingTableCards)
+                SoundManager.shared.playSoundIfPossible(type: .threeTableCards)
                 PopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [deckCard] + matchingTableCards, players: [player], completion: { _ in
                     Task {
                         await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [deckCard], tableCards: matchingTableCards) {
                             // 쓸인경우
                             if !player.handCards.isEmpty && self.isEmptyTable() {
-                                PopupManager.shared.showPopup(popupData: self.popupData, type: .emptyTable, cards: [], players: [player]) { select in
+                                SoundManager.shared.playSoundIfPossible(type: .ssl)
+                                PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                     Task {
                                         await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: isPlayerFuckCard ? 3 : 2) {
                                             self.checkScoreAndDoNextPlay()
@@ -749,6 +771,7 @@ extension GameScene {
     
     private func afterSelectGoOrStop(isGo: Bool, player: Player) {
         if isGo {
+            SoundManager.shared.playSoundIfPossible(type: .go)
             PopupManager.shared.showPopup(popupData: self.popupData, type: .go, cards: [], players: [player], message: "\(player.goCount + 1) 고!") { _ in
                 self.gameData.currentPlayerIndex = (self.gameData.currentPlayerIndex + 1) % 3
                 self.doPlay()
@@ -758,6 +781,7 @@ extension GameScene {
             self.gameData.goHistory.append(player.index)
         }
         else {
+            SoundManager.shared.playSoundIfPossible(type: .stop)
             PopupManager.shared.showPopup(popupData: self.popupData, type: .stop, cards: [], players: [player]) { _ in
                 self.stopPlayerGame(winnderIndex: player.index)
             }
@@ -768,6 +792,7 @@ extension GameScene {
         //  흔들기 선택
         if isWave {
             self.gameData.players[player.index].waveCount += 1
+            SoundManager.shared.playSoundIfPossible(type: .wave)
             //  흔들기 확인 팝업 다시 보이기
             PopupManager.shared.showPopup(popupData: self.popupData, type: .wave, cards: sameMonthPlayerHandCards, players: [player]) { select in
                 Task{
@@ -826,7 +851,7 @@ extension GameScene {
     private func playWithNoMatchingCard(playerIndex: Int, handCard: Card, nextDeckCardExceptBonus: Card) async {
         let player = self.gameData.players[self.gameData.currentPlayerIndex]
         Task {
-            // 폭탄빈카드는 그냥 제거하고 덱카드 뒤집기
+            // 폭탄으로 생긴 빈카드는 그냥 제거하고 덱카드 뒤집기
             if handCard.month == self.emptyCardMonth {
                 self.removePlayerHandCards(playerIndex: player.index, handCards: [handCard])
             }
@@ -836,7 +861,6 @@ extension GameScene {
             }
             
             // 쪽이면 > 쪽카드 받아가기 (막장 제외)
-            print("???? player.handCards: \(player.handCards.count)")
             if nextDeckCardExceptBonus.month == handCard.month && player.handCards.count > 1 {
                 await self.moveBonusDeckCardsToPlayerCapturedIfNeeded(playerIndex: playerIndex) {
                     Task {
@@ -918,12 +942,12 @@ extension GameScene {
         self.gameData.players[playerIndex].capturedCardTypeGroups[forcedType?.rawValue ?? card.type.rawValue].append(card)
         
         let movePosition = self.getPlayerCapturedCardPosition(playerIndex: playerIndex, cardIndexByType: cardIndexByType, cardType: forcedType ?? card.type)
-        cardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: cardIndexByType, afterCardNodeScale: .normal, completion: {
+        cardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: cardIndexByType, afterCardNodeScale: .normal, soundType: nil, completion: {
             self.setPlayerScoreNodes(playerIndex: playerIndex)
         })
     }
     
-    private func moveCardToTable(card: Card, tableCardGroupIndex: Int) {
+    private func moveCardToTable(card: Card, tableCardGroupIndex: Int, soundType: SoundType?) {
         print("\(#function) card: \(card.month), \(card.type)")
         guard let cardNode = childNode(withName: card.id.uuidString) as? CardNode else { return }
         cardNode.removeStroke()
@@ -931,16 +955,18 @@ extension GameScene {
         let zPosition = self.getTableCardZPosition(groupIndex: tableCardGroupIndex, cardIndexByGroup: cardIndexByGroup)
         let movePosition = self.getTableCardPosition(groupIndex: tableCardGroupIndex, cardIndexByGroup: cardIndexByGroup)
         self.gameData.tableCardGroups[tableCardGroupIndex].append(card)
-        cardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: Int(zPosition),afterCardNodeScale: .large)
+        cardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: Int(zPosition), afterCardNodeScale: .large, soundType: soundType)
     }
     
-    private func moveDeckCardToTable(count: Int = 1) async {
+    private func moveDeckCardsToTable(count: Int = 1, soundType: SoundType?) async {
         for _ in 0..<count {
             if self.gameData.deckCards.count == 0 { return }
             let deckCard = self.gameData.deckCards.removeLast()
             print("\(#function) deckCard: \(deckCard.month), \(deckCard.type)")
-            let tableCardGroupIndex = self.getTableCardGroupIndex(cardMonth: deckCard.month) ?? self.getEmptyTableCardGroupIndex(cardMonth: deckCard.month)
-            self.moveCardToTable(card: deckCard, tableCardGroupIndex: tableCardGroupIndex)
+            let existedTableCardGroupIndex = self.getTableCardGroupIndex(cardMonth: deckCard.month)
+            let tableCardGroupIndex = existedTableCardGroupIndex ?? self.getEmptyTableCardGroupIndex(cardMonth: deckCard.month)
+            //self.moveCardToTable(card: deckCard, tableCardGroupIndex: tableCardGroupIndex, soundType: existedTableCardGroupIndex == nil ? .noMatching : .matching)
+            self.moveCardToTable(card: deckCard, tableCardGroupIndex: tableCardGroupIndex, soundType: soundType)
         }
         
         do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
@@ -989,7 +1015,7 @@ extension GameScene {
         matchPosition.x += 10
         matchPosition.y -= 10
         
-        deckCardNode.moveAndTurnCard(movePosition: matchPosition, duration: self.gameData.cardDuration, isFront: true, zPosition: zPosition, afterCardNodeScale: .large)
+        deckCardNode.moveAndTurnCard(movePosition: matchPosition, duration: self.gameData.cardDuration, isFront: true, zPosition: zPosition, afterCardNodeScale: .large, soundType: .matching)
         do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
         } catch { print("error: \(error)")}
     }
@@ -1008,7 +1034,7 @@ extension GameScene {
             matchPosition.y -= CGFloat(10 * (i + 1))
             
             handCardNode.removeStroke()
-            handCardNode.moveAndTurnCard(movePosition: matchPosition, duration: self.gameData.cardDuration, isFront: true, zPosition: zPosition, afterCardNodeScale: .large)
+            handCardNode.moveAndTurnCard(movePosition: matchPosition, duration: self.gameData.cardDuration, isFront: true, zPosition: zPosition, afterCardNodeScale: .large, soundType: .matching)
         }
         
         do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
@@ -1129,7 +1155,7 @@ extension GameScene {
             guard let cardNode = childNode(withName: card.id.uuidString) as? CardNode else { continue }
             let zPosition = self.getTableCardZPosition(groupIndex: tableCardGroupIndex, cardIndexByGroup: i)
             let movePosition = self.getTableCardPosition(groupIndex: tableCardGroupIndex, cardIndexByGroup: i)
-            cardNode.moveAndTurnCard(movePosition: movePosition, isFront: true, zPosition: zPosition, movingUpScale: nil, afterCardNodeScale: .large)
+            cardNode.moveAndTurnCard(movePosition: movePosition, isFront: true, zPosition: zPosition, movingUpScale: nil, afterCardNodeScale: .large, soundType: nil)
         }
     }
     
@@ -1140,7 +1166,7 @@ extension GameScene {
             let cardIndex = self.gameData.players[playerIndex].handCards.count
             let movePosition = self.getPlayerHandCardPosition(playerIndex: playerIndex, cardIndex: cardIndex)
             self.gameData.players[playerIndex].handCards.append(lastDeckCard)
-            deckCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: playerIndex == 0, afterCardNodeScale: playerIndex == 0 ? .large : .small)
+            deckCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: playerIndex == 0, afterCardNodeScale: playerIndex == 0 ? .large : .small, soundType: nil)
         }
         
         do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
@@ -1150,8 +1176,9 @@ extension GameScene {
     private func movePlayerHandCardsToTable(playerIndex: Int, handCards: [Card]) async {
         for handCard in handCards {
             self.gameData.players[playerIndex].handCards.removeAll { $0.id == handCard.id }
-            let tableCardGroupIndex = self.getTableCardGroupIndex(cardMonth: handCard.month) ?? self.getEmptyTableCardGroupIndex(cardMonth: handCard.month)
-            self.moveCardToTable(card: handCard, tableCardGroupIndex: tableCardGroupIndex)
+            let existTableCardGroupIndex = self.getTableCardGroupIndex(cardMonth: handCard.month)
+            let tableCardGroupIndex = existTableCardGroupIndex ?? self.getEmptyTableCardGroupIndex(cardMonth: handCard.month)
+            self.moveCardToTable(card: handCard, tableCardGroupIndex: tableCardGroupIndex, soundType: existTableCardGroupIndex == nil ? .noMatching : .matching)
         }
         
         do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
@@ -1192,7 +1219,7 @@ extension GameScene {
             }
             else {
                 //print("\(#function) different positioin \(i) current(\(handCardNode.position.x),\(handCardNode.position.y)),target(\(movePosition.x),\(movePosition.y))")
-                handCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: playerIndex == 0, movingUpScale: nil, afterCardNodeScale: playerIndex == 0 ? .large : .small)
+                handCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: playerIndex == 0, movingUpScale: nil, afterCardNodeScale: playerIndex == 0 ? .large : .small, soundType: nil)
             }
         }
     }
@@ -1209,7 +1236,7 @@ extension GameScene {
             }
             else {
                 //print("\(#function) different positioin \(i) current(\(handCardNode.position.x),\(handCardNode.position.y)),target(\(movePosition.x),\(movePosition.y))")
-                capturedCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: cardIndexByType, movingUpScale: nil, afterCardNodeScale: .normal)
+                capturedCardNode.moveAndTurnCard(movePosition: movePosition, duration: self.gameData.cardDuration, isFront: true, zPosition: cardIndexByType, movingUpScale: nil, afterCardNodeScale: .normal, soundType: nil)
             }
         }
     }
@@ -1239,7 +1266,7 @@ extension GameScene {
         // 재귀함수 호출
         if bounsCardCount > 0 {
             for _ in 0..<bounsCardCount {
-                await self.moveDeckCardToTable()
+                await self.moveDeckCardsToTable(soundType: .noMatching)
                 await moveBonusTableCardToPlayerCapturedAndMoveDeckCardToTableAgain(playerIndex: playerIndex)
             }
         }
@@ -1249,6 +1276,7 @@ extension GameScene {
     private func moveBonusDeckCardsToPlayerCapturedIfNeeded(playerIndex: Int, completion: @escaping () -> Void) async  {
         guard let deckCard = self.gameData.deckCards.last else { return }
         if deckCard.month == 0 {
+            SoundManager.shared.playSoundIfPossible(type: .deckBonus)
             PopupManager.shared.showPopup(popupData: self.popupData, type: .deckBonus, cards: [deckCard], players: [self.gameData.players[playerIndex]]) { _ in
                 Task {
                     // table에서 제거하고 winner에게 지급
@@ -1313,7 +1341,7 @@ extension GameScene {
         if self.gameData.deckCards.last?.month == 0 {
             // table에서 제거하고 winner에게 지급
             let deckCard = self.gameData.deckCards.removeLast()
-            self.moveCardToTable(card: deckCard, tableCardGroupIndex: tableCardGroupIndex)
+            self.moveCardToTable(card: deckCard, tableCardGroupIndex: tableCardGroupIndex, soundType: .noMatching)
             
             do { try await Task.sleep(for: .seconds(self.gameData.cardDuration))
             } catch { print("error: \(error)")}

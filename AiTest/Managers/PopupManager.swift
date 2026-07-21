@@ -27,7 +27,7 @@ enum PopupType {
     case wave               // 흔들기
     case bomb               // 폭탄
     case kiss               // 쪽
-    case emptyTable         // 쓸
+    case ssl                // 쓸
     case deckBonus          // 보너스 득
     case handBonus          // 손에 있는 보너스 카드
     case fuck               // 기본 뻑
@@ -86,7 +86,7 @@ class PopupManager {
                 popupData.title = "아싸 쪽!!!"
                 popupData.message = "피 한장씩 주세요~ 😘"
                 popupData.status = .showAutoCloseMessagePopup
-            case .emptyTable:
+            case .ssl:
                 popupData.title = "아싸 쓸!!!"
                 popupData.message = "피 한장씩 더 주세요~ 😘"
                 popupData.status = .showAutoCloseMessagePopup

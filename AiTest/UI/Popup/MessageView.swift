@@ -33,6 +33,7 @@ public struct MessageView: View {
                         .font(.system(size: 18,weight: .regular))
                 }
                 Button(buttonText) {
+                    SoundManager.shared.playSoundIfPossible(type: .click)
                     self.buttonAction()
                 }
                 .foregroundStyle(.white)

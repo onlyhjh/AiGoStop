@@ -36,7 +36,10 @@ public struct SelectButtonView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button(action: {isHidden.toggle()}, label: {
+                    Button(action: {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
+                        isHidden.toggle()
+                    }, label: {
                         VStack {
                             Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
                             Text(isHidden ? "열기" : "닫기")
@@ -77,6 +80,7 @@ public struct SelectButtonView: View {
                                 }
                                 HStack(spacing: 20) {
                                     Button(button1Text) {
+                                        SoundManager.shared.playSoundIfPossible(type: .click)
                                         button1Action()
                                     }
                                     .foregroundStyle(.white)
@@ -86,6 +90,7 @@ public struct SelectButtonView: View {
                                     .clipShape(Capsule())
                                     
                                     Button(button2Text) {
+                                        SoundManager.shared.playSoundIfPossible(type: .click)
                                         button2Action()
                                     }
                                     .foregroundStyle(.white)

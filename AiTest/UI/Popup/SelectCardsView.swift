@@ -32,7 +32,10 @@ public struct SelectCardsView: View {
             VStack {
                 HStack {
                     Spacer()
-                    Button(action: {isHidden.toggle()}, label: {
+                    Button(action: {
+                        SoundManager.shared.playSoundIfPossible(type: .click)
+                        isHidden.toggle()
+                    }, label: {
                         VStack {
                             Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
                             Text(isHidden ? "열기" : "닫기")
@@ -75,6 +78,7 @@ public struct SelectCardsView: View {
                                 HStack(spacing: 20) {
                                     ForEach(1..<cards.count) { index in
                                         Button {
+                                            SoundManager.shared.playSoundIfPossible(type: .click)
                                             buttonActions[index]()
                                         } label: {
                                             Image(cards[index].imageName ?? Card.backImageName)
