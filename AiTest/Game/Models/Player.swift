@@ -83,6 +83,10 @@ struct Player: Codable {
         capturedCardTypeGroups[CardType.gwang.rawValue].count
     }
     
+    var allCount: Int {
+        gwangCount + yeolCount + ttiCount + piCount
+    }
+    
     // 초단 3점
     var chodanScore: Int {
         chodanCount > 2 ? 3 : 0
@@ -96,7 +100,7 @@ struct Player: Codable {
         hongdanCount > 2 ? 3 : 0
     }
     var hongdanCount: Int {
-        capturedCardTypeGroups[CardType.tti.rawValue].count(where: { $0.isChoDan == true })
+        capturedCardTypeGroups[CardType.tti.rawValue].count(where: { $0.isHongDan == true })
     }
     
     // 청단 3점

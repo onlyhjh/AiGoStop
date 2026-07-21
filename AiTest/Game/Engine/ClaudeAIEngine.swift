@@ -61,34 +61,63 @@ final class ClaudeAIEngine: AIEngine {
 
     // MARK: - 2. 고/스톱 결정
     /// 고를 할지 스톱을 할지 결정한다.
+    /// subtotalScore(실제 배율까지 반영된 최종 점수)를 기준으로 나와 상대의 "진짜 위협도"를 비교해
+    /// 압도적으로 유리할 때는 배율 급증 구간까지도 공격적으로 돌파한다.
     func selectGoOrStop(gameData: GameData, playerIndex: Int) -> Bool {
         let player = gameData.players[playerIndex]
         let opponents = opponents(gameData: gameData, of: playerIndex)
-        let currentScore = player.baseScore
-
-        // 현재 점수가 7점 이상이면 거의 항상 스톱 (배율 리스크)
-        if currentScore >= 7 { return false }
-
-        // 이미 고를 2번 이상 했으면 배율이 x2 이상 → 리스크 큼
-        if player.goCount >= 2 { return false }
-
-        // 남은 손패가 없으면 스톱 (막장)
-        if player.handCards.isEmpty { return false }
-
-        // 상대방 점수가 1점 이하면 고를 해도 안전
-        let maxOpponentScore = opponents.map { $0.baseScore }.max() ?? 0
-        if maxOpponentScore <= 1 && currentScore <= 4 && player.handCards.count >= 3 {
-            return true
-        }
-
-        // 남은 패 수가 많고, 점수가 낮으면 고 고려
         let remainingCards = player.handCards.count
-        if remainingCards >= 4 && currentScore == 3 && maxOpponentScore < 3 {
+
+        // 막장: 낼 패가 없으면 무조건 스톱
+        if remainingCards == 0 { return false }
+
+        let currentSubtotal = player.subtotalScore
+        let maxOpponentSubtotal = opponents.map { $0.subtotalScore }.max() ?? 0
+
+        // 3고부터는 고를 할 때마다 배율이 즉시 2배로 뛴다 (goCount>2 → 2^(goCount-2))
+        // 이번 고로 그 "배율 급증 구간"에 새로 진입하는지 확인
+        let nextGoCount = player.goCount + 1
+        let currentMultiplier = player.goCount > 2 ? Int(pow(2, Double(player.goCount - 2))) : 1
+        let projectedMultiplier = nextGoCount > 2 ? Int(pow(2, Double(nextGoCount - 2))) : 1
+        let entersHighRiskZone = projectedMultiplier > currentMultiplier
+
+        // 압도적 우위: 내가 상대 최고 위협 대비 3배 이상 & 최소 5점 이상 확보 중이면
+        // 배율 급증 구간도 공격적으로 돌파한다 (독박 당해도 손해가 상대적으로 작음)
+        let hugeLead = currentSubtotal >= maxOpponentSubtotal * 3 && currentSubtotal >= 5
+
+        // 이미 점수가 매우 크면(12점=피박/광박 없이도 사실상 승부 끝) 압도적 우위가 아닌 이상 확정 짓는다
+        if currentSubtotal >= 12 && !hugeLead { return false }
+
+        // 배율 급증 구간 진입은 확실한 우위가 아니면 피한다 (공격적이되 무모하지 않게)
+        if entersHighRiskZone && !hugeLead { return false }
+
+        // 패가 얼마 안 남았는데 상대가 이미 나보다 위협적이면 더 끌 이유가 없다
+        if remainingCards <= 2 && maxOpponentSubtotal >= currentSubtotal { return false }
+
+        // ── 여기부터는 공격적으로 고를 유도하는 조건들 ──
+
+        // 상대 전원이 사실상 무방비(subtotal 1 이하) 상태라면 최대한 점수를 불린다
+        if maxOpponentSubtotal <= 1 && remainingCards >= 2 {
             return true
         }
 
-        // 고도리/청단/홍단/초단 완성이 1장 남은 경우 고 고려
-        if isOneAwayFromBonus(player: player, tableCards: gameData.allTableCards) && remainingCards >= 3 {
+        // 내가 이미 앞서 있고 패가 3장 이상 남았다면 격차를 더 벌린다
+        if currentSubtotal > maxOpponentSubtotal && remainingCards >= 3 {
+            return true
+        }
+
+        // 고도리/단/광 완성이 1장 남은 경우, 확장 여지가 있으면 계속 노린다
+        if isOneAwayFromBonus(player: player, tableCards: gameData.allTableCards) && remainingCards >= 2 {
+            return true
+        }
+
+        // 열끗 6장 보유 중이라면 몽땅구리(7장, 최종 점수 x2) 완성을 노리고 공격적으로 고
+        if player.yeolCount == 6 && remainingCards >= 2 {
+            return true
+        }
+
+        // 근소하게 뒤지거나 동률이어도 패가 충분히 남았다면 역전을 시도한다
+        if remainingCards >= 4 && currentSubtotal >= maxOpponentSubtotal - 2 {
             return true
         }
 
@@ -115,7 +144,12 @@ final class ClaudeAIEngine: AIEngine {
     func selectGukjin(gameData: GameData, playerIndex: Int) -> Bool {
         let player = gameData.players[playerIndex]
 
-        // 열끗이 4개 이상이면 열끗으로 가져가는 게 더 유리 (5개부터 1점)
+        // 열끗 6장째라면 국진을 반드시 열끗으로 가져가 몽땅구리(7장, subtotalScore x2) 완성
+        if player.yeolCount == 6 {
+            return false // 열끗 선택
+        }
+
+        // 열끗이 4개 이상이면 열끗으로 가져가는 게 더 유리 (5개부터 1점, 몽땅구리로 가는 발판)
         if player.yeolCount >= 4 {
             return false // 열끗 선택
         }
@@ -146,19 +180,16 @@ final class ClaudeAIEngine: AIEngine {
         let player = gameData.players[playerIndex]
         let opponents = opponents(gameData: gameData, of: playerIndex)
 
-        // 이미 흔들기를 한 적 있으면 다시 하면 배율 x4 → 리스크 큼
+        // 이미 흔들기를 한 적 있으면 다시 하면 배율 x4(2^waveCount) → 과도한 리스크
         if player.waveCount >= 1 { return false }
 
-        // 상대방 중 점수가 2점 이상인 사람이 있으면 흔들기 고려
-        let maxOpponentScore = opponents.map { $0.baseScore }.max() ?? 0
+        // 흔들기는 "내가 승자가 됐을 때" 내 subtotalScore에만 배율로 붙는 옵션이므로
+        // 패배 시 추가 손해가 없다 → 상대가 압도적으로 강할 때가 아니면 공격적으로 흔든다
+        let maxOpponentSubtotal = opponents.map { $0.subtotalScore }.max() ?? 0
 
-        // 현재 점수가 낮고 상대방 점수도 낮으면 흔들기
-        if player.baseScore <= 2 && maxOpponentScore <= 2 {
-            return true
-        }
-
-        // 내 점수가 이미 3점 이상이면 흔들기 없이 스톱 유도
-        if player.baseScore >= 3 { return false }
+        // 상대가 이미 크게 앞서 있어 흔들기로 정보(같은 달 3장 보유)를 노출하는 게
+        // 손패 운영상 손해가 클 만한 상황에서만 예외적으로 자제한다
+        if maxOpponentSubtotal >= 7 { return false }
 
         return true
     }
@@ -198,6 +229,10 @@ private extension ClaudeAIEngine {
             }
             // 열끗 수에 따라 가치 증가
             value += Double(player.yeolCount) * 5
+            // 몽땅구리(열끗 7장, subtotalScore 전체 x2) 완성 직전이면 가치 폭증
+            if player.yeolCount == 6 {
+                value += 200
+            }
 
         case .tti:
             value = 20
@@ -265,6 +300,8 @@ private extension ClaudeAIEngine {
 
         // 열끗은 점수에 기여하므로 웬만하면 버리지 않기
         if card.type == .yeol { cost += 50 }
+        // 열끗 6장째(몽땅구리 1장 전)라면 어떤 열끗도 사실상 버리면 안 됨
+        if card.type == .yeol && player.yeolCount == 6 { cost += 400 }
 
         // 상대방이 갖고 있는 달의 카드는 버리면 위험 (상대에게 유리)
         cost += blockingValue(card: card, opponents: opponents) * 2
@@ -284,25 +321,31 @@ private extension ClaudeAIEngine {
         var value: Double = 0
 
         for opp in opponents {
+            // 상대가 이미 쌓아둔 subtotalScore(고/흔들기 배율까지 반영된 실제 위협도)가 클수록
+            // 그 상대를 막는 행위의 가치도 함께 커진다 → 앞서가는 상대를 공격적으로 더 세게 견제
+            let threatMultiplier = 1.0 + Double(opp.subtotalScore) * 0.15
+
             switch card.type {
             case .gwang:
                 // 상대방이 광 2개 이상 가지면 위협
-                if opp.gwangCount >= 2 { value += 80 }
+                if opp.gwangCount >= 2 { value += 80 * threatMultiplier }
 
             case .yeol:
                 // 상대방 고도리 완성 차단
-                if card.isGodori && opp.godoriCount >= 2 { value += 150 }
-                if opp.yeolCount >= 4 { value += 30 }
+                if card.isGodori && opp.godoriCount >= 2 { value += 150 * threatMultiplier }
+                if opp.yeolCount >= 4 { value += 30 * threatMultiplier }
+                // 상대가 열끗 6장째(몽땅구리 1장 전)라면 반드시 차단
+                if opp.yeolCount == 6 { value += 250 * threatMultiplier }
 
             case .tti:
                 // 상대방 단 완성 차단
-                if card.isChungDan && opp.chungdanCount >= 2 { value += 100 }
-                if card.isHongDan && opp.hongdanCount >= 2 { value += 100 }
-                if card.isChoDan && opp.chodanCount >= 2 { value += 100 }
+                if card.isChungDan && opp.chungdanCount >= 2 { value += 100 * threatMultiplier }
+                if card.isHongDan && opp.hongdanCount >= 2 { value += 100 * threatMultiplier }
+                if card.isChoDan && opp.chodanCount >= 2 { value += 100 * threatMultiplier }
 
             case .pi:
                 // 피는 상대방 차단 가치 낮음
-                if opp.piCount >= 9 { value += 15 }
+                if opp.piCount >= 9 { value += 15 * threatMultiplier }
             }
         }
         return value

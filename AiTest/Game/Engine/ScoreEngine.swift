@@ -36,8 +36,10 @@ class ScoreEngine {
                 loser2.isPiBak = loser2.piCount > 0 && loser2.piCount < 6
             }
         
-            loser1.finalScore = -winner.subtotalScore * (loser1.isGwangBak ? 2 :1) * (loser1.isPiBak ? 2 : 1)
-            loser2.finalScore = -winner.subtotalScore * (loser2.isGwangBak ? 2 :1) * (loser2.isPiBak ? 2 : 1)
+            // 아무것도 못먹은 경우 0
+            // 승자점수에 광박, 피박 적용
+            loser1.finalScore = loser1.allCount == 0 ? 0 : -winner.subtotalScore * (loser1.isGwangBak ? 2 :1) * (loser1.isPiBak ? 2 : 1)
+            loser2.finalScore = loser2.allCount == 0 ? 0 : -winner.subtotalScore * (loser2.isGwangBak ? 2 :1) * (loser2.isPiBak ? 2 : 1)
         }
 
         // 독박 확인
