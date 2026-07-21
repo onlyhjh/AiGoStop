@@ -15,7 +15,9 @@ final class CursorAIEngine: AIEngine {
         let player = gameData.players[playerIndex]
         let opponents = opponentPlayers(gameData: gameData, excluding: playerIndex)
         let myScore = player.baseScore
+        let mySubtotal = player.subtotalScore
         let maxOpponentScore = opponents.map(\.baseScore).max() ?? 0
+        let maxOpponentSubtotal = opponents.map(\.subtotalScore).max() ?? 0
         let scoreGain = myScore - player.lastGoScore
         let deckRemaining = gameData.deckCards.count
         let upside = handUpside(gameData: gameData, for: player, tableCards: gameData.allTableCards)
@@ -25,43 +27,60 @@ final class CursorAIEngine: AIEngine {
             return false
         }
 
-        // 7점 이상이면서 앞서면 스톱
-        if myScore >= 7 && myScore >= maxOpponentScore + 2 {
+        // 실질 점수(배수 반영)로 크게 앞서면 스톱
+        if mySubtotal >= maxOpponentSubtotal + 8 && myScore >= 6 {
             return false
         }
 
-        // 상대가 7점 이상이면 더 모아야 함
-        if maxOpponentScore >= 7 && myScore <= maxOpponentScore {
-            return shouldGoAggressively(player: player, scoreGain: scoreGain, deckRemaining: deckRemaining)
+        // 8점 이상이면서 앞서면 스톱 (배수 리스크 감수 한계)
+        if myScore >= 8 && myScore > maxOpponentScore {
+            return false
+        }
+
+        // 상대 실질 점수가 높으면 적극적으로 고
+        if maxOpponentSubtotal > mySubtotal || maxOpponentScore >= 5 && myScore <= maxOpponentScore {
+            return shouldGoAggressively(
+                player: player,
+                scoreGain: scoreGain,
+                deckRemaining: deckRemaining,
+                upside: upside
+            )
         }
 
         // 이미 고를 한 상태
         if player.goCount > 0 {
-            // 점수가 오르지 않았으면 스톱
             if scoreGain <= 0 {
                 return false
             }
-            // 2고 이상인데 점수가 낮으면 무리한 고 방지
-            if player.goCount >= 2 && myScore < 5 {
+            // 3고 이상 + 낮은 기본점 → 스톱
+            if player.goCount >= 3 && myScore < 4 {
                 return false
             }
-            // 충분히 올랐고 앞서면 스톱
-            if myScore >= 5 && myScore > maxOpponentScore && scoreGain >= 2 {
+            // 실질 점수로 충분히 앞서고 점수도 올랐으면 스톱
+            if mySubtotal > maxOpponentSubtotal && myScore >= 5 && scoreGain >= 2 {
                 return false
             }
-            return scoreGain >= 1 && upside >= 8
+            return scoreGain >= 1 && upside >= 5
         }
 
-        // 첫 고 판단
-        if myScore >= 5 && myScore > maxOpponentScore {
-            return upside >= 12 && deckRemaining > 6
+        // 첫 고: 앞서거나 비슷하면 손익 보고 고
+        if myScore >= 4 {
+            if mySubtotal <= maxOpponentSubtotal {
+                return scoreGain >= 1 || upside >= 6
+            }
+            return upside >= 8 && deckRemaining > 4
         }
 
         if myScore >= 3 {
-            if maxOpponentScore >= myScore {
-                return scoreGain >= 1 || upside >= 10
+            if maxOpponentScore >= myScore || maxOpponentSubtotal >= mySubtotal {
+                return scoreGain >= 1 || upside >= 6
             }
-            return upside >= 14 && deckRemaining > 8
+            return upside >= 10 && deckRemaining > 6
+        }
+
+        // 3점 미만이어도 상대보다 뒤처지고 여지가 있으면 고
+        if myScore >= 2 && maxOpponentScore >= 3 && upside >= 8 {
+            return true
         }
 
         return false
@@ -115,26 +134,27 @@ final class CursorAIEngine: AIEngine {
         let player = gameData.players[playerIndex]
         guard cards.count == 3 else { return false }
 
-        // 점수가 3점 미만이면 흔들기 배수 효과가 작음
-        if player.baseScore < 3 {
+        // 2점 미만이면 흔들기 배수 효과가 너무 작음
+        if player.baseScore < 2 {
             return false
         }
 
-        // 이미 흔든 적 있으면 추가 흔들기는 신중히
-        if player.waveCount > 0 && player.baseScore < 5 {
-            return false
-        }
-
-        // 5점 이상이면 흔들기로 배수 올리기
-        if player.baseScore >= 5 {
+        // 4점 이상이면 흔들기로 배수 적극 활용
+        if player.baseScore >= 4 {
             return true
         }
 
-        // 3~4점: 손패·덱에 같은 월이 더 있으면(총통·폭탄 기대) 흔들기
+        // 2~3점: 같은 월 추가 기대(총통·폭탄) 또는 상대 실질 점수가 높을 때
         let month = cards[0].month
         let sameMonthInHand = player.handCards.filter { $0.month == month }.count
         let sameMonthInDeck = gameData.deckCards.filter { $0.month == month }.count
-        return sameMonthInHand + sameMonthInDeck >= 1
+        let opponents = opponentPlayers(gameData: gameData, excluding: playerIndex)
+        let maxOpponentSubtotal = opponents.map(\.subtotalScore).max() ?? 0
+
+        if sameMonthInHand + sameMonthInDeck >= 1 {
+            return true
+        }
+        return player.subtotalScore <= maxOpponentSubtotal
     }
 
     /// AI가 낼 손패 카드 선택
@@ -287,58 +307,33 @@ final class CursorAIEngine: AIEngine {
     }
 
     private func setCompletionBonus(gameData: GameData, adding cards: [Card], to player: Player) -> Double {
-        projectedCaptureValue(gameData: gameData, cards: cards, for: player) - Double(player.baseScore)
+        Double(projectedSubtotalScore(gameData: gameData, for: player, adding: cards) - player.subtotalScore)
     }
 
     private func projectedCaptureValue(gameData: GameData, cards: [Card], for player: Player) -> Double {
-        Double(projectedBaseScore(gameData: gameData, for: player, adding: cards))
+        Double(projectedSubtotalScore(gameData: gameData, for: player, adding: cards))
     }
 
-    private func projectedBaseScore(gameData: GameData, for player: Player, adding cards: [Card]) -> Int {
-        var captured = player.capturedCardTypeGroups
+    private func projectedSubtotalScore(gameData: GameData, for player: Player, adding cards: [Card]) -> Int {
+        projectedPlayer(from: player, adding: cards, gameData: gameData).subtotalScore
+    }
+
+    private func projectedPlayer(from player: Player, adding cards: [Card], gameData: GameData) -> Player {
+        var projected = player
         for card in cards {
             if isGukjin(card) {
                 if selectGukjin(gameData: gameData, playerIndex: player.index) {
-                    captured[CardType.pi.rawValue].append(
+                    projected.capturedCardTypeGroups[CardType.pi.rawValue].append(
                         Card(month: card.month, type: .pi, isDoublePi: true)
                     )
                 } else {
-                    captured[CardType.yeol.rawValue].append(card)
+                    projected.capturedCardTypeGroups[CardType.yeol.rawValue].append(card)
                 }
             } else {
-                captured[card.type.rawValue].append(card)
+                projected.capturedCardTypeGroups[card.type.rawValue].append(card)
             }
         }
-        return baseScore(from: captured, goCount: player.goCount)
-    }
-
-    private func baseScore(from groups: [[Card]], goCount: Int) -> Int {
-        let gwangs = groups[CardType.gwang.rawValue]
-        let yeols = groups[CardType.yeol.rawValue]
-        let ttis = groups[CardType.tti.rawValue]
-        let pis = groups[CardType.pi.rawValue]
-
-        let gwangCount = gwangs.count == 5 ? 15
-            : gwangs.count == 3 && gwangs.contains(where: { $0.month == 12 }) ? 2
-            : gwangs.count
-        let gwangScore = gwangCount > 4 ? 15 : gwangCount > 2 ? gwangCount - 2 : 0
-
-        let yeolCount = yeols.count
-        let yeolScore = yeolCount > 4 ? yeolCount - 4 : 0
-
-        let ttiCount = ttis.count
-        let ttiScore = ttiCount > 4 ? ttiCount - 4 : 0
-
-        let piCount = pis.count + pis.count(where: { $0.isDoublePi })
-        let piScore = piCount > 9 ? piCount - 9 : 0
-
-        let chodanScore = ttis.count(where: { $0.isChoDan }) > 2 ? 3 : 0
-        let hongdanScore = ttis.count(where: { $0.isHongDan }) > 2 ? 3 : 0
-        let chungdanScore = ttis.count(where: { $0.isChungDan }) > 2 ? 3 : 0
-        let godoriScore = yeols.count(where: { $0.isGodori }) > 2 ? 5 : 0
-
-        return gwangScore + yeolScore + ttiScore + piScore
-            + chodanScore + hongdanScore + chungdanScore + godoriScore + goCount
+        return projected
     }
 
     private func marginalPiValue(for player: Player, asDouble: Bool) -> Double {
@@ -372,10 +367,16 @@ final class CursorAIEngine: AIEngine {
         }
     }
 
-    private func shouldGoAggressively(player: Player, scoreGain: Int, deckRemaining: Int) -> Bool {
+    private func shouldGoAggressively(
+        player: Player,
+        scoreGain: Int,
+        deckRemaining: Int,
+        upside: Double
+    ) -> Bool {
+        if scoreGain >= 1 && upside >= 4 { return true }
         if scoreGain >= 2 { return true }
-        if deckRemaining <= 4 { return player.baseScore >= 5 }
-        return player.baseScore >= 3 && player.handCards.count >= 2
+        if deckRemaining <= 6 && player.baseScore >= 3 { return true }
+        return player.baseScore >= 2 && player.handCards.count >= 2 && upside >= 6
     }
 
     // MARK: - Utilities
