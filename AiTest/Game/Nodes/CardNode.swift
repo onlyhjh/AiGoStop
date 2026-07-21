@@ -75,7 +75,7 @@ class CardNode: SKSpriteNode {
         }
         
         
-        if let soundType {
+        if let soundType, UserDefaults.standard.effectSound {
             let fileName = "\(soundType.rawValue).mp3"
             let soundAction = SKAction.playSoundFileNamed(fileName, waitForCompletion: true)
             sequnce.append(soundAction)

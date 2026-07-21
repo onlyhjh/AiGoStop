@@ -33,9 +33,14 @@ class MoneyNode: SKSpriteNode {
         let scaleDownAction = SKAction.scale(to: 1.0, duration: duration / 2)
         let moveWithScaleDownAction = SKAction.group([move2Action, scaleDownAction])
 
-        let fileName = "\(SoundType.coinClink.rawValue).mp3"
-        let soundAction = SKAction.playSoundFileNamed(fileName, waitForCompletion: false)
-        sequnce = [moveWithScaleUpAction, soundAction, moveWithScaleDownAction]
+        if UserDefaults.standard.effectSound {
+            let fileName = "\(SoundType.coinClink.rawValue).mp3"
+            let soundAction = SKAction.playSoundFileNamed(fileName, waitForCompletion: false)
+            sequnce = [moveWithScaleUpAction, soundAction, moveWithScaleDownAction]
+        }
+        else {
+            sequnce = [moveWithScaleUpAction, moveWithScaleDownAction]
+        }
         
         run(SKAction.sequence(sequnce), completion: {
             self.removeFromParent()

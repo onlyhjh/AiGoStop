@@ -110,7 +110,10 @@ struct MainContentView: View {
             .ignoresSafeArea(.all)
         }
         .onAppear {
-            SoundManager.shared.playSoundIfPossible(type: .background)
+            SoundManager.shared.playSound(type: .win)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                SoundManager.shared.playSoundIfPossible(type: .background)
+            }
             
             let playerFactory = PlayerFactory()
             if let user = playerFactory.loadPlayer(playerIndex: 0) {
