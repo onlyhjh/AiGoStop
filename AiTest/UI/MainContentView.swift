@@ -56,6 +56,16 @@ struct MainContentView: View {
                 Image(.splash)
                     .resizable()
                     .ignoresSafeArea()
+                
+                Button("게임 시작!") {
+                    SoundManager.shared.playSoundIfPossible(type: .click)
+                    self.gameData.gameStatus = .start
+                    self.isStarted = true
+                }
+                .foregroundStyle(.white)
+                .padding()
+                .background(.red)
+                .clipShape(Capsule())
             }
             
             HStack {
@@ -67,16 +77,17 @@ struct MainContentView: View {
                     }
                     .foregroundStyle(.white)
                     .font(.largeTitle)
-                    Spacer()
-                    Button("start") {
-                        SoundManager.shared.playSoundIfPossible(type: .click)
-                        self.gameData.gameStatus = .start
-                        self.isStarted = true
-                    }
-                    .foregroundStyle(.white)
                     .padding()
-                    .background(.green)
-                    .clipShape(Capsule())
+                    Spacer()
+                })
+            }
+            .ignoresSafeArea(.all)
+            
+            // Debug Test
+            HStack {
+                Spacer()
+                VStack(alignment: .center, spacing: 20, content: {
+                    Spacer()
                     Button("save") {
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         if !self.gameData.origianalDeckCards.isEmpty, let encoded = try? JSONEncoder().encode(self.gameData.origianalDeckCards) {
@@ -88,7 +99,7 @@ struct MainContentView: View {
                     }
                     .foregroundStyle(.white)
                     .padding()
-                    .background(.red)
+                    .background(.pink)
                     .clipShape(Capsule())
 
                     Button("load") {
@@ -108,6 +119,7 @@ struct MainContentView: View {
                 .padding(.all, 10)
             }
             .ignoresSafeArea(.all)
+            .hidden()
         }
         .onAppear {
             SoundManager.shared.playSound(type: .win)

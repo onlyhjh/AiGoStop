@@ -218,6 +218,7 @@ extension GameScene {
         SoundManager.shared.playSoundIfPossible(type: .win)
         PopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
             self.movePlayerPayouts(players: players) {
+                self.updatePlayersMoneyNodes(players: players)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
                     self.startGame()
                 }
@@ -328,9 +329,9 @@ extension GameScene {
             self.gameData.players[players[2].index].money += players[2].finalScore
             
             // 승률, 기대수익 저장
-            self.gameData.players[players[0].index].addGame(isWin: true, profit: players[0].finalScore)
-            self.gameData.players[players[1].index].addGame(isWin: false, profit: players[1].finalScore)
-            self.gameData.players[players[2].index].addGame(isWin: false, profit: players[2].finalScore)
+            self.gameData.players[players[0].index].updateStatisticsData(isWin: true, profit: players[0].finalScore)
+            self.gameData.players[players[1].index].updateStatisticsData(isWin: false, profit: players[1].finalScore)
+            self.gameData.players[players[2].index].updateStatisticsData(isWin: false, profit: players[2].finalScore)
             
             self.savePlayer(index: 0)
             self.savePlayer(index: 1)
@@ -362,6 +363,7 @@ extension GameScene {
                     SoundManager.shared.playSoundIfPossible(type: .win)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .chongtongWin, cards: sameMonthCards, players: players, completion: { _ in
                         self.movePlayerPayouts(players: players) {
+                            self.updatePlayersMoneyNodes(players: players)
                             self.replacePlayerIfNeeded(isShowPopup: true) {
                                 self.startGame()
                             }
@@ -491,6 +493,7 @@ extension GameScene {
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .firstFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
+                                self.updatePlayersMoneyNodes(players: players)
                                 self.checkScoreAndDoNextPlay()
                             }
                         }
@@ -504,6 +507,7 @@ extension GameScene {
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .secondFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
+                                self.updatePlayersMoneyNodes(players: players)
                                 self.checkScoreAndDoNextPlay()
                             }
                         }
@@ -518,6 +522,7 @@ extension GameScene {
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
                         PopupManager.shared.showPopup(popupData: self.popupData, type: .thirdFuckWin, cards: fuckCards, players: players) {_ in
                             self.movePlayerPayouts(players: players) {
+                                self.updatePlayersMoneyNodes(players: players)
                                 self.replacePlayerIfNeeded(isShowPopup: true) {
                                     self.startGame()
                                 }
@@ -566,9 +571,11 @@ extension GameScene {
                                                     var players = [self.gameData.players[player.index], self.gameData.players[((player.index + 1) % 3)] , self.gameData.players[((player.index + 2) % 3)]]
                                                     players[0].finalScore = 10
                                                     players[1].finalScore = -5
-                                                    players[2].finalScore = 5
+                                                    players[2].finalScore = -5
                                                     self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
-                                                    self.movePlayerPayouts(players: players) {}
+                                                    self.movePlayerPayouts(players: players) {
+                                                        self.updatePlayersMoneyNodes(players: players)
+                                                    }
                                                 }
                                             })
                                         }
@@ -1551,10 +1558,20 @@ extension GameScene {
             playerMoneyNode.position.x = playerWinningCountNode.position.x + playerWinningCountNode.frame.width / 2 + playerMoneyNode.frame.width / 2 + 20
         }
         
-        
         self.addChild(playerIconNode)
         self.addChild(playerNameNode)
         self.addChild(playerMoneyNode)
+    }
+    
+    private func updatePlayersMoneyNodes(players: [Player]) {
+        for player in players {
+            if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerMoney + "\(player.index)") {
+                let playerMoneyNode = CapsuledLabelNode(playerIndex: player.index, money: player.money)
+                playerMoneyNode.position = oldOne.position
+                oldOne.removeFromParent()
+                self.addChild(playerMoneyNode)
+            }
+        }
     }
     
     private func setPlayerScoreNodes(playerIndex: Int) {

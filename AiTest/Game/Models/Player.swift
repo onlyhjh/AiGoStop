@@ -131,7 +131,7 @@ struct Player: Codable {
         self.index = index
     }
     
-    mutating func addGame(isWin: Bool, profit: Int) {
+    mutating func updateStatisticsData(isWin: Bool, profit: Int) {
         totalGames += 1
         winGames += isWin ? 1 : 0
         winRate = Double(winGames) / Double(totalGames)

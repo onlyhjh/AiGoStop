@@ -65,10 +65,15 @@ class ScoreEngine {
         
         winner.finalScore = -(loser1.finalScore + loser2.finalScore)
         
-        // 승률, 기대수익 임시 저장 (save할때
-        winner.addGame(isWin: true, profit: winner.finalScore)
-        loser1.addGame(isWin: false, profit: loser1.finalScore)
-        loser2.addGame(isWin: false, profit: loser2.finalScore)
+        // 승률, 기대수익 임시 저장 (save할때)
+        winner.updateStatisticsData(isWin: true, profit: winner.finalScore)
+        loser1.updateStatisticsData(isWin: false, profit: loser1.finalScore)
+        loser2.updateStatisticsData(isWin: false, profit: loser2.finalScore)
+        
+        // money 임시 저장 (save할때)
+        winner.money += winner.finalScore
+        loser1.money += loser1.finalScore
+        loser2.money += loser2.finalScore
         
         return [winner, loser1, loser2]
     }

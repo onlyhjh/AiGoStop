@@ -67,7 +67,7 @@ class CapsuledLabelNode: SKLabelNode {
         let size = CGSize(width: self.frame.width + 15, height: self.frame.height + 6)
         let rect = CGRect(x: size.width / -2, y: self.frame.height / -2 + 5, width: size.width, height: size.height)
         let shapeNode = SKShapeNode(rect: rect, cornerRadius: size.height / 2)
-        shapeNode.fillColor = .blue
+        shapeNode.fillColor = money > 0 ? .blue : .red
         shapeNode.zPosition = -1
         shapeNode.strokeColor = .black
         self.addChild(shapeNode)
