@@ -111,10 +111,17 @@ extension GameScene {
             
             // Test 특정카드 사용자에게
 //            for (i, card) in self.gameData.deckCards.enumerated().reversed() {
-//                if card.type != .gwang && card.month == 1  {
+//                var cards: [Card] = []
+//                if card.month == 1  {
 //                    let element = self.gameData.deckCards.remove(at: i)
-//                    self.gameData.deckCards.insert(element, at: self.gameData.deckCards.count - 4)
+//                    if card.type == .gwang {
+//                        self.gameData.deckCards.append(element)
+//                    }
+//                    else {
+//                        cards.append(element)
+//                    }
 //                }
+//                self.gameData.deckCards.insert(contentsOf: cards, at: self.gameData.deckCards.count - 11)
 //            }
 //            for (i, card) in self.gameData.deckCards.enumerated().reversed() {
 //                if card.type == .yeol && card.month > 5 && card.piNum == 0 {
@@ -452,6 +459,7 @@ extension GameScene {
                 // 폭탄
                 if sameMonthPlayerHandCards.count == 3 {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: sameMonthPlayerHandCards, tableCards: matchingTableCards)
+                    self.gameData.players[player.index].waveCount += 1
                     SoundManager.shared.playSoundIfPossible(type: .bomb)
                     PopupManager.shared.showPopup(popupData: self.popupData, type: .bomb, cards: sameMonthPlayerHandCards, players: [player], completion: {_ in
                         Task{

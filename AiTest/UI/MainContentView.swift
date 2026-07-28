@@ -119,7 +119,7 @@ struct MainContentView: View {
                 .padding(.all, 10)
             }
             .ignoresSafeArea(.all)
-            .hidden()
+            //.hidden()
         }
         .onAppear {
             SoundManager.shared.playSound(type: .win)
