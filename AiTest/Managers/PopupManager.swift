@@ -101,7 +101,7 @@ class PopupManager {
                 popupData.button1Text = "흔들기"
                 popupData.button2Text = "그냥치기"
             case .selectGoOrStop:
-                popupData.title = "고/스톱???"
+                popupData.title = "고/스톱"
                 popupData.message = "고할까 아님 안전하게 스톱할까요??? 😵‍💫"
                 popupData.status = .showSelectButtonPopup
                 popupData.button1Text = "고"
