@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 import SpriteKit
 import GameplayKit
+import GoogleMobileAds
 
 struct MainContentView: View {
     @StateObject private var gameData = GameData()
@@ -21,7 +22,7 @@ struct MainContentView: View {
     @State var popupType: String? = nil
     @State var popupStatus: PopupStatus = .closePopup
     @State var scene: GameScene? // 다시 그리기 방지
-    @State var showSpriteView = false
+    @State var isPresentedGameScene = false
     @State var isStarted = false
     @State var completionIndex = 0
     
@@ -31,7 +32,7 @@ struct MainContentView: View {
                 .ignoresSafeArea(.all)
             GeometryReader { geometry in
                 Group {
-                    if let scene, showSpriteView {
+                    if let scene, isPresentedGameScene {
                         SpriteView(scene: scene, debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics])
                             .frame(width: geometry.size.width, height: geometry.size.height)
                     }
@@ -46,7 +47,7 @@ struct MainContentView: View {
                             newScene.scaleMode = .aspectFit
                             scene = newScene
                         }
-                        showSpriteView = true
+                        isPresentedGameScene = true
                     }
                 }
             }
@@ -84,6 +85,7 @@ struct MainContentView: View {
             .ignoresSafeArea(.all)
             
             // Debug Test
+            /*
             HStack {
                 Spacer()
                 VStack(alignment: .center, spacing: 20, content: {
@@ -119,7 +121,7 @@ struct MainContentView: View {
                 .padding(.all, 10)
             }
             .ignoresSafeArea(.all)
-            //.hidden()
+            */
         }
         .onAppear {
             SoundManager.shared.playSound(type: .win)

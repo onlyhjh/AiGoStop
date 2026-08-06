@@ -147,7 +147,7 @@ extension GameScene {
                             self.movePlayerPayouts(players: players) {
                                 self.updatePlayersMoneyNodes(players: players)
                                 self.replacePlayerIfNeeded(isShowPopup: true) {
-                                    self.startGame()
+                                    AdManager.shared.showAd(completion: {self.startGame()})
                                 }
                             }
                         }

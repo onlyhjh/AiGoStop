@@ -13,6 +13,7 @@ struct SettingView: View {
     @State private var sliderValue: Double = UserDefaults.standard.gameSpeed ?? 0
     @State private var isOnBackgroundSound: Bool = UserDefaults.standard.backgroundSound
     @State private var isOnEffectSound: Bool = UserDefaults.standard.effectSound
+    @StateObject private var purchaseManager = PurchaseManager.shared
     
     var body: some View {
         ZStack {
@@ -64,6 +65,31 @@ struct SettingView: View {
                     Spacer()
                 }
                 .frame(width: 300)
+                
+                HStack(spacing: 10) {
+                    Text("광고 제거")
+                        .font(.system(size: 18,weight: .regular))
+                        .frame(width: 100)
+                    if purchaseManager.isAdRemoved {
+                        Text("구매해 주셔서 감사합니다. 🥹")
+                            .font(.system(size: 18,weight: .regular))
+                            .foregroundStyle(.blue)
+                    }
+                    else {
+                        Button("영구 구매") {
+                            Task {
+                                await PurchaseManager.shared.purchaseRemoveAds()
+                            }
+                        }
+                        Text ("|")
+                            .foregroundStyle(.gray)
+                        Button("구매 복원") {
+                            Task {
+                                await PurchaseManager.shared.restorePurchases()
+                            }
+                        }
+                    }
+                }
                 
                 HStack(spacing: 20){
                     Button("확인") {

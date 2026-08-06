@@ -149,7 +149,7 @@ extension GameScene {
             self.movePlayerPayouts(players: players) {
                 self.updatePlayersMoneyNodes(players: players)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
-                    self.startGame()
+                    AdManager.shared.showAd(completion: {self.startGame()})
                 }
             }
         })
@@ -217,7 +217,7 @@ extension GameScene {
             PopupManager.shared.showPopup(popupData: self.popupData, type: .nagari, cards: [], players: []) { _ in
                 self.saveGameData(winnerIndex: nil, players: [], isNagari: true)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
-                    self.startGame()
+                    AdManager.shared.showAd(completion: {self.startGame()})
                 }
             }
         }
@@ -294,7 +294,7 @@ extension GameScene {
                         self.movePlayerPayouts(players: players) {
                             self.updatePlayersMoneyNodes(players: players)
                             self.replacePlayerIfNeeded(isShowPopup: true) {
-                                self.startGame()
+                                AdManager.shared.showAd(completion: {self.startGame()})
                             }
                         }
                     })
@@ -309,7 +309,7 @@ extension GameScene {
                 SoundManager.shared.playSoundIfPossible(type: .nagari)
                 PopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
                     self.replacePlayerIfNeeded(isShowPopup: true) {
-                        self.startGame()
+                        AdManager.shared.showAd(completion: {self.startGame()})
                     }
                 })
             }

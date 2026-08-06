@@ -11,7 +11,6 @@ import Combine
 
 
 class GameScene: SKScene, ObservableObject {
-    
     @Binding var isPresentedCharacterSettingPopup: Bool
     var gameData: GameData
     var popupData: PopupData
