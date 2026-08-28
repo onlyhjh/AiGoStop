@@ -13,7 +13,7 @@ import Combine
 class GameScene: SKScene, ObservableObject {
     @Binding var isPresentedCharacterSettingPopup: Bool
     var gameData: GameData
-    var popupData: PopupData
+    var popupData: GamePopupData
     var isUserTouchCardEnabled = false
     
     let aiManager = AIEngineManager()
@@ -25,7 +25,7 @@ class GameScene: SKScene, ObservableObject {
     var cardGap: CGFloat = 0
     var cardLayeredGap: CGFloat = 0
     
-    init(size: CGSize, gameData: GameData, popupData: PopupData, isPresentedCharacterSettingPopup: Binding<Bool>) {
+    init(size: CGSize, gameData: GameData, popupData: GamePopupData, isPresentedCharacterSettingPopup: Binding<Bool>) {
         _isPresentedCharacterSettingPopup = isPresentedCharacterSettingPopup
         self.gameData = gameData
         self.popupData = popupData

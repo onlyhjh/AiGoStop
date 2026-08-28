@@ -13,7 +13,7 @@ class CapsuledLabelNode: SKLabelNode {
     static let prefixPlayerName = "playerNameLabelNode_"
     static let prefixPlayerScore = "playerScoreLabelNode_"
     static let prefixPlayerWinningCount = "playerWinningCount_"
-    static let prefixPlayerMoney = "playerMoney_"
+    static let prefixPlayerCoin = "playerCoin_"
     static let prefixPlayerCapturedGroup = "playerCapturedGroupNode_"
     
     init(playerIndex: Int, playerName: String) {
@@ -54,12 +54,12 @@ class CapsuledLabelNode: SKLabelNode {
         self.addChild(shapeNode)
     }
     
-    init(playerIndex: Int, money: Int) {
+    init(playerIndex: Int, coin: Int) {
         super.init()
         self.fontName = "Helvetica"
         self.fontSize = 20
-        self.text = "\(money)만냥"
-        self.name = CapsuledLabelNode.prefixPlayerMoney + "\(playerIndex)"
+        self.text = "\(coin)만냥"
+        self.name = CapsuledLabelNode.prefixPlayerCoin + "\(playerIndex)"
         self.fontColor = UIColor.white
         self.position = CGPoint(x: 0, y: 0)
         self.zPosition = 100
@@ -67,7 +67,7 @@ class CapsuledLabelNode: SKLabelNode {
         let size = CGSize(width: self.frame.width + 15, height: self.frame.height + 6)
         let rect = CGRect(x: size.width / -2, y: self.frame.height / -2 + 5, width: size.width, height: size.height)
         let shapeNode = SKShapeNode(rect: rect, cornerRadius: size.height / 2)
-        shapeNode.fillColor = money > 0 ? .blue : .red
+        shapeNode.fillColor = coin > 0 ? .blue : .red
         shapeNode.zPosition = -1
         shapeNode.strokeColor = .black
         self.addChild(shapeNode)

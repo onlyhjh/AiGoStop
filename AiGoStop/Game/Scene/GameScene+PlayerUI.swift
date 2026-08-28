@@ -22,12 +22,12 @@ extension GameScene {
         let playerIconNodeSize = CGSize(width: self.playerIconDiameter * (isBlink ? 1.5 : 1),  height: self.playerIconDiameter * (isBlink ? 1.5 : 1))
         let playerIconNode = PlayerIconNode(player: player, size: playerIconNodeSize, isBlink: isBlink)
         let playerNameNode = CapsuledLabelNode(playerIndex: player.index, playerName: player.name)
-        let playerMoneyNode = CapsuledLabelNode(playerIndex: player.index, money: player.money)
+        let playerCoinNode = CapsuledLabelNode(playerIndex: player.index, coin: player.coin)
         // remove old node
         if let oldOne = self.childNode(withName: PlayerIconNode.prefixName + "\(player.index)") { oldOne.removeFromParent() }
         if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerName + "\(player.index)") { oldOne.removeFromParent() }
         if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerWinningCount + "\(player.index)") { oldOne.removeFromParent() }
-        if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerMoney + "\(player.index)") { oldOne.removeFromParent() }
+        if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerCoin + "\(player.index)") { oldOne.removeFromParent() }
         
         switch player.index {
         case 1:
@@ -55,8 +55,8 @@ extension GameScene {
             playerNameNode.position.y = startPosition.y - self.normalCardSize.height / 2
         }
         
-        playerMoneyNode.position.y = playerNameNode.position.y
-        playerMoneyNode.position.x = playerNameNode.position.x + playerNameNode.frame.width / 2 + playerMoneyNode.frame.width / 2 + 20
+        playerCoinNode.position.y = playerNameNode.position.y
+        playerCoinNode.position.x = playerNameNode.position.x + playerNameNode.frame.width / 2 + playerCoinNode.frame.width / 2 + 20
         
         if let winnerHistory = UserDefaults.standard.winnerHistory, winnerHistory.last == player.index {
             let winningCount = winnerHistory.reversed().prefix(while: { $0 == player.index }).count
@@ -65,21 +65,21 @@ extension GameScene {
             playerWinningCountNode.position.x = playerNameNode.position.x + playerNameNode.frame.width / 2 + playerWinningCountNode.frame.width / 2 + 20
             self.addChild(playerWinningCountNode)
             // moeny 위치 변경
-            playerMoneyNode.position.x = playerWinningCountNode.position.x + playerWinningCountNode.frame.width / 2 + playerMoneyNode.frame.width / 2 + 20
+            playerCoinNode.position.x = playerWinningCountNode.position.x + playerWinningCountNode.frame.width / 2 + playerCoinNode.frame.width / 2 + 20
         }
         
         self.addChild(playerIconNode)
         self.addChild(playerNameNode)
-        self.addChild(playerMoneyNode)
+        self.addChild(playerCoinNode)
     }
     
-    func updatePlayersMoneyNodes(players: [Player]) {
+    func updatePlayersCoinNodes(players: [Player]) {
         for player in players {
-            if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerMoney + "\(player.index)") {
-                let playerMoneyNode = CapsuledLabelNode(playerIndex: player.index, money: player.money)
-                playerMoneyNode.position = oldOne.position
+            if let oldOne = self.childNode(withName: CapsuledLabelNode.prefixPlayerCoin + "\(player.index)") {
+                let playerCoinNode = CapsuledLabelNode(playerIndex: player.index, coin: player.coin)
+                playerCoinNode.position = oldOne.position
                 oldOne.removeFromParent()
-                self.addChild(playerMoneyNode)
+                self.addChild(playerCoinNode)
             }
         }
     }

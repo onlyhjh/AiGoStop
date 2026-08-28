@@ -26,7 +26,7 @@ extension GameScene {
         guard let loser2Node = self.childNode(withName: PlayerIconNode.prefixName + "\(players[2].index)") else { return }
         
         if players[1].finalScore != 0 {
-            let loser1PayoutNode = MoneyNode(position: loser1Node.position)
+            let loser1PayoutNode = CoinNode(position: loser1Node.position)
             self.addChild(loser1PayoutNode)
             loser1PayoutNode.moveToWinner(movePosition: winnerIconNode.position, duration: self.gameData.cardDuration){
                 if !didActCompletion {
@@ -36,7 +36,7 @@ extension GameScene {
             }
         }
         if players[2].finalScore != 0 {
-            let loser2PayoutNode = MoneyNode(position: loser2Node.position)
+            let loser2PayoutNode = CoinNode(position: loser2Node.position)
             self.addChild(loser2PayoutNode)
             loser2PayoutNode.moveToWinner(movePosition: winnerIconNode.position, duration: self.gameData.cardDuration) {
                 if !didActCompletion {
@@ -192,7 +192,7 @@ extension GameScene {
         if let gukjinCard {
             // user
             if self.gameData.currentPlayerIndex == 0 {
-                PopupManager.shared.showPopup(popupData: self.popupData, type: .selectGukjin, cards: [gukjinCard], players: [self.gameData.players[playerIndex]]) { select in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectGukjin, cards: [gukjinCard], players: [self.gameData.players[playerIndex]]) { select in
                     self.afterSelectGukjin(isDoublePi: select == 0, playerIndex: playerIndex, card: gukjinCard, tableCardGroupIndex: tableCardGroupIndex, completion: completion)
                 }
             }
@@ -229,7 +229,7 @@ extension GameScene {
         if let gukjinCard {
             // user
             if playerIndex == 0 {
-                PopupManager.shared.showPopup(popupData: self.popupData, type: .selectGukjin, cards: [gukjinCard], players: [self.gameData.players[playerIndex]]) { select in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectGukjin, cards: [gukjinCard], players: [self.gameData.players[playerIndex]]) { select in
                     //  쌍피 선택
                     if select == 0 {
                         self.moveCardToPlayerCaptured(playerIndex: playerIndex, card: gukjinCard, forcedType: .pi)
@@ -408,7 +408,7 @@ extension GameScene {
         guard let deckCard = self.gameData.deckCards.last else { return }
         if deckCard.month == 0 {
             SoundManager.shared.playSoundIfPossible(type: .deckBonus)
-            PopupManager.shared.showPopup(popupData: self.popupData, type: .deckBonus, cards: [deckCard], players: [self.gameData.players[playerIndex]]) { _ in
+            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .deckBonus, cards: [deckCard], players: [self.gameData.players[playerIndex]]) { _ in
                 Task {
                     // table에서 제거하고 winner에게 지급
                     self.gameData.deckCards.removeLast()

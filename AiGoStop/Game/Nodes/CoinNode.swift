@@ -1,15 +1,15 @@
 //
-//  MoneyNode.swift
+//  CoinNode.swift
 //  AiGoStop
 //
 //  Created by Joey's Mac mini on 6/24/26.
 //
 import SpriteKit
 
-class MoneyNode: SKSpriteNode {
+class CoinNode: SKSpriteNode {
     
     init(position: CGPoint) {
-        let texture = SKTexture(image: .money)
+        let texture = SKTexture(image: .coin)
         super.init(texture: texture, color: .clear, size: CGSize(width: 100, height: 100))
         
         self.position = position

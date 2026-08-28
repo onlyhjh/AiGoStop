@@ -18,7 +18,7 @@ extension GameScene {
             // 선택카드가 bonus 카드인경우
             if handCard.month == 0 {
                 SoundManager.shared.playSoundIfPossible(type: .handBonus)
-                PopupManager.shared.showPopup(popupData: self.popupData, type: .handBonus, cards: [handCard], players: [player], completion: {_ in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .handBonus, cards: [handCard], players: [player], completion: {_ in
                     Task {
                         await self.moveBonusPlayerHandBonusCardToPlayerCaptured(playerIndex: player.index, handCard: handCard)
                         self.sortPlayerHandCards(playerIndex: player.index)
@@ -57,7 +57,7 @@ extension GameScene {
                 if sameMonthPlayerHandCards.count == 3 {
                     // user
                     if self.gameData.currentPlayerIndex == 0 {
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .selectWave, cards: sameMonthPlayerHandCards, players: [player]) { select in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectWave, cards: sameMonthPlayerHandCards, players: [player]) { select in
                             self.afterWave(isWave: select == 0, player: player, handCard: handCard, sameMonthPlayerHandCards: sameMonthPlayerHandCards, nextDeckCardExceptBonus: nextDeckCardExceptBonus)
                         }
                     }
@@ -76,7 +76,7 @@ extension GameScene {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: sameMonthPlayerHandCards, tableCards: matchingTableCards)
                     self.gameData.players[player.index].waveCount += 1
                     SoundManager.shared.playSoundIfPossible(type: .bomb)
-                    PopupManager.shared.showPopup(popupData: self.popupData, type: .bomb, cards: sameMonthPlayerHandCards, players: [player], completion: {_ in
+                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: .bomb, cards: sameMonthPlayerHandCards, players: [player], completion: {_ in
                         Task{
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: sameMonthPlayerHandCards, tableCards: matchingTableCards) {
                                 Task{
@@ -114,9 +114,9 @@ extension GameScene {
                         players[2].finalScore = -5
                         self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .firstFuck, cards: fuckCards, players: [player]) {_ in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .firstFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
-                                self.updatePlayersMoneyNodes(players: players)
+                                self.updatePlayersCoinNodes(players: players)
                                 self.checkScoreAndDoNextPlay()
                             }
                         }
@@ -128,9 +128,9 @@ extension GameScene {
                         players[2].finalScore = -10
                         self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .secondFuck, cards: fuckCards, players: [player]) {_ in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .secondFuck, cards: fuckCards, players: [player]) {_ in
                             self.movePlayerPayouts(players: players) {
-                                self.updatePlayersMoneyNodes(players: players)
+                                self.updatePlayersCoinNodes(players: players)
                                 self.checkScoreAndDoNextPlay()
                             }
                         }
@@ -143,9 +143,9 @@ extension GameScene {
                         self.saveGameData(winnerIndex: player.index, players: players, isNagari: false)
                         
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .thirdFuckWin, cards: fuckCards, players: players) {_ in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .thirdFuckWin, cards: fuckCards, players: players) {_ in
                             self.movePlayerPayouts(players: players) {
-                                self.updatePlayersMoneyNodes(players: players)
+                                self.updatePlayersCoinNodes(players: players)
                                 self.replacePlayerIfNeeded(isShowPopup: true) {
                                     AdManager.shared.showAd(completion: {self.startGame()})
                                 }
@@ -155,7 +155,7 @@ extension GameScene {
                     }
                     else {
                         SoundManager.shared.playSoundIfPossible(type: .fuck)
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .fuck, cards: fuckCards, players: players, completion: {_ in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .fuck, cards: fuckCards, players: players, completion: {_ in
                             self.checkScoreAndDoNextPlay()
                         })
                     }
@@ -180,7 +180,7 @@ extension GameScene {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
                     let isFirstCardTadak = player.handCards.count > 5
                     SoundManager.shared.playSoundIfPossible(type: .tadak)
-                    PopupManager.shared.showPopup(popupData: self.popupData, type: isFirstCardTadak  ? .firstTadak : .tadak, cards: [handCard, nextDeckCardExceptBonus] + matchingTableCards, players: [player]) { _ in
+                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: isFirstCardTadak  ? .firstTadak : .tadak, cards: [handCard, nextDeckCardExceptBonus] + matchingTableCards, players: [player]) { _ in
                         Task {
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard], tableCards: [matchingTableCards[0]]) {
                                 Task {
@@ -197,7 +197,7 @@ extension GameScene {
                                                     players[2].finalScore = -5
                                                     self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
                                                     self.movePlayerPayouts(players: players) {
-                                                        self.updatePlayersMoneyNodes(players: players)
+                                                        self.updatePlayersCoinNodes(players: players)
                                                     }
                                                 }
                                             })
@@ -226,7 +226,7 @@ extension GameScene {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
                     // user
                     if self.gameData.currentPlayerIndex == 0 {
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .selectCard, cards: [handCard] + matchingTableCards, players: [player]) { select in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectCard, cards: [handCard] + matchingTableCards, players: [player]) { select in
                             self.afterSelectCard(player: player, deckOrHandCard: handCard, tableCard: self.popupData.cards[1])
                         }
                     }
@@ -245,7 +245,7 @@ extension GameScene {
                 let isPlayerFuckCard = player.fuckCardMonths.first(where: { $0 == handCard.month }) != nil
                 await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
                 SoundManager.shared.playSoundIfPossible(type: .threeTableCards)
-                PopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [handCard] + matchingTableCards, players: [player], completion: { _ in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [handCard] + matchingTableCards, players: [player], completion: { _ in
                     Task {
                         await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard], tableCards: matchingTableCards) {
                             Task {
@@ -293,13 +293,13 @@ extension GameScene {
                 // 쪽인경우
                 if let kissHandCard {
                     SoundManager.shared.playSoundIfPossible(type: .kiss)
-                    PopupManager.shared.showPopup(popupData: popupData, type: .kiss, cards: [kissHandCard, deckCard], players: [player]) { select in
+                    GamePopupManager.shared.showPopup(popupData: popupData, type: .kiss, cards: [kissHandCard, deckCard], players: [player]) { select in
                         Task {
                             await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [deckCard], tableCards: matchingTableCards){
                                 // 쓸인경우
                                 if !player.handCards.isEmpty && self.isEmptyTable() {
                                     SoundManager.shared.playSoundIfPossible(type: .ssl)
-                                    PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
+                                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                         Task {
                                             await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 2) {
                                                 self.checkScoreAndDoNextPlay()
@@ -324,7 +324,7 @@ extension GameScene {
                         // 쓸인경우
                         if !player.handCards.isEmpty && self.isEmptyTable() {
                             SoundManager.shared.playSoundIfPossible(type: .ssl)
-                            PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
+                            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                 Task {
                                     await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 1) {
                                         self.checkScoreAndDoNextPlay()
@@ -350,7 +350,7 @@ extension GameScene {
                 else {
                     await self.moveDeckCardToMatchingTableCards(deckCard: deckCard, tableCards: matchingTableCards)
                     if self.gameData.currentPlayerIndex == 0 {
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .selectCard, cards: [deckCard] + matchingTableCards, players: [player], completion: { select in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectCard, cards: [deckCard] + matchingTableCards, players: [player], completion: { select in
                             Task {
                                 await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [deckCard], tableCards: [self.popupData.cards[1]]){
                                     self.checkScoreAndDoNextPlay()
@@ -371,13 +371,13 @@ extension GameScene {
                 let isPlayerFuckCard = player.fuckCardMonths.first(where: { $0 == deckCard.month }) != nil
                 await self.moveDeckCardToMatchingTableCards(deckCard: deckCard, tableCards: matchingTableCards)
                 SoundManager.shared.playSoundIfPossible(type: .threeTableCards)
-                PopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [deckCard] + matchingTableCards, players: [player], completion: { _ in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: isPlayerFuckCard ? .threeTableCardsWithPlayerFuck : .threeTableCards, cards: [deckCard] + matchingTableCards, players: [player], completion: { _ in
                     Task {
                         await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [deckCard], tableCards: matchingTableCards) {
                             // 쓸인경우
                             if !player.handCards.isEmpty && self.isEmptyTable() {
                                 SoundManager.shared.playSoundIfPossible(type: .ssl)
-                                PopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
+                                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [player]) { select in
                                     Task {
                                         await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: isPlayerFuckCard ? 3 : 2) {
                                             self.checkScoreAndDoNextPlay()
@@ -402,7 +402,7 @@ extension GameScene {
     func afterSelectGoOrStop(isGo: Bool, player: Player) {
         if isGo {
             SoundManager.shared.playSoundIfPossible(type: .go)
-            PopupManager.shared.showPopup(popupData: self.popupData, type: .go, cards: [], players: [player], message: "\(player.goCount + 1) 고!") { _ in
+            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .go, cards: [], players: [player], message: "\(player.goCount + 1) 고!") { _ in
                 self.gameData.currentPlayerIndex = (self.gameData.currentPlayerIndex + 1) % 3
                 self.doPlay()
             }
@@ -412,7 +412,7 @@ extension GameScene {
         }
         else {
             SoundManager.shared.playSoundIfPossible(type: .stop)
-            PopupManager.shared.showPopup(popupData: self.popupData, type: .stop, cards: [], players: [player]) { _ in
+            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .stop, cards: [], players: [player]) { _ in
                 self.stopPlayerGame(winnderIndex: player.index)
             }
         }
@@ -424,7 +424,7 @@ extension GameScene {
             self.gameData.players[player.index].waveCount += 1
             SoundManager.shared.playSoundIfPossible(type: .wave)
             //  흔들기 확인 팝업 다시 보이기
-            PopupManager.shared.showPopup(popupData: self.popupData, type: .wave, cards: sameMonthPlayerHandCards, players: [player]) { select in
+            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .wave, cards: sameMonthPlayerHandCards, players: [player]) { select in
                 Task{
                     await self.playWithNoMatchingCard(playerIndex: player.index, handCard: handCard, nextDeckCardExceptBonus: nextDeckCardExceptBonus)
                 }

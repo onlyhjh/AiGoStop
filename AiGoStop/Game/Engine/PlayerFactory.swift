@@ -8,7 +8,8 @@
 import Foundation
 
 class PlayerFactory {
-    func loadPlayer(playerIndex: Int) -> Player? {
+    
+    func loadLocalPlayerData(playerIndex: Int) -> Player? {
         var playerData: Data?
         switch playerIndex {
         case 1: playerData = UserDefaults.standard.player1

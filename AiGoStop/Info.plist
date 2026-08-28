@@ -2,14 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Localization native development region</key>
-	<string>Korea</string>
-	<key>GADIsAdManagerApp</key>
-	<true/>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>맞춤광고를 위한 타사 광고 추적목적으로 사용됨.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-9821824469972292~5891675793</string>
+	<key>GADIsAdManagerApp</key>
+	<true/>
+	<key>Localization native development region</key>
+	<string>Korea</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -212,6 +210,10 @@
 			<key>SKAdNetworkIdentifier</key>
 			<string>3qcr597p9d.skadnetwork</string>
 		</dict>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
 	</array>
 </dict>
 </plist>

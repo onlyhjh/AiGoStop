@@ -1,5 +1,5 @@
 //
-//  PopupManager.swift
+//  GamePopupManager.swift
 //  AiGoStop
 //
 //  Created by Joey's Mac mini on 5/29/26.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PopupType {
+enum EventType {
     case chongtongWin       // 총통 승리
     case winner             // 승리
     case bustedPlayer       // 오링(돈없음)
@@ -35,131 +35,131 @@ enum PopupType {
     case secondFuck         // 두번째 뻑 (첫뻑후)
     case thirdFuckWin       // 세번 뻑승
 }
-class PopupManager {
-    static var shared = PopupManager()
+class GamePopupManager {
+    static var shared = GamePopupManager()
     
-    func showPopup(popupData: PopupData, type: PopupType, cards: [Card], players: [Player], message: String? = nil, completion: @escaping (Int) -> Void) {
+    func showPopup(popupData: GamePopupData, type: EventType, cards: [Card], players: [Player], message: String? = nil, completion: @escaping (Int) -> Void) {
         
         popupData.cards = cards
         popupData.players = players
         popupData.completion = completion
-        popupData.status = .closePopup // 이미 팝업이 떠 있는 경우 닫아야함
+        popupData.type = .none // 이미 팝업이 떠 있는 경우 닫아야함
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
-            print("\(#function) Popup type: \(type)")
+            print("\(#function) event type: \(type)")
             switch type {
             case .chongtongWin:
                 popupData.title = "총통 승!!!"
                 popupData.message = "10만냥씩 주세요~ 🥳"
-                popupData.status = .showSpecialWinnerPopup
+                popupData.type = .specialWinner
             case .winner:
                 popupData.title = "Winner!!!"
                 popupData.message = message ?? "알아서 빨리 주세요~ 🥳"
-                popupData.status = .showWinnerPopup
+                popupData.type = .winner
             case .bustedPlayer:
                 popupData.title = "빈털털이!!!"
                 popupData.message = message ?? "다음에 두고 보자고요~ 🤬"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .newPlayerJoins:
                 popupData.title = "내가 들어갈께요!!"
                 popupData.message = message ?? "같이 재밌게 놀아 보자구요~ 😘"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .nagari:
                 popupData.title = "나가리!!!"
                 popupData.message = message ?? "다음판은 두배에요~ 🥶"
                 popupData.button1Text = "확인"
-                popupData.status = .showMessagePopup
+                popupData.type = .message
             case .fourTableCards:
                 popupData.title = "무효!!!"
                 popupData.message = message ?? "이럴수가! 바닥패 4장이 모두 같다니요~ 🥶"
                 popupData.button1Text = "확인"
-                popupData.status = .showMessagePopup
+                popupData.type = .message
             case .thirdFuckWin:
                 popupData.title = "한게임에 3번 뻑!!!"
                 popupData.message = "웃프게 이겼네요.. 3만냥 주세요~ 😂"
-                popupData.status = .showSpecialWinnerPopup
+                popupData.type = .specialWinner
             case .selectCard:
                 popupData.title = "카드 선택!!!"
                 popupData.message = "이 카드로 가져올 카드를 선택하세요~ 🥸"
-                popupData.status = .showSelectCardPopup
+                popupData.type = .selectCard
             case .kiss:
                 popupData.title = "아싸 쪽!!!"
                 popupData.message = "피 한장씩 주세요~ 😘"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .ssl:
                 popupData.title = "아싸 쓸!!!"
                 popupData.message = "피 한장씩 더 주세요~ 😘"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .bomb:
                 popupData.title = "폭탄!!!"
                 popupData.message = "피 한장씩 주세요~ 🫣"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .selectWave:
                 popupData.title = "흔들기!!!"
                 popupData.message = "흔들까요? 😵‍💫"
-                popupData.status = .showSelectButtonPopup
+                popupData.type = .selectButton
                 popupData.button1Text = "흔들기"
                 popupData.button2Text = "그냥치기"
             case .selectGoOrStop:
                 popupData.title = "고/스톱"
                 popupData.message = "고할까 아님 안전하게 스톱할까요??? 😵‍💫"
-                popupData.status = .showSelectButtonPopup
+                popupData.type = .selectButton
                 popupData.button1Text = "고"
                 popupData.button2Text = "스톱"
             case .selectGukjin:
                 popupData.title = "국진 쌍피 선택!!!"
                 popupData.message = "쌍피로 쓸까요? 🥸"
-                popupData.status = .showSelectButtonPopup
+                popupData.type = .selectButton
                 popupData.button1Text = "쌍피로"
                 popupData.button2Text = "열끗으로"
             case .wave:
                 popupData.title = "흔들었으!!!"
                 popupData.message = "어질어질 하시죠? 😵‍💫"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .fuck:
                 popupData.title = "뻑!!!"
                 popupData.message = "오메 이런일이... 🤯"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .deckBonus:
                 popupData.title = "아싸 보너스!!!"
                 popupData.message = "쌍피 추가요~ 🤭"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .handBonus:
                 popupData.title = "숨겨둔 보너스!!!"
                 popupData.message = "오늘 운이 좋네요~ 🤭"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .firstFuck:
                 popupData.title = "오메 첫뻑!!!"
                 popupData.message = "웃프다~ 일단 5만냥씩 주세요~ 😂"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .secondFuck:
                 popupData.title = "오메메 2연속 뻑!!!"
                 popupData.message = "대단하죠~ 일단 따블로 10만냥씩 주세요~ 😂"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .tadak:
                 popupData.title = "아싸 따닥!!!"
                 popupData.message = "피 한장씩 주세요~ 🤩"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .firstTadak:
                 popupData.title = "아싸 첫 따닥!!!"
                 popupData.message = "피 한장씩 그리고 5만냥도 주세요~ 🤩"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .threeTableCards:
                 popupData.title = "아싸 쌩큐!!!"
                 popupData.message = "피 한장씩 주세요~ 🥳"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .threeTableCardsWithPlayerFuck:
                 popupData.title = "아싸 자뻑이었던거 알죠!!!"
                 popupData.message = "피 두장씩 주세요~ 🥳"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .go:
                 popupData.title = message
                 popupData.message = "못먹어도 고~ 🥶"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             case .stop:
                 popupData.title = "안전하게 스톱!!!"
                 popupData.message = "돈 준비들 하셔요~ 🥹"
-                popupData.status = .showAutoCloseMessagePopup
+                popupData.type = .autoCloseMessage
             }
         }
     }

@@ -12,38 +12,46 @@ import GameplayKit
 import GoogleMobileAds
 
 struct MainContentView: View {
-    @StateObject private var gameData = GameData()
-    @StateObject private var popupData = PopupData()
+    
+    @StateObject var gameData = GameData()
+    @StateObject var gamePopupData = GamePopupData()
+    
+    @State var appData: AppInfo?
+    @State var isPresentedAppPopup = false
+    @State var appPopupType: AppPopupType = .none
+    
+    @State var isPresentedGamePopup = false
+    @State var gamePopupType: GamePopupType = .none
+    
     @State var isPresentedAlert: Bool = false
-    @State var isPresentedPopup = false
+    @State var alertMessage: String? = nil
+    
     @State var isPresentedCharacterSettingPopup = false
     @State var isPresentedSettingPopup = false
-    @State var alertMessage: String? = nil
-    @State var popupType: String? = nil
-    @State var popupStatus: PopupStatus = .closePopup
+    
     @State var scene: GameScene? // 다시 그리기 방지
     @State var isPresentedGameScene = false
-    @State var isStarted = false
+    @State var isStartedGame = false
+    @State var isLoadedData = false
     @State var completionIndex = 0
     
     var body: some View {
         ZStack {
-            Color.tableBG
-                .ignoresSafeArea(.all)
+            Image(.splash)
+                .resizable()
+                .ignoresSafeArea()
+            
             GeometryReader { geometry in
                 Group {
                     if let scene, isPresentedGameScene {
                         SpriteView(scene: scene, debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics])
                             .frame(width: geometry.size.width, height: geometry.size.height)
                     }
-                    else {
-                        Color.pink
-                    }
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         if scene == nil {
-                            let newScene = GameScene(size: geometry.size, gameData: self.gameData, popupData: self.popupData, isPresentedCharacterSettingPopup: $isPresentedCharacterSettingPopup)
+                            let newScene = GameScene(size: geometry.size, gameData: self.gameData, popupData: self.gamePopupData, isPresentedCharacterSettingPopup: $isPresentedCharacterSettingPopup)
                             newScene.scaleMode = .aspectFit
                             scene = newScene
                         }
@@ -53,15 +61,11 @@ struct MainContentView: View {
             }
             .edgesIgnoringSafeArea(.vertical)
             
-            if !isStarted {
-                Image(.splash)
-                    .resizable()
-                    .ignoresSafeArea()
-                
+            if !isStartedGame && !isLoadedData {
                 Button("게임 시작!") {
                     SoundManager.shared.playSoundIfPossible(type: .click)
                     self.gameData.gameStatus = .start
-                    self.isStarted = true
+                    self.isStartedGame = true
                 }
                 .foregroundStyle(.white)
                 .padding()
@@ -129,16 +133,10 @@ struct MainContentView: View {
                 SoundManager.shared.playSoundIfPossible(type: .background)
             }
             
-            let playerFactory = PlayerFactory()
-            if let user = playerFactory.loadPlayer(playerIndex: 0) {
-                self.gameData.players[0] = user
-                print("??? user moeny: \(user.money)")
-                self.gameData.players[1] = playerFactory.loadPlayer(playerIndex: 1) ?? playerFactory.getRandomPlayer(playerIndex: 1, without: [user.characterIndex])
-                self.gameData.players[2] = playerFactory.loadPlayer(playerIndex: 2) ?? playerFactory.getRandomPlayer(playerIndex: 2, without: [user.characterIndex, self.gameData.players[1].characterIndex])
-            }
-            else {
-                self.gameData.players = playerFactory.getRandomPlayers()
-                self.isPresentedCharacterSettingPopup = true
+            Task {
+                // check app status
+                appData = await CloudKitManager.shared.loadCloudAppData()
+                self.showNextAppPopupIfNeedded(completion: { loadData() })
             }
         }
         .fullScreenCover(isPresented: $isPresentedCharacterSettingPopup, onDismiss: {
@@ -152,59 +150,59 @@ struct MainContentView: View {
         .fullScreenCover(isPresented: $isPresentedSettingPopup, onDismiss: {
             let gameSpeed = UserDefaults.standard.gameSpeed ?? 0.0
             self.gameData.setCardDuration(gameSpeed: gameSpeed)
-            self.popupData.setAutoCloseDuration(gameSpeed: gameSpeed)
+            self.gamePopupData.setAutoCloseDuration(gameSpeed: gameSpeed)
         }, content: {
             SettingView(isPresented: $isPresentedSettingPopup)
         })
-        .fullScreenCover(isPresented: $isPresentedPopup, onDismiss: {
-            self.popupData.status = .closePopup
-            self.popupData.completion(self.completionIndex)
+        .fullScreenCover(isPresented: $isPresentedGamePopup, onDismiss: {
+            self.gamePopupData.type = .none
+            self.gamePopupData.completion(self.completionIndex)
         }, content: {
-            switch self.popupData.status  {
-            case .showSelectCardPopup:
-                SelectCardsView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, cards: self.popupData.cards, buttonActions: [
+            switch self.gamePopupData.type  {
+            case .selectCard:
+                SelectCardsView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players, cards: self.gamePopupData.cards, buttonActions: [
                     {}, // 첫번째 카드는 이벤트 없음
                     {
-                        isPresentedPopup = false
-                        self.popupData.cards = [self.popupData.cards[0], self.popupData.cards[1]]
+                        isPresentedGamePopup = false
+                        self.gamePopupData.cards = [self.gamePopupData.cards[0], self.gamePopupData.cards[1]]
                         self.completionIndex = 0
                     }, {
-                        isPresentedPopup = false
-                        self.popupData.cards = [self.popupData.cards[0], self.popupData.cards[2]]
+                        isPresentedGamePopup = false
+                        self.gamePopupData.cards = [self.gamePopupData.cards[0], self.gamePopupData.cards[2]]
                         self.completionIndex = 1
                     }
                 ], closeAction: {
-                    isPresentedPopup = false
+                    isPresentedGamePopup = false
                 })
-            case .showSelectButtonPopup:
-                SelectButtonView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, cards: self.popupData.cards, button1Text: self.popupData.button1Text, button2Text: self.popupData.button2Text, button1Action: {
-                    isPresentedPopup = false
+            case .selectButton:
+                SelectButtonView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players, cards: self.gamePopupData.cards, button1Text: self.gamePopupData.button1Text, button2Text: self.gamePopupData.button2Text, button1Action: {
+                    isPresentedGamePopup = false
                     self.completionIndex = 0
                 }, button2Action : {
-                    isPresentedPopup = false
+                    isPresentedGamePopup = false
                     self.completionIndex = 1
                 })
-            case .showAutoCloseMessagePopup:
-                AutoCloseMessageView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players,cards: self.popupData.cards)
+            case .autoCloseMessage:
+                AutoCloseMessageView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players,cards: self.gamePopupData.cards)
                     .onAppear{
-                        DispatchQueue.main.asyncAfter(deadline: .now() + self.popupData.autoCloseDuration) {
-                            isPresentedPopup = false
+                        DispatchQueue.main.asyncAfter(deadline: .now() + self.gamePopupData.autoCloseDuration) {
+                            isPresentedGamePopup = false
                             self.completionIndex = 0
                         }
                     }
-            case .showMessagePopup:
-                MessageView(title: self.popupData.title, message: self.popupData.message, buttonText: self.popupData.button1Text, buttonAction: {
-                    isPresentedPopup = false
+            case .message:
+                MessageView(title: self.gamePopupData.title, message: self.gamePopupData.message, buttonText: self.gamePopupData.button1Text, buttonAction: {
+                    isPresentedGamePopup = false
                     self.completionIndex = 0
                 })
-            case .showWinnerPopup:
-                WinnerView(players: self.popupData.players, closeAction: {
-                    isPresentedPopup = false
+            case .winner:
+                WinnerView(players: self.gamePopupData.players, closeAction: {
+                    isPresentedGamePopup = false
                     self.completionIndex = 0
                 })
-            case .showSpecialWinnerPopup:
-                SpecialWinnerView(title: self.popupData.title, message: self.popupData.message, players: self.popupData.players, cards: self.popupData.cards, closeAction: {
-                    isPresentedPopup = false
+            case .specialWinner:
+                SpecialWinnerView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players, cards: self.gamePopupData.cards, closeAction: {
+                    isPresentedGamePopup = false
                     self.completionIndex = 0
                 })
             default:
@@ -217,21 +215,105 @@ struct MainContentView: View {
         .alert(self.alertMessage ?? "", isPresented: self.$isPresentedAlert) {
             Button("OK") { self.isPresentedAlert = false }
         }
-        .onChange(of: popupData.status) { newValue in
-            print("\(#function) change popupStatus: \(newValue)")
-            if self.popupStatus == newValue { return }
-            self.popupStatus = newValue
+        .fullScreenCover(isPresented: $isPresentedAppPopup, onDismiss: {
+            self.appPopupType = .none
+        }, content: {
+            switch self.appPopupType  {
+            case .maintanance:
+                MessageView(title: "안내", message: appData?.maintananceText ?? "앱이 공사중입니다.\n잠시만 기다려 주세요.", buttonText: "재시도", buttonAction: {
+                    self.isPresentedAppPopup = false
+                    Task{
+                        self.appData = await CloudKitManager.shared.loadCloudAppData()
+                        self.showNextAppPopupIfNeedded(completion: { loadData() })
+                    }
+                })
+            case .forcedUpdate:
+                let url = URL(string: appData?.appstoreUrl ?? "itms-apps://itunes.apple.com")
+                MessageView(title: "업데이트 안내", message: "앱이 업데이트되었습니다.\n신규 앱으로 업데이트 해 주세요.", buttonText: "스토어로 이동", buttonAction: {
+                    //self.isPresentedAppPopup = false
+                    if let url { UIApplication.shared.open(url) }
+                })
+            case .optionalUpdate:
+                let url = URL(string: appData?.appstoreUrl ?? "itms-apps://itunes.apple.com")
+                SelectButtonView(title: "업데이트 안내", message: "새로 업데이트 된 앱이 있습니다.\n신규 앱으로 플레이 해 볼래요?", players: [], cards: [], button1Text: "스토어로 이동", button2Text: "그냥 플레이", button1Action: {
+                    //self.isPresentedAppPopup = false
+                    if let url { UIApplication.shared.open(url) }
+                }, button2Action: {
+                    self.isPresentedAppPopup = false
+                    self.showNextAppPopupIfNeedded(currentAppPopupType: .optionalUpdate, completion: { loadData() })
+                })
+            case .noticeWebView:
+                if let noticeUrl = appData?.noticeUrl, let url = URL(string: noticeUrl) {
+                    InternalWebView(url: url, closeAction: {
+                        self.isPresentedAppPopup = false
+                        self.showNextAppPopupIfNeedded(currentAppPopupType: .noticeWebView, completion: { loadData() })
+                    })
+                }
+            default:
+                Color.pink
+            }
+        })
+        .onChange(of: appPopupType) { newValue in
+            print("\(#function) change App Popup Type: \(newValue)")
+            self.isPresentedAppPopup = newValue != .none
+        }
+        .onChange(of: gamePopupData.type) { newValue in
+            print("\(#function) change Game Popup Type: \(newValue)")
+            if gamePopupType == newValue { return }
+            self.gamePopupType = newValue
             
             switch newValue {
-            case .closePopup:
-                self.isPresentedPopup = false
-            case .showAlert:
-                self.alertMessage = self.popupData.message
+            case .none:
+                self.isPresentedGamePopup = false
+            case .alert:
+                self.alertMessage = self.gamePopupData.message
                 self.isPresentedAlert = true
             default:
-                self.isPresentedPopup = true
+                self.isPresentedGamePopup = true
             }
         }
+    }
+    
+    func showNextAppPopupIfNeedded(currentAppPopupType: AppPopupType? = nil, completion: () -> Void) {
+        let currentPopupStep = currentAppPopupType?.rawValue ?? 0
+        // 팝업 순서대로 보이도록함
+        if let appData {
+            if let _ = appData.maintananceText {
+                self.appPopupType = .maintanance
+            }
+            else if appData.isForcedUpdate {
+                self.appPopupType = .forcedUpdate
+            }
+            else if appData.isOptionalUpdate, currentPopupStep < AppPopupType.optionalUpdate.rawValue {
+                self.appPopupType = .optionalUpdate
+            }
+            else if let _ = appData.noticeUrl, currentPopupStep < AppPopupType.noticeWebView.rawValue {
+                self.appPopupType = .noticeWebView
+            }
+            else {
+                self.appPopupType = .none
+            }
+        }
+        else {
+            self.appPopupType = .none
+        }
+    }
+    
+    func loadData() {
+        // set player
+        let playerFactory = PlayerFactory()
+        if let user = playerFactory.loadLocalPlayerData(playerIndex: 0) {
+            self.gameData.players[0] = user
+            print("??? user moeny: \(user.coin)")
+            self.gameData.players[1] = playerFactory.loadLocalPlayerData(playerIndex: 1) ?? playerFactory.getRandomPlayer(playerIndex: 1, without: [user.characterIndex])
+            self.gameData.players[2] = playerFactory.loadLocalPlayerData(playerIndex: 2) ?? playerFactory.getRandomPlayer(playerIndex: 2, without: [user.characterIndex, self.gameData.players[1].characterIndex])
+        }
+        else {
+            self.gameData.players = playerFactory.getRandomPlayers()
+            self.isPresentedCharacterSettingPopup = true
+        }
+        
+        isLoadedData = true
     }
 }
 

@@ -9,13 +9,14 @@ import SwiftUI
 
 struct Player: Codable {
     static let imageNamePrefix = "player_"
-    static let defaultMoney = 10
+    static let defaultCoin = 10
 
     let index: Int
     var characterIndex: Int = 0
     var name: String = ""
     var imageName: String = ""
-    var money: Int = Player.defaultMoney
+    var coin: Int = Player.defaultCoin
+    var updatedAt: Date?
     
     // AI Statistics
     var totalGames: Int = 0

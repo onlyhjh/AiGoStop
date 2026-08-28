@@ -90,13 +90,13 @@ extension GameScene {
             startPosition.x = self.size.width / 2 + (cardWidth / 2)
             startPosition.y = self.normalCardSize.height * CardNodeScale.large.rawValue / 2 + self.cardGap
         }
-        else if let playerMoneyNode = self.childNode(withName: CapsuledLabelNode.prefixPlayerMoney + "\(playerIndex)") as? SKLabelNode {
+        else if let playerCoinNode = self.childNode(withName: CapsuledLabelNode.prefixPlayerCoin + "\(playerIndex)") as? SKLabelNode {
             cardWidth = self.normalCardSize.width * CardNodeScale.small.rawValue
-            startPosition.x = playerMoneyNode.position.x + (playerMoneyNode.bounds.size.width / 2) + cardWidth + 5
+            startPosition.x = playerCoinNode.position.x + (playerCoinNode.bounds.size.width / 2) + cardWidth + 5
             startPosition.y = self.size.height - (self.normalCardSize.height * CardNodeScale.small.rawValue / 2) - 7
         }
         else {
-            print("\(#function) empty childNode: \(CapsuledLabelNode.prefixPlayerMoney)\(playerIndex)")
+            print("\(#function) empty childNode: \(CapsuledLabelNode.prefixPlayerCoin)\(playerIndex)")
         }
         
         var position: CGPoint = .zero

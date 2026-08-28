@@ -8,6 +8,7 @@
 import Foundation
 
 enum UserDefaultKey: String, CaseIterable {
+    case pushToken
     case savedGameDeckCards
     case savedGameWinnerIndex
     case user
@@ -23,6 +24,11 @@ enum UserDefaultKey: String, CaseIterable {
 }
 
 extension UserDefaults {
+    var pushToken: String? {
+        get { value(forKey: UserDefaultKey.pushToken.rawValue) as? String }
+        set { setValue(newValue, forKey: UserDefaultKey.pushToken.rawValue)}
+    }
+    
     var savedGameDeckCards: Data? {
         get { data(forKey: UserDefaultKey.savedGameDeckCards.rawValue) }
         set { setValue(newValue, forKey: UserDefaultKey.savedGameDeckCards.rawValue)}

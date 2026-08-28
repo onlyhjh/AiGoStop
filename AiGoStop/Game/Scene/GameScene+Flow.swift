@@ -145,9 +145,9 @@ extension GameScene {
         self.saveGameData(winnerIndex: winnderIndex, players: players, isNagari: false)
         self.setPlayerNodes(player: players[0], isBlink: false)
         SoundManager.shared.playSoundIfPossible(type: .win)
-        PopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
+        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .winner, cards: [], players: players, completion: { _ in
             self.movePlayerPayouts(players: players) {
-                self.updatePlayersMoneyNodes(players: players)
+                self.updatePlayersCoinNodes(players: players)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
                     AdManager.shared.showAd(completion: {self.startGame()})
                 }
@@ -157,23 +157,23 @@ extension GameScene {
     
     func replacePlayerIfNeeded(isShowPopup: Bool, completion: @escaping () -> Void) {
         for i in 0 ... 2 {
-            if self.gameData.players[i].money <= 0 {
+            if self.gameData.players[i].coin <= 0 {
                 let oldPlayer = self.gameData.players[i]
                 let without = [self.gameData.players[0].characterIndex, self.gameData.players[1].characterIndex, self.gameData.players[2].characterIndex]
                 let newPlayer = PlayerFactory().getRandomPlayer(playerIndex: i, without: without)
                 self.gameData.players[i].characterIndex = newPlayer.characterIndex
                 self.gameData.players[i].name = newPlayer.name
                 self.gameData.players[i].imageName = newPlayer.imageName
-                self.gameData.players[i].money = Player.defaultMoney
+                self.gameData.players[i].coin = Player.defaultCoin
                 self.savePlayer(index: i)
                 
                 print("\(#function) isShowPopup:\(isShowPopup), old player:\(oldPlayer.name) >>> new player: \(newPlayer.name)")
                 
                 if isShowPopup {
                     SoundManager.shared.playSoundIfPossible(type: .bustedPlayer)
-                    PopupManager.shared.showPopup(popupData: self.popupData, type: .bustedPlayer, cards: [], players: [oldPlayer]) { _ in
+                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: .bustedPlayer, cards: [], players: [oldPlayer]) { _ in
                         SoundManager.shared.playSoundIfPossible(type: .newPlayerJoins)
-                        PopupManager.shared.showPopup(popupData: self.popupData, type: .newPlayerJoins, cards: [], players: [newPlayer]) { _ in
+                        GamePopupManager.shared.showPopup(popupData: self.popupData, type: .newPlayerJoins, cards: [], players: [newPlayer]) { _ in
                             self.replacePlayerIfNeeded(isShowPopup: isShowPopup, completion: completion)
                         }
                     }
@@ -198,7 +198,7 @@ extension GameScene {
             }
             // User
             else if player.index == 0 {
-                PopupManager.shared.showPopup(popupData: self.popupData, type: .selectGoOrStop, cards: [], players: [player]) { select in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .selectGoOrStop, cards: [], players: [player]) { select in
                     self.afterSelectGoOrStop(isGo: select == 0, player: player)
                 }
             }
@@ -214,7 +214,7 @@ extension GameScene {
         // 전체 사용자 막장이었으면 나가리>> 다음판 두배
         else if self.gameData.players[0].handCards.isEmpty && self.gameData.players[1].handCards.isEmpty && self.gameData.players[2].handCards.isEmpty {
             SoundManager.shared.playSoundIfPossible(type: .nagari)
-            PopupManager.shared.showPopup(popupData: self.popupData, type: .nagari, cards: [], players: []) { _ in
+            GamePopupManager.shared.showPopup(popupData: self.popupData, type: .nagari, cards: [], players: []) { _ in
                 self.saveGameData(winnerIndex: nil, players: [], isNagari: true)
                 self.replacePlayerIfNeeded(isShowPopup: true) {
                     AdManager.shared.showAd(completion: {self.startGame()})
@@ -253,9 +253,9 @@ extension GameScene {
         
         // 나가리인경우 플레이어 없음
         if players.count > 2 {
-            self.gameData.players[players[0].index].money += players[0].finalScore
-            self.gameData.players[players[1].index].money += players[1].finalScore
-            self.gameData.players[players[2].index].money += players[2].finalScore
+            self.gameData.players[players[0].index].coin += players[0].finalScore
+            self.gameData.players[players[1].index].coin += players[1].finalScore
+            self.gameData.players[players[2].index].coin += players[2].finalScore
             
             // 승률, 기대수익 저장
             self.gameData.players[players[0].index].updateStatisticsData(isWin: true, profit: players[0].finalScore)
@@ -290,9 +290,9 @@ extension GameScene {
                     self.gameData.winnerIndex = self.gameData.currentPlayerIndex
                     self.saveGameData(winnerIndex: player.index, players: players, isNagari: false)
                     SoundManager.shared.playSoundIfPossible(type: .win)
-                    PopupManager.shared.showPopup(popupData: self.popupData, type: .chongtongWin, cards: sameMonthCards, players: players, completion: { _ in
+                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: .chongtongWin, cards: sameMonthCards, players: players, completion: { _ in
                         self.movePlayerPayouts(players: players) {
-                            self.updatePlayersMoneyNodes(players: players)
+                            self.updatePlayersCoinNodes(players: players)
                             self.replacePlayerIfNeeded(isShowPopup: true) {
                                 AdManager.shared.showAd(completion: {self.startGame()})
                             }
@@ -307,7 +307,7 @@ extension GameScene {
             let count = groupCards.count{ $0.month != 0 }
             if count == 4 {
                 SoundManager.shared.playSoundIfPossible(type: .nagari)
-                PopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
                     self.replacePlayerIfNeeded(isShowPopup: true) {
                         AdManager.shared.showAd(completion: {self.startGame()})
                     }

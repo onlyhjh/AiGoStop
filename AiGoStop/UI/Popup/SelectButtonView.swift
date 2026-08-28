@@ -105,15 +105,16 @@ public struct SelectButtonView: View {
                             .cornerRadius(20)
                         }
                     }
-                    Image(players[0].imageName)
-                        .resizable()
-                        .frame(width: 70, height: 70)
-                        .cornerRadius(35)
-                        .overlay(
-                            Circle()
-                                .strokeBorder(.white, lineWidth: 2)
-                        )
-                    
+                    if players.count > 0 {
+                        Image(players[0].imageName)
+                            .resizable()
+                            .frame(width: 70, height: 70)
+                            .cornerRadius(35)
+                            .overlay(
+                                Circle()
+                                    .strokeBorder(.white, lineWidth: 2)
+                            )
+                    }
                 }
             }
         }

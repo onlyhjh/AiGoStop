@@ -70,10 +70,10 @@ class ScoreEngine {
         loser1.updateStatisticsData(isWin: false, profit: loser1.finalScore)
         loser2.updateStatisticsData(isWin: false, profit: loser2.finalScore)
         
-        // money 임시 저장 (save할때)
-        winner.money += winner.finalScore
-        loser1.money += loser1.finalScore
-        loser2.money += loser2.finalScore
+        // coin 임시 저장 (save할때)
+        winner.coin += winner.finalScore
+        loser1.coin += loser1.finalScore
+        loser2.coin += loser2.finalScore
         
         return [winner, loser1, loser2]
     }

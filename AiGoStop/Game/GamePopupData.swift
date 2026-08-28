@@ -8,21 +8,21 @@
 import SwiftUI
 import Combine
 
-enum PopupStatus {
-    case showSelectCardPopup
-    case showSelectButtonPopup
-    case showAutoCloseMessagePopup
-    case showMessagePopup
-    case showWinnerPopup
-    case showSpecialWinnerPopup
-    case showAlert
-    case closePopup
+enum GamePopupType {
+    case selectCard
+    case selectButton
+    case autoCloseMessage
+    case message
+    case winner
+    case specialWinner
+    case alert
+    case none
 }
 
-class PopupData: ObservableObject {
+class GamePopupData: ObservableObject {
     static let defaultAutoCloseDuration: Double = 1.5
     
-    @Published var status: PopupStatus = .closePopup
+    @Published var type: GamePopupType = .none
     var title: String? = nil
     var message: String? = nil
     var cards: [Card] = []
@@ -37,6 +37,6 @@ class PopupData: ObservableObject {
     }
     
     func setAutoCloseDuration(gameSpeed: Double) {
-        self.autoCloseDuration = PopupData.defaultAutoCloseDuration + gameSpeed * -1.0
+        self.autoCloseDuration = GamePopupData.defaultAutoCloseDuration + gameSpeed * -1.0
     }
 }

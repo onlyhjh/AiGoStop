@@ -9,10 +9,22 @@ import SwiftUI
 import SwiftData
 import GoogleMobileAds
 import AppTrackingTransparency
+import WebKit
+
+// 순서 대로!
+enum AppPopupType: Int {
+    case maintanance
+    case forcedUpdate
+    case optionalUpdate
+    case noticeWebView
+    case none
+}
 
 @main
 struct AiGoStopApp: App {
-
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     init() {
         MobileAds.shared.start()
         _ = AdManager.shared   // 여기서 초기 생성 및 광고 로딩 시작
@@ -24,10 +36,12 @@ struct AiGoStopApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainContentView()
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-                    ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
-                }
+            ZStack {
+                MainContentView()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                ATTrackingManager.requestTrackingAuthorization(completionHandler: { _ in })
+            }
         }
     }
 }
