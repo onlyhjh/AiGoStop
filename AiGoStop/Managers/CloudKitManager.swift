@@ -20,28 +20,30 @@ final class CloudKitManager {
 
     func saveUserData(_ user: Player) async {
         let uuid = DeviceIdentifier.shared.getUUID()
-        let predicate = NSPredicate(format:"uuid == %@",uuid)
-        let query = CKQuery(recordType:"UserData", predicate:predicate)
+        let recordID = CKRecord.ID(recordName: uuid)
 
         do {
-            let result = try await database.records( matching: query )
-            if let first = result.matchResults.first, let record = try? first.1.get() {
-                record["name"] = user.name
-                record["characterIndex"] = user.characterIndex
-                record["coin"] = user.coin
-                record["imageName"] = user.imageName
-                record["updatedAt"] = Date()
-                try await database.save(record)
+            let record: CKRecord
+
+            do {
+                // 기존 Record가 있는지 확인
+                record = try await database.record(for: recordID)
+            } catch let error as CKError where error.code == .unknownItem {
+                // 없으면 새 Record 생성
+                record = CKRecord(
+                    recordType: "UserData",
+                    recordID: recordID
+                )
             }
-            else {
-                let record = CKRecord(recordType:"UserData")
-                record["name"] = user.name
-                record["characterIndex"] = user.characterIndex
-                record["coin"] = user.coin
-                record["imageName"] = user.imageName
-                record["updatedAt"] = Date()
-                try await database.save(record)
-            }
+
+            record["name"] = user.name
+            record["characterIndex"] = user.characterIndex
+            record["coin"] = user.coin
+            record["imageName"] = user.imageName
+            record["updatedAt"] = Date()
+
+            try await database.save(record)
+            print("CloudKit save success:", uuid)
         } catch {
             print("CloudKit save error:", error)
         }
@@ -50,15 +52,14 @@ final class CloudKitManager {
 
     func loadCloudUserData() async -> Player? {
         let uuid = DeviceIdentifier.shared.getUUID()
-        let predicate = NSPredicate(format:"uuid == %@",uuid)
-        let query = CKQuery(recordType:"UserData", predicate:predicate)
+        let recordID = CKRecord.ID(recordName: uuid)
 
         do {
-            let result = try await database.records(matching: query)
-            guard let first = result.matchResults.first, let record = try? first.1.get() else {
-                return nil
-            }
+            let record: CKRecord
 
+            // 기존 Record가 있는지 확인
+            record = try await database.record(for: recordID)
+            
             var player = Player(index: 0)
             if let name = record["name"] as? String { player.name = name }
             if let coin = record["coin"] as? Int { player.coin = coin }
@@ -67,7 +68,7 @@ final class CloudKitManager {
             if let updatedAt = record["updatedAt"] as? Date { player.updatedAt = updatedAt }
             return player
         } catch {
-            print("CloudKit loadUserData error:", error)
+            print("CloudKit loadUserData error or first user:", error)
             return nil
         }
     }

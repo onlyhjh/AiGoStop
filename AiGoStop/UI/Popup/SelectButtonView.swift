@@ -17,10 +17,11 @@ public struct SelectButtonView: View {
     var cards: [Card]
     var button1Text: String
     var button2Text: String
+    var isShowHideButton = false
     var button1Action: (() -> Void)
     var button2Action: (() -> Void)
     
-    init(title: String?, message: String?, players: [Player], cards: [Card], button1Text: String, button2Text: String, button1Action: @escaping () -> Void, button2Action: @escaping () -> Void) {
+    init(title: String?, message: String?, players: [Player], cards: [Card], isShowHideButton: Bool = true, button1Text: String, button2Text: String, button1Action: @escaping () -> Void, button2Action: @escaping () -> Void) {
         self.title = title
         self.message = message
         self.players = players
@@ -29,30 +30,33 @@ public struct SelectButtonView: View {
         self.button2Text = button2Text
         self.button1Action = button1Action
         self.button2Action = button2Action
+        self.isShowHideButton = isShowHideButton
     }
     
     public var body: some View {
         ZStack {
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        SoundManager.shared.playSoundIfPossible(type: .click)
-                        isHidden.toggle()
-                    }, label: {
-                        VStack {
-                            Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
-                            Text(isHidden ? "열기" : "닫기")
-                                .font(.system(size: 18,weight: .regular))
-                        }
+            if !isShowHideButton {
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            SoundManager.shared.playSoundIfPossible(type: .click)
+                            isHidden.toggle()
+                        }, label: {
+                            VStack {
+                                Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
+                                Text(isHidden ? "열기" : "닫기")
+                                    .font(.system(size: 18,weight: .regular))
+                            }
+                            .padding(20)
+                            .foregroundStyle(.white)
+                            .background(.black)
+                            .clipShape(Circle())
+                        })
                         .padding(20)
-                        .foregroundStyle(.white)
-                        .background(.black)
-                        .clipShape(Circle())
-                    })
-                    .padding(20)
+                    }
+                    Spacer()
                 }
-                Spacer()
             }
             
             if !isHidden {

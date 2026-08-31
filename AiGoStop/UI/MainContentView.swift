@@ -30,10 +30,9 @@ struct MainContentView: View {
     @State var isPresentedSettingPopup = false
     
     @State var scene: GameScene? // 다시 그리기 방지
-    @State var isPresentedGameScene = false
     @State var isStartedGame = false
-    @State var isLoadedData = false
     @State var completionIndex = 0
+    @State var isFirstAppLaunch: Bool = true
     
     var body: some View {
         ZStack {
@@ -42,26 +41,25 @@ struct MainContentView: View {
                 .ignoresSafeArea()
             
             GeometryReader { geometry in
-                Group {
-                    if let scene, isPresentedGameScene {
+                ZStack {
+                    if let scene, isStartedGame {
+                        Color.tableBG?.ignoresSafeArea()
                         SpriteView(scene: scene, debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics])
                             .frame(width: geometry.size.width, height: geometry.size.height)
                     }
                 }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        if scene == nil {
-                            let newScene = GameScene(size: geometry.size, gameData: self.gameData, popupData: self.gamePopupData, isPresentedCharacterSettingPopup: $isPresentedCharacterSettingPopup)
-                            newScene.scaleMode = .aspectFit
-                            scene = newScene
-                        }
-                        isPresentedGameScene = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        print("??? geometry.size: \(geometry.size)")
+                        let newScene = GameScene(size: geometry.size, gameData: self.gameData, popupData: self.gamePopupData, isPresentedCharacterSettingPopup: $isPresentedCharacterSettingPopup)
+                        newScene.scaleMode = .aspectFit
+                        scene = newScene
                     }
                 }
             }
             .edgesIgnoringSafeArea(.vertical)
             
-            if !isStartedGame && !isLoadedData {
+            if !isStartedGame {
                 Button("게임 시작!") {
                     SoundManager.shared.playSoundIfPossible(type: .click)
                     self.gameData.gameStatus = .start
@@ -128,15 +126,17 @@ struct MainContentView: View {
             */
         }
         .onAppear {
-            SoundManager.shared.playSound(type: .win)
+            SoundManager.shared.playSoundIfPossible(type: .win)
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                 SoundManager.shared.playSoundIfPossible(type: .background)
             }
             
+            setPlayers()
+            
             Task {
                 // check app status
                 appData = await CloudKitManager.shared.loadCloudAppData()
-                self.showNextAppPopupIfNeedded(completion: { loadData() })
+                self.showNextAppPopupIfNeedded()
             }
         }
         .fullScreenCover(isPresented: $isPresentedCharacterSettingPopup, onDismiss: {
@@ -197,24 +197,36 @@ struct MainContentView: View {
                 })
             case .winner:
                 WinnerView(players: self.gamePopupData.players, closeAction: {
-                    isPresentedGamePopup = false
-                    self.completionIndex = 0
+                    isPresentedAppPopup = true
+                    self.appPopupType = .progress
+                    Task {
+                        await CloudKitManager.shared.saveUserData(self.gameData.players[0])
+                        appData = await CloudKitManager.shared.loadCloudAppData()
+                        isPresentedAppPopup = false
+                        self.appPopupType = .none
+                        isPresentedGamePopup = false
+                        self.completionIndex = 0
+                        self.showNextAppPopupIfNeedded()
+                    }
                 })
             case .specialWinner:
                 SpecialWinnerView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players, cards: self.gamePopupData.cards, closeAction: {
-                    isPresentedGamePopup = false
-                    self.completionIndex = 0
+                    isPresentedAppPopup = true
+                    self.appPopupType = .progress
+                    Task {
+                        await CloudKitManager.shared.saveUserData(self.gameData.players[0])
+                        appData = await CloudKitManager.shared.loadCloudAppData()
+                        isPresentedAppPopup = false
+                        self.appPopupType = .none
+                        isPresentedGamePopup = false
+                        self.completionIndex = 0
+                        self.showNextAppPopupIfNeedded()
+                    }
                 })
             default:
                 EmptyView()
             }
         })
-        .transaction { transaction in
-            transaction.disablesAnimations = true
-        }
-        .alert(self.alertMessage ?? "", isPresented: self.$isPresentedAlert) {
-            Button("OK") { self.isPresentedAlert = false }
-        }
         .fullScreenCover(isPresented: $isPresentedAppPopup, onDismiss: {
             self.appPopupType = .none
         }, content: {
@@ -224,7 +236,7 @@ struct MainContentView: View {
                     self.isPresentedAppPopup = false
                     Task{
                         self.appData = await CloudKitManager.shared.loadCloudAppData()
-                        self.showNextAppPopupIfNeedded(completion: { loadData() })
+                        self.showNextAppPopupIfNeedded()
                     }
                 })
             case .forcedUpdate:
@@ -235,24 +247,35 @@ struct MainContentView: View {
                 })
             case .optionalUpdate:
                 let url = URL(string: appData?.appstoreUrl ?? "itms-apps://itunes.apple.com")
-                SelectButtonView(title: "업데이트 안내", message: "새로 업데이트 된 앱이 있습니다.\n신규 앱으로 플레이 해 볼래요?", players: [], cards: [], button1Text: "스토어로 이동", button2Text: "그냥 플레이", button1Action: {
+                SelectButtonView(title: "업데이트 안내", message: "새로 업데이트 된 앱이 있습니다.\n신규 앱으로 플레이 해 볼래요?", players: [], cards: [],  isShowHideButton: true, button1Text: "스토어로 이동", button2Text: "그냥 플레이", button1Action: {
                     //self.isPresentedAppPopup = false
                     if let url { UIApplication.shared.open(url) }
                 }, button2Action: {
                     self.isPresentedAppPopup = false
-                    self.showNextAppPopupIfNeedded(currentAppPopupType: .optionalUpdate, completion: { loadData() })
+                    self.showNextAppPopupIfNeedded(currentAppPopupType: .optionalUpdate)
                 })
             case .noticeWebView:
                 if let noticeUrl = appData?.noticeUrl, let url = URL(string: noticeUrl) {
                     InternalWebView(url: url, closeAction: {
                         self.isPresentedAppPopup = false
-                        self.showNextAppPopupIfNeedded(currentAppPopupType: .noticeWebView, completion: { loadData() })
+                        self.showNextAppPopupIfNeedded(currentAppPopupType: .noticeWebView)
                     })
                 }
+            case .progress:
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                    .scaleEffect(1.5)
             default:
                 Color.pink
             }
         })
+        .transaction { transaction in
+            transaction.disablesAnimations = true
+        }
+        .alert(self.alertMessage ?? "", isPresented: self.$isPresentedAlert) {
+            Button("OK") { self.isPresentedAlert = false }
+        }
+        
         .onChange(of: appPopupType) { newValue in
             print("\(#function) change App Popup Type: \(newValue)")
             self.isPresentedAppPopup = newValue != .none
@@ -274,7 +297,7 @@ struct MainContentView: View {
         }
     }
     
-    func showNextAppPopupIfNeedded(currentAppPopupType: AppPopupType? = nil, completion: () -> Void) {
+    func showNextAppPopupIfNeedded(currentAppPopupType: AppPopupType? = nil) {
         let currentPopupStep = currentAppPopupType?.rawValue ?? 0
         // 팝업 순서대로 보이도록함
         if let appData {
@@ -284,36 +307,44 @@ struct MainContentView: View {
             else if appData.isForcedUpdate {
                 self.appPopupType = .forcedUpdate
             }
-            else if appData.isOptionalUpdate, currentPopupStep < AppPopupType.optionalUpdate.rawValue {
+            else if appData.isOptionalUpdate, currentPopupStep < AppPopupType.optionalUpdate.rawValue && self.isFirstAppLaunch {
                 self.appPopupType = .optionalUpdate
             }
-            else if let _ = appData.noticeUrl, currentPopupStep < AppPopupType.noticeWebView.rawValue {
+            else if let _ = appData.noticeUrl, currentPopupStep < AppPopupType.noticeWebView.rawValue && self.isFirstAppLaunch {
                 self.appPopupType = .noticeWebView
             }
             else {
                 self.appPopupType = .none
+                self.isFirstAppLaunch = false
             }
         }
         else {
             self.appPopupType = .none
+            self.isFirstAppLaunch = false
         }
     }
     
-    func loadData() {
+    func setPlayers() {
         // set player
         let playerFactory = PlayerFactory()
         if let user = playerFactory.loadLocalPlayerData(playerIndex: 0) {
+            print("\(#function) user coin: \(user.coin)")
             self.gameData.players[0] = user
-            print("??? user moeny: \(user.coin)")
             self.gameData.players[1] = playerFactory.loadLocalPlayerData(playerIndex: 1) ?? playerFactory.getRandomPlayer(playerIndex: 1, without: [user.characterIndex])
             self.gameData.players[2] = playerFactory.loadLocalPlayerData(playerIndex: 2) ?? playerFactory.getRandomPlayer(playerIndex: 2, without: [user.characterIndex, self.gameData.players[1].characterIndex])
         }
         else {
             self.gameData.players = playerFactory.getRandomPlayers()
-            self.isPresentedCharacterSettingPopup = true
+            
+            Task {
+                if let user = await CloudKitManager.shared.loadCloudUserData() {
+                    self.gameData.players[0] = user
+                }
+                else {
+                    self.isPresentedCharacterSettingPopup = true
+                }
+            }
         }
-        
-        isLoadedData = true
     }
 }
 

@@ -17,6 +17,7 @@ enum AppPopupType: Int {
     case forcedUpdate
     case optionalUpdate
     case noticeWebView
+    case progress
     case none
 }
 
