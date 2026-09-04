@@ -32,12 +32,12 @@ struct CharacterIconSettingView: View {
                 
                 ScrollView{
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(0..<GameData.playerNames.count) { i in
+                        ForEach(0..<PlayerFactory.playerNames.count) { i in
                             Button(action: {
                                 SoundManager.shared.playSoundIfPossible(type: .click)
                                 tempCharacterIndex = i
                             }, label: {
-                                Image(Player.imageNamePrefix + String(format: "%02d", i))
+                                Image(PlayerFactory.imageNamePrefix + String(format: "%02d", i))
                                     .resizable()
                                     .frame(width: 70, height: 70)
                                     .cornerRadius(33)

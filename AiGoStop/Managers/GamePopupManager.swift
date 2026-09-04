@@ -60,10 +60,12 @@ class GamePopupManager {
                 popupData.title = "빈털털이!!!"
                 popupData.message = message ?? "다음에 두고 보자고요~ 🤬"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .angry
             case .newPlayerJoins:
                 popupData.title = "내가 들어갈께요!!"
                 popupData.message = message ?? "같이 재밌게 놀아 보자구요~ 😘"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .nagari:
                 popupData.title = "나가리!!!"
                 popupData.message = message ?? "다음판은 두배에요~ 🥶"
@@ -86,14 +88,17 @@ class GamePopupManager {
                 popupData.title = "아싸 쪽!!!"
                 popupData.message = "피 한장씩 주세요~ 😘"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .ssl:
                 popupData.title = "아싸 쓸!!!"
                 popupData.message = "피 한장씩 더 주세요~ 😘"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .bomb:
                 popupData.title = "폭탄!!!"
                 popupData.message = "피 한장씩 주세요~ 🫣"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .selectWave:
                 popupData.title = "흔들기!!!"
                 popupData.message = "흔들까요? 😵‍💫"
@@ -116,50 +121,62 @@ class GamePopupManager {
                 popupData.title = "흔들었으!!!"
                 popupData.message = "어질어질 하시죠? 😵‍💫"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .fuck:
                 popupData.title = "뻑!!!"
                 popupData.message = "오메 이런일이... 🤯"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .angry
             case .deckBonus:
                 popupData.title = "아싸 보너스!!!"
                 popupData.message = "쌍피 추가요~ 🤭"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .handBonus:
                 popupData.title = "숨겨둔 보너스!!!"
                 popupData.message = "오늘 운이 좋네요~ 🤭"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .firstFuck:
                 popupData.title = "오메 첫뻑!!!"
                 popupData.message = "웃프다~ 일단 5만냥씩 주세요~ 😂"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .secondFuck:
                 popupData.title = "오메메 2연속 뻑!!!"
                 popupData.message = "대단하죠~ 일단 따블로 10만냥씩 주세요~ 😂"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .tadak:
                 popupData.title = "아싸 따닥!!!"
                 popupData.message = "피 한장씩 주세요~ 🤩"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .firstTadak:
                 popupData.title = "아싸 첫 따닥!!!"
                 popupData.message = "피 한장씩 그리고 5만냥도 주세요~ 🤩"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .threeTableCards:
                 popupData.title = "아싸 쌩큐!!!"
                 popupData.message = "피 한장씩 주세요~ 🥳"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .threeTableCardsWithPlayerFuck:
                 popupData.title = "아싸 자뻑이었던거 알죠!!!"
                 popupData.message = "피 두장씩 주세요~ 🥳"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .go:
                 popupData.title = message
                 popupData.message = "못먹어도 고~ 🥶"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             case .stop:
                 popupData.title = "안전하게 스톱!!!"
                 popupData.message = "돈 준비들 하셔요~ 🥹"
                 popupData.type = .autoCloseMessage
+                popupData.playerEmotion = .happy
             }
         }
     }

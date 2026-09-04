@@ -183,7 +183,7 @@ struct MainContentView: View {
                     self.completionIndex = 1
                 })
             case .autoCloseMessage:
-                AutoCloseMessageView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players,cards: self.gamePopupData.cards)
+                AutoCloseMessageView(title: self.gamePopupData.title, message: self.gamePopupData.message, players: self.gamePopupData.players,cards: self.gamePopupData.cards, playerEmotion: self.gamePopupData.playerEmotion)
                     .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + self.gamePopupData.autoCloseDuration) {
                             isPresentedGamePopup = false
@@ -262,9 +262,11 @@ struct MainContentView: View {
                     })
                 }
             case .progress:
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                    .scaleEffect(1.5)
+                ZStack {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                        .scaleEffect(1.5)
+                }
             default:
                 Color.pink
             }

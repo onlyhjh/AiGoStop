@@ -61,7 +61,7 @@ public struct WinnerView: View {
                             // Winner
                             VStack(spacing: 5) {
                                 HStack {
-                                    Image(players[0].imageName)
+                                    Image(players[0].imageName + PlayerEmotion.happy.rawValue)
                                         .resizable()
                                         .frame(width: 70, height: 70)
                                         .cornerRadius(35)
@@ -130,7 +130,7 @@ public struct WinnerView: View {
                                     // Player1
                                     VStack(spacing: 5) {
                                         HStack(spacing: 5) {
-                                            Image(players[1].imageName)
+                                            Image(players[1].imageName + (players[1].finalScore == 0 ? PlayerEmotion.happy.rawValue :  PlayerEmotion.angry.rawValue))
                                                 .resizable()
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(25)
@@ -198,7 +198,7 @@ public struct WinnerView: View {
                                     // Player1
                                     VStack(spacing: 5) {
                                         HStack(spacing: 5) {
-                                            Image(players[2].imageName)
+                                            Image(players[2].imageName + (players[2].finalScore == 0 ? PlayerEmotion.happy.rawValue :  PlayerEmotion.angry.rawValue))
                                                 .resizable()
                                                 .frame(width: 50, height: 50)
                                                 .cornerRadius(25)

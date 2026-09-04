@@ -65,7 +65,7 @@ public struct SpecialWinnerView: View {
                         .cornerRadius(20)
                     }
                 }
-                Image(players[0].imageName)
+                Image(players[0].imageName + PlayerEmotion.happy.rawValue)
                     .resizable()
                     .frame(width: 70, height: 70)
                     .cornerRadius(35)

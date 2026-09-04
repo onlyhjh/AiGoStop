@@ -7,19 +7,27 @@
 
 import SwiftUI
 
+enum PlayerEmotion: String {
+    case happy = "_happy"
+    case angry = "_angry"
+    case normal = ""
+}
+
 public struct AutoCloseMessageView: View {
 
     var title: String?
     var message: String?
     var players: [Player]
     var cards: [Card]
+    var playerEmotion : PlayerEmotion
     
     // 😎 😭 🥶😱🤯😭😘🤩💀
-    init(title: String?, message: String?, players: [Player], cards: [Card]) {
+    init(title: String?, message: String?, players: [Player], cards: [Card], playerEmotion: PlayerEmotion = .normal) {
         self.title = title
         self.message = message
         self.players = players
         self.cards = cards
+        self.playerEmotion = playerEmotion
     }
     
     public var body: some View {
@@ -56,7 +64,8 @@ public struct AutoCloseMessageView: View {
                         .cornerRadius(20)
                     }
                 }
-                Image(players[0].imageName)
+                
+                Image(players[0].imageName + playerEmotion.rawValue)
                     .resizable()
                     .frame(width: 70, height: 70)
                     .cornerRadius(35)

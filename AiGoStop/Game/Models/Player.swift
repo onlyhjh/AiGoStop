@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Player: Codable {
-    static let imageNamePrefix = "player_"
+    
     static let defaultCoin = 10
 
     let index: Int

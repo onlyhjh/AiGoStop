@@ -9,6 +9,9 @@ import Foundation
 
 class PlayerFactory {
     
+    static let imageNamePrefix = "player_"
+    static let playerNames = ["최마담", "청담미씨", "아이린", "김선생", "영어쌤", "김원장", "에릭", "황교수", "정실장", "베거스", "훈나일", "정도령", "스티븐", "혜미", "겜블킹", "이도사", "정박사", "이시무라", "에릭킴", "왕웨이", "브루스"]
+    
     func loadLocalPlayerData(playerIndex: Int) -> Player? {
         var playerData: Data?
         switch playerIndex {
@@ -31,8 +34,8 @@ class PlayerFactory {
         for i in 0...2 {
             var player = Player(index: i)
             player.characterIndex = random[i]
-            player.name = GameData.playerNames[random[i]]
-            player.imageName = Player.imageNamePrefix + String(format: "%02d", random[i])
+            player.name = PlayerFactory.playerNames[random[i]]
+            player.imageName = PlayerFactory.imageNamePrefix + String(format: "%02d", random[i])
             players.append(player)
         }
         return players
@@ -44,8 +47,8 @@ class PlayerFactory {
 
         var player = Player(index: playerIndex)
         player.characterIndex = random[0]
-        player.name = GameData.playerNames[random[0]]
-        player.imageName = Player.imageNamePrefix + String(format: "%02d", random[0])
+        player.name = PlayerFactory.playerNames[random[0]]
+        player.imageName = PlayerFactory.imageNamePrefix + String(format: "%02d", random[0])
         
         return player
     }

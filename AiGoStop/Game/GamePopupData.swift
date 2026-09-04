@@ -27,6 +27,7 @@ class GamePopupData: ObservableObject {
     var message: String? = nil
     var cards: [Card] = []
     var players: [Player] = []
+    var playerEmotion: PlayerEmotion = .normal
     var button1Text: String = ""
     var button2Text: String = ""
     var completion: (_ select: Int) -> Void = { select in }

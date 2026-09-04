@@ -18,7 +18,6 @@ enum GameStatus {
 
 class GameData: ObservableObject {
     static let defaultCardDuration: Double = 0.3
-    static let playerNames = ["고니", "정마담", "고광렬", "짝귀", "평경장", "박무석", "아귀", "곽철용", "장동식", "함대길", "꼬장", "작은마담", "우사장", "송마담", "허미나", "영미", "도일출", "애꾸", "이상무", "물영감", "까치"]
     
     @Published var gameStatus: GameStatus = .wait
     var origianalDeckCards: [Card] = []  // 최초 저장용
