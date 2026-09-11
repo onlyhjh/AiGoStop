@@ -12,7 +12,7 @@ import Foundation
 final class CloudKitManager {
 
     static let shared = CloudKitManager()
-    private let container = CKContainer(identifier: "iCloud.com.AiTest")
+    private let container = CKContainer(identifier: "iCloud.com.AiGoStop")
     private var database: CKDatabase { container.publicCloudDatabase }
 
 

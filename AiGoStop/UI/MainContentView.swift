@@ -303,7 +303,7 @@ struct MainContentView: View {
         let currentPopupStep = currentAppPopupType?.rawValue ?? 0
         // 팝업 순서대로 보이도록함
         if let appData {
-            if let _ = appData.maintananceText {
+            if let maintananceText = appData.maintananceText, maintananceText != "-" {
                 self.appPopupType = .maintanance
             }
             else if appData.isForcedUpdate {
@@ -312,7 +312,7 @@ struct MainContentView: View {
             else if appData.isOptionalUpdate, currentPopupStep < AppPopupType.optionalUpdate.rawValue && self.isFirstAppLaunch {
                 self.appPopupType = .optionalUpdate
             }
-            else if let _ = appData.noticeUrl, currentPopupStep < AppPopupType.noticeWebView.rawValue && self.isFirstAppLaunch {
+            else if let noticeUrl = appData.noticeUrl, noticeUrl != "-", currentPopupStep < AppPopupType.noticeWebView.rawValue && self.isFirstAppLaunch {
                 self.appPopupType = .noticeWebView
             }
             else {

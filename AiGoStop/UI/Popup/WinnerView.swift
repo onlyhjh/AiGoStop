@@ -513,17 +513,17 @@ private struct PlayerTypeStatisticsView: View {
             case 1:
                 Image(.cursorAI)
                     .frame(width: 20, height: 20)
-                Text("cursor")
+                Text("CS AI")
                     .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             case 2:
                 Image(.claudeAI)
                     .frame(width: 20, height: 20)
-                Text("claude")
+                Text("CL AI")
                     .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             default:
-                Text("😎 human")
+                Text("😎 인간")
                     .font(.system(size: 14,weight: .regular))
                     .foregroundStyle(.gray)
             }
