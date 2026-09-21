@@ -34,6 +34,9 @@ struct MainContentView: View {
     @State var completionIndex = 0
     @State var isFirstAppLaunch: Bool = true
     
+    //SwiftUI의 앱 생명주기(ScenePhase) 감지
+    @Environment(\.scenePhase) private var scenePhase
+    
     var body: some View {
         ZStack {
             Image(.splash)
@@ -46,6 +49,17 @@ struct MainContentView: View {
                         Color.tableBG?.ignoresSafeArea()
                         SpriteView(scene: scene, debugOptions: [.showsFPS, .showsNodeCount, .showsPhysics])
                             .frame(width: geometry.size.width, height: geometry.size.height)
+                            .onChange(of: scenePhase) { newValue in
+                                switch newValue {
+                                case .active:
+                                    scene.isPaused = false
+                                    scene.view?.isPaused = false
+                                case .background, .inactive:
+                                    scene.isPaused = true
+                                @unknown default:
+                                    break
+                                }
+                            }
                     }
                 }
                 .onAppear {
@@ -60,7 +74,7 @@ struct MainContentView: View {
             .edgesIgnoringSafeArea(.vertical)
             
             if !isStartedGame {
-                Button("게임 시작!") {
+                Button("START_GAME_BUTTON") {
                     SoundManager.shared.playSoundIfPossible(type: .click)
                     self.gameData.gameStatus = .start
                     self.isStartedGame = true
@@ -232,7 +246,7 @@ struct MainContentView: View {
         }, content: {
             switch self.appPopupType  {
             case .maintanance:
-                MessageView(title: "안내", message: appData?.maintananceText ?? "앱이 공사중입니다.\n잠시만 기다려 주세요.", buttonText: "재시도", buttonAction: {
+                MessageView(title: String(localized: "NOTICE_TITLE"), message: appData?.maintananceText ?? String(localized: "MAINTENANCE_MESSAGE_DEFAULT"), buttonText: String(localized: "RETRY_BUTTON"), buttonAction: {
                     self.isPresentedAppPopup = false
                     Task{
                         self.appData = await CloudKitManager.shared.loadCloudAppData()
@@ -241,13 +255,13 @@ struct MainContentView: View {
                 })
             case .forcedUpdate:
                 let url = URL(string: appData?.appstoreUrl ?? "itms-apps://itunes.apple.com")
-                MessageView(title: "업데이트 안내", message: "앱이 업데이트되었습니다.\n신규 앱으로 업데이트 해 주세요.", buttonText: "스토어로 이동", buttonAction: {
+                MessageView(title: String(localized: "UPDATE_TITLE"), message: String(localized: "FORCED_UPDATE_MESSAGE"), buttonText: String(localized: "GO_TO_STORE"), buttonAction: {
                     //self.isPresentedAppPopup = false
                     if let url { UIApplication.shared.open(url) }
                 })
             case .optionalUpdate:
                 let url = URL(string: appData?.appstoreUrl ?? "itms-apps://itunes.apple.com")
-                SelectButtonView(title: "업데이트 안내", message: "새로 업데이트 된 앱이 있습니다.\n신규 앱으로 플레이 해 볼래요?", players: [], cards: [],  isShowHideButton: true, button1Text: "스토어로 이동", button2Text: "그냥 플레이", button1Action: {
+                SelectButtonView(title: String(localized: "UPDATE_TITLE"), message: String(localized: "OPTIONAL_UPDATE_MESSAGE"), players: [], cards: [],  isShowHideButton: true, button1Text: String(localized: "GO_TO_STORE"), button2Text: String(localized: "PLAY_ANYWAY"), button1Action: {
                     //self.isPresentedAppPopup = false
                     if let url { UIApplication.shared.open(url) }
                 }, button2Action: {
@@ -275,7 +289,7 @@ struct MainContentView: View {
             transaction.disablesAnimations = true
         }
         .alert(self.alertMessage ?? "", isPresented: self.$isPresentedAlert) {
-            Button("OK") { self.isPresentedAlert = false }
+            Button("OK_BUTTON") { self.isPresentedAlert = false }
         }
         
         .onChange(of: appPopupType) { newValue in

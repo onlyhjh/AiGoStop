@@ -49,7 +49,7 @@ public struct SpecialWinnerView: View {
                                 }
                             }
                             HStack(spacing: 20) {
-                                Button("확인") {
+                                Button("CONFIRM_BUTTON") {
                                     SoundManager.shared.playSoundIfPossible(type: .click)
                                     closeAction()
                                 }

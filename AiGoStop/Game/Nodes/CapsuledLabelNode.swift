@@ -39,7 +39,7 @@ class CapsuledLabelNode: SKLabelNode {
         super.init()
         self.fontName = "Helvetica-Bold"
         self.fontSize = 20
-        self.text = winningCount == 1 ? "先" : "\(winningCount)연승"
+        self.text = winningCount == 1 ? String(localized: "FIRST_WIN") : String(format: String(localized: "WIN_STREAK_FORMAT"), winningCount)
         self.name = CapsuledLabelNode.prefixPlayerWinningCount + "\(playerIndex)"
         self.fontColor = UIColor.white
         self.position = CGPoint(x: 0, y: 0)
@@ -58,7 +58,7 @@ class CapsuledLabelNode: SKLabelNode {
         super.init()
         self.fontName = "Helvetica"
         self.fontSize = 20
-        self.text = "\(coin)만냥"
+        self.text = String(format: String(localized: "MANNYANG_FORMAT"), coin)
         self.name = CapsuledLabelNode.prefixPlayerCoin + "\(playerIndex)"
         self.fontColor = UIColor.white
         self.position = CGPoint(x: 0, y: 0)
@@ -76,7 +76,7 @@ class CapsuledLabelNode: SKLabelNode {
     init(playerIndex: Int, goCount: Int) {
         super.init()
         self.fontName = "System"
-        self.text = "\(goCount)고"
+        self.text = String(format: String(localized: "GO_COUNT_FORMAT"), goCount)
         self.name = CapsuledLabelNode.prefixPlayerScore + "\(playerIndex)"
         self.fontColor = UIColor.yellow
         self.fontSize = 20

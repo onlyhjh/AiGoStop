@@ -27,7 +27,7 @@ struct CharacterIconSettingView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 10) {
-                Text(self.isFirstLaunch ? "🥹 환영합니다!!!" : "👩‍🏭 캐릭터 아이콘 설정!")
+                Text(self.isFirstLaunch ? "WELCOME_TITLE" : "CHARACTER_ICON_SETTING_TITLE")
                     .font(.system(size: 20,weight: .bold))
                 
                 ScrollView{
@@ -52,7 +52,7 @@ struct CharacterIconSettingView: View {
                 }
                 
                 HStack(spacing: 100){
-                    Button("확인") {
+                    Button("CONFIRM_BUTTON") {
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         isPresented = false
                         print("origianlCharacterIndex: \(origianlCharacterIndex)")
@@ -64,7 +64,7 @@ struct CharacterIconSettingView: View {
                     .background(.green)
                     .clipShape(Capsule())
                     
-                    Button("취소") {
+                    Button("CANCEL_BUTTON") {
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         isPresented = false
                     }

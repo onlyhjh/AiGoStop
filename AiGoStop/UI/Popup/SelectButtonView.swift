@@ -45,7 +45,7 @@ public struct SelectButtonView: View {
                         }, label: {
                             VStack {
                                 Image(systemName: isHidden ? "square.and.arrow.up.fill" : "square.and.arrow.down.fill")
-                                Text(isHidden ? "열기" : "닫기")
+                                Text(isHidden ? "OPEN_BUTTON" : "CLOSE_BUTTON")
                                     .font(.system(size: 18,weight: .regular))
                             }
                             .padding(20)

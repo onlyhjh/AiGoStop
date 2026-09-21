@@ -22,7 +22,7 @@ public struct InternalWebView: View {
             VStack(spacing: 10) {
                 HStack {
                     Spacer()
-                    Button("닫기") {
+                    Button("CLOSE_BUTTON") {
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         self.closeAction()
                     }

@@ -24,7 +24,7 @@ struct CharacterSettingView: View {
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
             VStack(spacing: 10) {
-                Text(self.isFirstLaunch ? "🥹 환영합니다!!!" : "👩‍🏭 캐릭터 설정!")
+                Text(self.isFirstLaunch ? "WELCOME_TITLE" : "CHARACTER_SETTING_TITLE")
                     .font(.system(size: 20,weight: .bold))
                     .padding()
                 HStack(spacing: 10) {
@@ -42,7 +42,7 @@ struct CharacterSettingView: View {
                             .cornerRadius(25)
                     }
                     HStack {
-                        TextField("이름을 입력해 주세요", text: $userName)
+                        TextField("NAME_PLACEHOLDER", text: $userName)
                             .padding(10)
                             .frame(width: 200, height: 50)
                             .onChange(of: userName) { newValue in
@@ -59,12 +59,12 @@ struct CharacterSettingView: View {
                     .cornerRadius(10)
                 }
                 HStack(spacing: 10) {
-                    Button("확인") {
+                    Button("CONFIRM_BUTTON") {
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         hideKeyboard()
                         if userName.isEmpty {
                             isPresentedAlert = true
-                            alertMessage = "이름을 입력해 주세요"
+                            alertMessage = String(localized: "NAME_REQUIRED")
                         }
                         else {
                             self.gameData.players[0].name = userName
@@ -89,7 +89,7 @@ struct CharacterSettingView: View {
                     .clipShape(Capsule())
                     
                     if !self.isFirstLaunch {
-                        Button("취소") {
+                        Button("CANCEL_BUTTON") {
                             SoundManager.shared.playSoundIfPossible(type: .click)
                             hideKeyboard()
                             isPresented = false
@@ -116,7 +116,7 @@ struct CharacterSettingView: View {
         }
         .presentationBackground(.black.opacity(0.4))
         .alert(self.alertMessage, isPresented: self.$isPresentedAlert) {
-            Button("OK") { self.isPresentedAlert = false }
+            Button("OK_BUTTON") { self.isPresentedAlert = false }
         }
         .onAppear{
             characterIndex = self.gameData.players[0].characterIndex

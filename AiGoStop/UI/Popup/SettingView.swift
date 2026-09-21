@@ -25,16 +25,16 @@ struct SettingView: View {
 //                .ignoresSafeArea()
 
             VStack(spacing: 20) {
-                Text("👩‍🏭 설정!")
+                Text("SETTING_TITLE")
                 HStack(spacing: 10) {
-                    Text("게임 속도")
+                    Text("GAME_SPEED")
                         .font(.system(size: 18,weight: .regular))
                         .frame(width: 100)
                     Slider(value: $sliderValue, in: -1...1)
                 }
                 .frame(width: 300)
                 HStack(spacing: 10) {
-                    Text("배경 음악")
+                    Text("BACKGROUND_MUSIC")
                         .font(.system(size: 18,weight: .regular))
                         .frame(width: 100)
                     Toggle("", isOn: $isOnBackgroundSound)
@@ -53,7 +53,7 @@ struct SettingView: View {
                 }
                 .frame(width: 300)
                 HStack(spacing: 10) {
-                    Text("효과음")
+                    Text("EFFECT_SOUND")
                         .font(.system(size: 18,weight: .regular))
                         .frame(width: 100)
                     Toggle("", isOn: $isOnEffectSound)
@@ -67,23 +67,23 @@ struct SettingView: View {
                 .frame(width: 300)
                 
                 HStack(spacing: 10) {
-                    Text("광고 제거")
+                    Text("REMOVE_ADS")
                         .font(.system(size: 18,weight: .regular))
                         .frame(width: 100)
                     if purchaseManager.isAdRemoved {
-                        Text("구매해 주셔서 감사합니다. 🥹")
+                        Text("PURCHASE_THANK_YOU")
                             .font(.system(size: 18,weight: .regular))
                             .foregroundStyle(.blue)
                     }
                     else {
-                        Button("영구 구매") {
+                        Button("PURCHASE_PERMANENT") {
                             Task {
                                 await PurchaseManager.shared.purchaseRemoveAds()
                             }
                         }
                         Text ("|")
                             .foregroundStyle(.gray)
-                        Button("구매 복원") {
+                        Button("RESTORE_PURCHASE") {
                             Task {
                                 await PurchaseManager.shared.restorePurchases()
                             }
@@ -92,7 +92,7 @@ struct SettingView: View {
                 }
                 
                 HStack(spacing: 20){
-                    Button("확인") {
+                    Button("CONFIRM_BUTTON") {
                         isPresented = false
                         UserDefaults.standard.gameSpeed = sliderValue
                         UserDefaults.standard.backgroundSound = isOnBackgroundSound
@@ -106,7 +106,7 @@ struct SettingView: View {
                     .background(.green)
                     .clipShape(Capsule())
                     
-                    Button("취소") {
+                    Button("CANCEL_BUTTON") {
                         SoundManager.shared.playSoundIfPossible(type: .background)
                         SoundManager.shared.playSoundIfPossible(type: .click)
                         isPresented = false
