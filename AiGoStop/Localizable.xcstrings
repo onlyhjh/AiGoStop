@@ -31,6 +31,12 @@
             "value" : "Background Music"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "背景音楽"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46,6 +52,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Best Records"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最高記録"
           }
         },
         "ko" : {
@@ -65,6 +77,12 @@
             "value" : "Cancel"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82,6 +100,12 @@
             "value" : "👩‍🏭 Character Icon Settings!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👩‍🏭 キャラクターアイコン設定！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97,6 +121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "👩‍🏭 Character Settings!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👩‍🏭 キャラクター設定！"
           }
         },
         "ko" : {
@@ -119,6 +149,12 @@
             "value" : "Close"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134,6 +170,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Confirm"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認"
           }
         },
         "ko" : {
@@ -156,6 +198,12 @@
             "value" : "Go Penalty"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "독박"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -171,6 +219,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$lld Go x%2$lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld文×%2$lld"
           }
         },
         "ko" : {
@@ -190,6 +244,12 @@
             "value" : "3 Go x2"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3文×2"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -205,6 +265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sound Effects"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "効果音"
           }
         },
         "ko" : {
@@ -224,6 +290,12 @@
             "value" : "(Expected: %1$@0K)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(予想収益：%1$@万両)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -239,6 +311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1st"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "先"
           }
         },
         "ko" : {
@@ -258,6 +336,12 @@
             "value" : "The app has been updated.\nPlease update to the latest version."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリがアップデートされました。\n最新バージョンにアップデートしてください。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -273,6 +357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Game Speed"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲーム速度"
           }
         },
         "ko" : {
@@ -292,6 +382,12 @@
             "value" : "%lld Go"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld文"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -307,6 +403,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go to Store"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストアへ移動"
           }
         },
         "ko" : {
@@ -326,6 +428,12 @@
             "value" : "Bright Penalty x2"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "光バク×2"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -341,6 +449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "😎 Human"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "😎 人間"
           }
         },
         "ko" : {
@@ -360,6 +474,12 @@
             "value" : "Loss"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "敗"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -375,6 +495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "The app is under maintenance.\nPlease wait a moment."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在メンテナンス中です。\nしばらくお待ちください。"
           }
         },
         "ko" : {
@@ -394,6 +520,12 @@
             "value" : "%lld0K"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld万両"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -409,6 +541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "-%lld0K"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "-%lld万両"
           }
         },
         "ko" : {
@@ -428,6 +566,12 @@
             "value" : "+%lld0K"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld万両"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -443,6 +587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mungtungguri x2"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モントングリ×2"
           }
         },
         "ko" : {
@@ -462,6 +612,12 @@
             "value" : "Nagari x2"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "流れ×2"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -477,6 +633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please enter your name"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を入力してください"
           }
         },
         "ko" : {
@@ -496,6 +658,12 @@
             "value" : "Please enter your name"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を入力してください"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -513,6 +681,12 @@
             "value" : "Notice"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お知らせ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -525,6 +699,12 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -547,6 +727,12 @@
             "value" : "Open"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開く"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -562,6 +748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "A new version of the app is available.\nWould you like to try the updated app?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいバージョンのアプリがあります。\nアップデートしてプレイしますか？"
           }
         },
         "ko" : {
@@ -581,6 +773,12 @@
             "value" : "Junk Penalty x2"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスバク×2"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -598,10 +796,499 @@
             "value" : "Play Anyway"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "そのままプレイ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "그냥 플레이"
+          }
+        }
+      }
+    },
+    "PLAYER_BRUCE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruce"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブルース"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "브루스"
+          }
+        }
+      }
+    },
+    "PLAYER_CHOI_MADAM" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Madame Choi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "マダム崔"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "최마담"
+          }
+        }
+      }
+    },
+    "PLAYER_CHUNGDAM_MISSY" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chungdam Missy"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チョンダムミッシー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "청담미씨"
+          }
+        }
+      }
+    },
+    "PLAYER_DIRECTOR_JUNG" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manager Jung"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チョン室長"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정실장"
+          }
+        }
+      }
+    },
+    "PLAYER_DORYUNG_JUNG" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master Doryung"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チョンドリョン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정도령"
+          }
+        }
+      }
+    },
+    "PLAYER_DOSA_LEE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Master Lee"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "イ道士"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이도사"
+          }
+        }
+      }
+    },
+    "PLAYER_DR_JUNG" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dr. Jung"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チョン博士"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정박사"
+          }
+        }
+      }
+    },
+    "PLAYER_ENGLISH_TEACHER" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "English Teacher"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "英語の先生"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "영어쌤"
+          }
+        }
+      }
+    },
+    "PLAYER_ERIC" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eric"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エリック"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "에릭"
+          }
+        }
+      }
+    },
+    "PLAYER_ERIC_KIM" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eric Kim"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エリック・キム"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "에릭킴"
+          }
+        }
+      }
+    },
+    "PLAYER_GAMBLE_KING" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gamble King"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ギャンブルキング"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "겜블킹"
+          }
+        }
+      }
+    },
+    "PLAYER_HOONNAIL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoonnail"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フンネイル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "훈나일"
+          }
+        }
+      }
+    },
+    "PLAYER_HYEMI" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyemi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘミ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "혜미"
+          }
+        }
+      }
+    },
+    "PLAYER_IRENE" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Irene"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイリーン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "아이린"
+          }
+        }
+      }
+    },
+    "PLAYER_ISHIMURA" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ishimura"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "石村"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이시무라"
+          }
+        }
+      }
+    },
+    "PLAYER_KIM_DIRECTOR" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Director Kim"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キム院長"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "김원장"
+          }
+        }
+      }
+    },
+    "PLAYER_KIM_TEACHER" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teacher Kim"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キム先生"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "김선생"
+          }
+        }
+      }
+    },
+    "PLAYER_PROFESSOR_HWANG" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Professor Hwang"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファン教授"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "황교수"
+          }
+        }
+      }
+    },
+    "PLAYER_STEVEN" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steven"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スティーブン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스티븐"
+          }
+        }
+      }
+    },
+    "PLAYER_VEGAS" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vegas"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ベガス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "베거스"
+          }
+        }
+      }
+    },
+    "PLAYER_WANG_WEI" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wang Wei"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "王偉"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "왕웨이"
           }
         }
       }
@@ -613,6 +1300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give one junk card each~ 🫣"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを1枚ずつください~ 🫣"
           }
         },
         "ko" : {
@@ -632,6 +1325,12 @@
             "value" : "Bomb!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "爆弾！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -647,6 +1346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I'll get you next time~ 🤬"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次は覚えてろよ~ 🤬"
           }
         },
         "ko" : {
@@ -666,6 +1371,12 @@
             "value" : "Broke!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文無し！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -681,6 +1392,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pay 100,000 each~ 🥳"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10万両ずつください~ 🥳"
           }
         },
         "ko" : {
@@ -700,6 +1417,12 @@
             "value" : "Chongtong Win!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "総統勝利！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -715,6 +1438,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Extra double junk~ 🤭"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タン追加~ 🤭"
           }
         },
         "ko" : {
@@ -734,6 +1463,12 @@
             "value" : "Bonus!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やったね、ボーナス！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -749,6 +1484,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "So sad~ Pay 50,000 each for now~ 😂"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トホホ~ まず5万両ずつください~ 😂"
           }
         },
         "ko" : {
@@ -768,6 +1509,12 @@
             "value" : "First Ppeok!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最初のクソ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -783,6 +1530,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "One junk each and 50,000 too~ 🤩"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを1枚ずつ、そして5万両もください~ 🤩"
           }
         },
         "ko" : {
@@ -802,6 +1555,12 @@
             "value" : "First Tadak!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "やったね、最初のおッピー！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -817,6 +1576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No way! All four table cards are the same~ 🥶"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "まさか！場札4枚がすべて同じとは~ 🥶"
           }
         },
         "ko" : {
@@ -836,6 +1601,12 @@
             "value" : "Void!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無効！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -851,6 +1622,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oh my, how did this happen... 🤯"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なんてことだ... 🤯"
           }
         },
         "ko" : {
@@ -870,6 +1647,12 @@
             "value" : "Ppeok!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クソ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -885,6 +1668,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コー"
           }
         },
         "ko" : {
@@ -904,6 +1693,12 @@
             "value" : "Go even if you can't eat~ 🥶"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取れなくてもコー~ 🥶"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -919,6 +1714,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Go for more, or stop safely??? 😵‍💫"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コーするか、それとも安全にストップするか??? 😵‍💫"
           }
         },
         "ko" : {
@@ -938,6 +1739,12 @@
             "value" : "Go / Stop"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コー / ストップ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -953,6 +1760,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stop"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストップ"
           }
         },
         "ko" : {
@@ -972,6 +1785,12 @@
             "value" : "As Double Junk"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タンとして"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -987,6 +1806,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use it as double junk? 🥸"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タンとして使いますか？ 🥸"
           }
         },
         "ko" : {
@@ -1006,6 +1831,12 @@
             "value" : "Gukjin Double Junk!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菊の酒タン選択！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1021,6 +1852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "As Animal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タネとして"
           }
         },
         "ko" : {
@@ -1040,6 +1877,12 @@
             "value" : "You're lucky today~ 🤭"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "今日はツイてますね~ 🤭"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1055,6 +1898,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hidden Bonus!!!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隠しボーナス！！！"
           }
         },
         "ko" : {
@@ -1074,6 +1923,12 @@
             "value" : "Two junk cards each~ 🥳"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを2枚ずつください~ 🥳"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1089,6 +1944,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You knew it was self-Ppeok!!!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分で自分のクソ！！！"
           }
         },
         "ko" : {
@@ -1108,6 +1969,12 @@
             "value" : "Just Play"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "そのまま勝負"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1123,6 +1990,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give one junk card each~ 😘"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを1枚ずつください~ 😘"
           }
         },
         "ko" : {
@@ -1142,6 +2015,12 @@
             "value" : "Kiss!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チュー！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1157,6 +2036,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Next round is double~ 🥶"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次の局は倍になります~ 🥶"
           }
         },
         "ko" : {
@@ -1176,6 +2061,12 @@
             "value" : "Nagari!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "流れ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1191,6 +2082,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Let's have fun together~ 😘"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一緒に楽しく遊びましょう~ 😘"
           }
         },
         "ko" : {
@@ -1210,6 +2107,12 @@
             "value" : "I'm joining!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "参加します！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1225,6 +2128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give one junk card each~ 🥳"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを1枚ずつください~ 🥳"
           }
         },
         "ko" : {
@@ -1244,6 +2153,12 @@
             "value" : "Sang-Q!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サンキュー！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1259,6 +2174,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Amazing~ Pay double, 100,000 each~ 😂"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すごいね~ ダブルで10万両ずつください~ 😂"
           }
         },
         "ko" : {
@@ -1278,6 +2199,12 @@
             "value" : "Two Ppeoks in a Row!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2連続クソ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1293,6 +2220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select a card to take with this one~ 🥸"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このカードで取るカードを選択してください~ 🥸"
           }
         },
         "ko" : {
@@ -1312,6 +2245,12 @@
             "value" : "Select Card!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カード選択！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1327,6 +2266,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give one more junk card each~ 😘"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスをもう1枚ずつください~ 😘"
           }
         },
         "ko" : {
@@ -1346,6 +2291,12 @@
             "value" : "Sweep!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫い（スール）！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1361,6 +2312,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get your money ready~ 🥹"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お金の準備をしておいてね~ 🥹"
           }
         },
         "ko" : {
@@ -1380,6 +2337,12 @@
             "value" : "Safe Stop!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "安全にストップ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1395,6 +2358,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Give one junk card each~ 🤩"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスを1枚ずつください~ 🤩"
           }
         },
         "ko" : {
@@ -1414,6 +2383,12 @@
             "value" : "Tadak!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "おッピー！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1429,6 +2404,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bittersweet win.. Pay 30,000 each~ 😂"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "苦笑いの勝利.. 3万両ください~ 😂"
           }
         },
         "ko" : {
@@ -1448,6 +2429,12 @@
             "value" : "Three Ppeoks in One Game!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1ゲームに3回クソ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1463,6 +2450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wave"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らし"
           }
         },
         "ko" : {
@@ -1482,6 +2475,12 @@
             "value" : "Feeling dizzy? 😵‍💫"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "めまいがしますか？ 😵‍💫"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1497,6 +2496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wave the cards? 😵‍💫"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らしますか？ 😵‍💫"
           }
         },
         "ko" : {
@@ -1516,6 +2521,12 @@
             "value" : "Wave!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らし！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1531,6 +2542,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Waved!!!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らしたぞ！！！"
           }
         },
         "ko" : {
@@ -1550,6 +2567,12 @@
             "value" : "Pay up quickly~ 🥳"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "早く支払ってね~ 🥳"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1565,6 +2588,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Winner!!!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "勝者！！！"
           }
         },
         "ko" : {
@@ -1584,6 +2613,12 @@
             "value" : "(%@0K)"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(%@万両)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1599,6 +2634,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Buy Permanently"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "永久購入"
           }
         },
         "ko" : {
@@ -1618,6 +2659,12 @@
             "value" : "Thank you for your purchase. 🥹"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ご購入ありがとうございます。 🥹"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1633,6 +2680,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "#%lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld位"
           }
         },
         "ko" : {
@@ -1652,6 +2705,12 @@
             "value" : "Remove Ads"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "広告削除"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1667,6 +2726,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore Purchase"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入の復元"
           }
         },
         "ko" : {
@@ -1686,6 +2751,12 @@
             "value" : "Retry"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再試行"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1701,6 +2772,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Grass Ribbon"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "草短（草の短冊）"
           }
         },
         "ko" : {
@@ -1720,6 +2797,12 @@
             "value" : "Blue Ribbon"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "青短（青の短冊）"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1735,6 +2818,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Godori"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "五鳥（ごどり）"
           }
         },
         "ko" : {
@@ -1754,6 +2843,12 @@
             "value" : "Bright"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "光"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1769,6 +2864,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Red Ribbon"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "赤短（赤の短冊）"
           }
         },
         "ko" : {
@@ -1788,6 +2889,12 @@
             "value" : "Junk"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カス"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1803,6 +2910,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld pts"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld点"
           }
         },
         "ko" : {
@@ -1822,6 +2935,12 @@
             "value" : "Ribbon"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "短冊"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1837,6 +2956,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Animal"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タネ"
           }
         },
         "ko" : {
@@ -1856,6 +2981,12 @@
             "value" : "👩‍🏭 Settings!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "👩‍🏭 設定！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1871,6 +3002,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Start Game!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームスタート！"
           }
         },
         "ko" : {
@@ -1890,6 +3027,12 @@
             "value" : "Total %lld pts"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合計 %lld点"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1905,6 +3048,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Update Notice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップデートのお知らせ"
           }
         },
         "ko" : {
@@ -1924,6 +3073,12 @@
             "value" : "Wave x%lld"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らし×%lld"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1939,6 +3094,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wave x2"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "揺らし×2"
           }
         },
         "ko" : {
@@ -1958,6 +3119,12 @@
             "value" : "🥹 Welcome!!!"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🥹 ようこそ！！！"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1973,6 +3140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Win"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "勝"
           }
         },
         "ko" : {
@@ -1992,6 +3165,12 @@
             "value" : "Win Rate: %lld%%"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "勝率：%lld%%"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2007,6 +3186,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld Win Streak"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld連勝"
           }
         },
         "ko" : {

@@ -32,7 +32,7 @@ struct CharacterIconSettingView: View {
                 
                 ScrollView{
                     LazyVGrid(columns: columns, spacing: 10) {
-                        ForEach(0..<PlayerFactory.playerNames.count) { i in
+                        ForEach(0..<PlayerFactory.localizedPlayerNames.count) { i in
                             Button(action: {
                                 SoundManager.shared.playSoundIfPossible(type: .click)
                                 tempCharacterIndex = i

@@ -130,8 +130,8 @@ struct CharacterSettingView: View {
         .onChange(of: characterIndex) { newValue in
             self.characterIndex = newValue
             // 사용자가 수정한 이름이 기존이름을 그대로 쓰는지 확인, 다르면 사용자 설정 커스텀 이름 사용
-            if PlayerFactory.playerNames.contains(where: { $0 == self.gameData.players[0].name }) || self.userName.isEmpty {
-                userName = PlayerFactory.playerNames[newValue]
+            if PlayerFactory.localizedPlayerNames.contains(where: { $0 == self.gameData.players[0].name }) || self.userName.isEmpty {
+                userName = PlayerFactory.localizedPlayerNames[newValue]
                 self.gameData.players[0].name = userName
             }
             else {
