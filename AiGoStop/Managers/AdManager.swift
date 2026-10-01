@@ -36,9 +36,13 @@ class AdManager: NSObject, FullScreenContentDelegate, ObservableObject {
 
     // [START load_ad]
     func loadAd() async {
-//        let interstitialAdUnitID = "ca-app-pub-9821824469972292/7914489898" // AiGoStop Interstitial (전면광고)
+        #if DEBUG
         let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // test Interstitial (전면광고)
-//        let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313" // test Rewarded (리워드 광고)
+        #else
+        let interstitialAdUnitID = "ca-app-pub-9821824469972292/7914489898" // AiGoStop Interstitial (전면광고)
+        #endif
+
+        // let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313" // test Rewarded (리워드 광고)
         // RewardedAd.load(rewardedAdUnitID)
         
         do {
