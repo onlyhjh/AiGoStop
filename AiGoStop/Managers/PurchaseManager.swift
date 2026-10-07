@@ -16,7 +16,7 @@ final class PurchaseManager: ObservableObject {
     @Published private(set) var isAdRemoved = false
     @Published private(set) var removeAdsProduct: Product?
 
-    private let productID = "com.aigostop.removeads"
+    private let productID = "com.isolsystem.AiGoStop.RemoveAds"
 
     private init() {
         Task {
@@ -28,7 +28,7 @@ final class PurchaseManager: ObservableObject {
 
     func loadProducts() async {
         do {
-            let products = try await Product.products(for: ["com.aigostop.removeads"])
+            let products = try await Product.products(for: [productID])
             removeAdsProduct = products.first
         } catch {
             print(error)

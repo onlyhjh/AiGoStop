@@ -18,6 +18,8 @@
 import GoogleMobileAds
 import SwiftUI
 import Combine
+import AdSupport
+import AppTrackingTransparency
 
 class AdManager: NSObject, FullScreenContentDelegate, ObservableObject {
     
@@ -28,19 +30,42 @@ class AdManager: NSObject, FullScreenContentDelegate, ObservableObject {
     
     override init() {
         super.init()
-        Task {
-            await self.loadAd()
-            await PurchaseManager.shared.updatePurchasedProducts()
+        
+        MobileAds.shared.start { status in
+            // 초기화 완료 후 처리할 작업이 있다면 이곳에 작성합니다.
+            print("AdMob SDK 초기화 완료 상태: \(status.adapterStatusesByClassName)")
+            Task {
+                await self.loadAd()
+                await PurchaseManager.shared.updatePurchasedProducts()
+            }
+        }
+    }
+    
+    func showUUID() {
+        ATTrackingManager.requestTrackingAuthorization { status in
+            switch status {
+            case .authorized:
+                // 허용된 경우 IDFA 추출
+                let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+                print("Device advertisingIdentifier UUID (IDFA): \(idfa)")
+            case .denied, .restricted, .notDetermined:
+                print("Tracking permission not granted.")
+            @unknown default:
+                break
+            }
         }
     }
 
     // [START load_ad]
     func loadAd() async {
-        #if DEBUG
-        let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // test Interstitial (전면광고)
-        #else
+        print("\(#function)")
+//        #if DEBUG
+//        let interstitialAdUnitID = "ca-app-pub-3940256099942544/4411468910" // test Interstitial (전면광고)
+//        #else
+//        let interstitialAdUnitID = "ca-app-pub-9821824469972292/7914489898" // AiGoStop Interstitial (전면광고)
+//        #endif
+        
         let interstitialAdUnitID = "ca-app-pub-9821824469972292/7914489898" // AiGoStop Interstitial (전면광고)
-        #endif
 
         // let rewardedAdUnitID = "ca-app-pub-3940256099942544/1712485313" // test Rewarded (리워드 광고)
         // RewardedAd.load(rewardedAdUnitID)
@@ -48,8 +73,14 @@ class AdManager: NSObject, FullScreenContentDelegate, ObservableObject {
         do {
             interstitialAd = try await InterstitialAd.load(
                 with: interstitialAdUnitID, request: Request())
-            
-            interstitialAd?.fullScreenContentDelegate = self
+            if let interstitialAd =  interstitialAd {
+                interstitialAd.fullScreenContentDelegate = self
+                print("load interstitial ad success: \(interstitialAd.description)")
+                // showAd() 테스트
+            }
+            else {
+                print("load interstitial ad empty!")
+            }
         } catch {
             print("Failed to load interstitial ad with error: \(error.localizedDescription)")
         }
