@@ -12,10 +12,8 @@ extension GameScene {
     
     func collectPiCardsFromOthers(toPlayerIndex: Int, piCount: Int, completion: @escaping () -> Void) async {
         print("\(#function) 가져올 피 \(piCount)장")
-        Task{
-            await self.moveOtherPlayersCapturedCardsToPlayerCaptured(toPlayerIndex: toPlayerIndex, piCount: piCount)
-            completion()
-        }
+        await self.moveOtherPlayersCapturedCardsToPlayerCaptured(toPlayerIndex: toPlayerIndex, piCount: piCount)
+        completion()
     }
     
     func movePlayerPayouts(players: [Player], completion: @escaping () -> Void) {

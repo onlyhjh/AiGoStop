@@ -314,14 +314,15 @@ extension GameScene {
         }
         // 바닥패 4장인 경우 무효 (뻑 with 보너스카드 제외)
         for groupCards in self.gameData.tableCardGroups {
-            let count = groupCards.count{ $0.month != 0 }
+            let count = groupCards.count { $0.month != 0 }
             if count == 4 {
                 SoundManager.shared.playSoundIfPossible(type: .nagari)
-                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: [], players: [], completion: { _ in
+                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .fourTableCards, cards: groupCards, players: [], completion: { _ in
                     self.replacePlayerIfNeeded(isShowPopup: true) {
                         self.startGame()
                     }
                 })
+                return true
             }
         }
         return false

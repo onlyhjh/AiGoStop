@@ -76,7 +76,7 @@ class AdManager: NSObject, FullScreenContentDelegate, ObservableObject {
             if let interstitialAd =  interstitialAd {
                 interstitialAd.fullScreenContentDelegate = self
                 print("load interstitial ad success: \(interstitialAd.description)")
-                // showAd() 테스트
+                //showAd() //테스트
             }
             else {
                 print("load interstitial ad empty!")

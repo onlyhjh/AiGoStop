@@ -27,55 +27,51 @@ final class PurchaseManager: ObservableObject {
     }
 
     func loadProducts() async {
+        print("\(#function)")
         do {
             let products = try await Product.products(for: [productID])
-            removeAdsProduct = products.first
+            if products.isEmpty {
+                print("products empty!!!")
+            }
+            else {
+                removeAdsProduct = products.first
+            }
         } catch {
             print(error)
         }
     }
 
     func purchaseRemoveAds() async {
-
+        print("\(#function)")
         guard let product = removeAdsProduct else {
+            print("products empty!!!")
             return
         }
 
         do {
-
             let result = try await product.purchase()
 
             switch result {
-
             case .success(let verification):
-
                 let transaction = try checkVerified(verification)
-
                 isAdRemoved = true
-
                 await transaction.finish()
-
             case .userCancelled:
                 break
-
             case .pending:
                 break
-
             default:
                 break
             }
-
         } catch {
             print(error)
         }
     }
 
     func restorePurchases() async {
-
+        print("\(#function)")
         for await result in Transaction.currentEntitlements {
-
             if case .verified(let transaction) = result {
-
                 if transaction.productID == productID {
                     isAdRemoved = true
                 }
@@ -97,17 +93,12 @@ final class PurchaseManager: ObservableObject {
     }
 
     private func observeTransactions() {
-
         Task {
-
             for await result in Transaction.updates {
-
                 if case .verified(let transaction) = result {
-
                     if transaction.productID == productID {
                         isAdRemoved = true
                     }
-
                     await transaction.finish()
                 }
             }
@@ -117,12 +108,9 @@ final class PurchaseManager: ObservableObject {
     private func checkVerified<T>(
         _ result: VerificationResult<T>
     ) throws -> T {
-
         switch result {
-
         case .verified(let safe):
             return safe
-
         case .unverified:
             throw StoreError.failedVerification
         }

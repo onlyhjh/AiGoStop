@@ -180,22 +180,23 @@ extension GameScene {
                     }
                 }
             case 2: // 매칭카드 2개
-                // 따닥 (첫따닥은 첫뻑과 동일)
+                // 따닥 (첫따닥은 첫뻑과 동일): 바닥 2 + 손패 + 덱을 한 번에 가져간다
                 if nextDeckCardExceptBonus.month == handCard.month {
                     await self.movePlayerHandCardsToMatchingTableCards(handCards: [handCard], tableCards: matchingTableCards)
                     let isFirstCardTadak = player.handCards.count > 5
                     SoundManager.shared.playSoundIfPossible(type: .tadak)
-                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: isFirstCardTadak  ? .firstTadak : .tadak, cards: [handCard, nextDeckCardExceptBonus] + matchingTableCards, players: [player]) { _ in
+                    GamePopupManager.shared.showPopup(popupData: self.popupData, type: isFirstCardTadak ? .firstTadak : .tadak, cards: [handCard, nextDeckCardExceptBonus] + matchingTableCards, players: [player]) { _ in
                         Task {
-                            await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard], tableCards: [matchingTableCards[0]]) {
+                            await self.moveBonusDeckCardsToPlayerCapturedIfNeeded(playerIndex: player.index) {
                                 Task {
-                                    await self.moveBonusDeckCardsToPlayerCapturedIfNeeded(playerIndex: player.index){
+                                    guard let deckCard = self.gameData.deckCards.last else { return }
+                                    await self.moveDeckCardToMatchingTableCards(deckCard: deckCard, tableCards: matchingTableCards)
+                                    await self.moveMatchingCardsToPlayerCaptured(playerIndex: player.index, deckOrHandCards: [handCard, deckCard], tableCards: matchingTableCards) {
                                         Task {
-                                            await self.flipDeckCardAfterBonusCard()
-                                            await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 1, completion: {
-                                                // 첫따닥 5만냥
+                                            let currentPlayer = self.gameData.players[player.index]
+                                            let isSsl = !currentPlayer.handCards.isEmpty && self.isEmptyTable()
+                                            let finishTadak = {
                                                 if isFirstCardTadak {
-                                                    // 점수 계산 순서정렬
                                                     var players = [self.gameData.players[player.index], self.gameData.players[((player.index + 1) % 3)] , self.gameData.players[((player.index + 2) % 3)]]
                                                     players[0].finalScore = 10
                                                     players[1].finalScore = -5
@@ -203,9 +204,22 @@ extension GameScene {
                                                     self.saveGameData(winnerIndex: nil, players: players, isNagari: nil)
                                                     self.movePlayerPayouts(players: players) {
                                                         self.updatePlayersCoinNodes(players: players)
+                                                        self.checkScoreAndDoNextPlay()
+                                                    }
+                                                } else {
+                                                    self.checkScoreAndDoNextPlay()
+                                                }
+                                            }
+                                            if isSsl {
+                                                SoundManager.shared.playSoundIfPossible(type: .ssl)
+                                                GamePopupManager.shared.showPopup(popupData: self.popupData, type: .ssl, cards: [], players: [currentPlayer]) { _ in
+                                                    Task {
+                                                        await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 2, completion: finishTadak)
                                                     }
                                                 }
-                                            })
+                                            } else {
+                                                await self.collectPiCardsFromOthers(toPlayerIndex: player.index, piCount: 1, completion: finishTadak)
+                                            }
                                         }
                                     }
                                 }
@@ -281,15 +295,14 @@ extension GameScene {
         let player = self.gameData.players[self.gameData.currentPlayerIndex]
         guard let deckCard = self.gameData.deckCards.last else { return }
         
-        Task {
-            // 매칭카드가 갯수에 따른 처리
-            let matchingTableCards = self.getMatchingTableCards(cardMonth: deckCard.month)
-            print("\(#function) deckCard: \(deckCard.month), \(deckCard.type)")
-            for card in matchingTableCards {
-                print("... matchingTableCard: \(card.month), \(card.type)")
-            }
-            
-            switch matchingTableCards.count {
+        // 매칭카드가 갯수에 따른 처리
+        let matchingTableCards = self.getMatchingTableCards(cardMonth: deckCard.month)
+        print("\(#function) deckCard: \(deckCard.month), \(deckCard.type)")
+        for card in matchingTableCards {
+            print("... matchingTableCard: \(card.month), \(card.type)")
+        }
+        
+        switch matchingTableCards.count {
             case 0: // 매칭카드 없는 경우
                 await self.moveDeckCardsToTable(soundType: .noMatching)
                 self.checkScoreAndDoNextPlay()
@@ -401,7 +414,6 @@ extension GameScene {
                     }
                 })
             }
-        }
     }
     
     func afterSelectGoOrStop(isGo: Bool, player: Player) {
